@@ -12,7 +12,7 @@ import {StorageKeyEnum} from "../../model/StorageKeyEnum";
 export class WrongAnswerWindowComponent implements OnInit {
 
   public correctAnswer: string | null = '';
-  private wrongAnswerSound: HTMLAudioElement = new Audio('assets/sounds/winxpsounds/Windows XP Critical Stop.wav');
+  private wrongAnswerSound: HTMLAudioElement = new Audio('assets/sounds/critical_stop.wav');
 
   constructor(
     private readonly router: Router,

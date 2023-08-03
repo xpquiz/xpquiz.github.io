@@ -13,7 +13,7 @@ export class CorrectAnswerWindowComponent implements OnInit {
 
   public questionScore: number = 10;
 
-  private correctAnswerSound: HTMLAudioElement = new Audio('assets/sounds/winxpsounds/tada.wav');
+  private correctAnswerSound: HTMLAudioElement = new Audio('assets/sounds/tada.wav');
 
   constructor(
     private readonly router: Router,

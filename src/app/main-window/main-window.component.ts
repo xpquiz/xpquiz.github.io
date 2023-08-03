@@ -13,8 +13,6 @@ export class MainWindowComponent implements OnInit {
   public quizCanBeAnswered: boolean = true;
   public countdown: string = '';
 
-  private windowReadySound: HTMLAudioElement = new Audio('assets/sounds/winxpsounds/Windows XP Startup.wav');
-
   constructor(
     private readonly storageService: StorageService,
     private readonly router: Router
@@ -22,8 +20,6 @@ export class MainWindowComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
-    await this.windowReadySound.play();
-
     const lastQuizResponseDate: string | null = this.storageService.get(StorageKeyEnum.LAST_QUIZ_RESPONSE_DATE);
 
     this.quizCanBeAnswered = this.checkIfQuizCanBeAnswered(lastQuizResponseDate);

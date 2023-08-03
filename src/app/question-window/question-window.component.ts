@@ -19,8 +19,8 @@ export class QuestionWindowComponent implements OnInit {
   public progressBarMax: number = 100;
   public progressBarCurrent: number = 0;
 
-  private questionReadySound: HTMLAudioElement = new Audio('assets/sounds/winxpsounds/Windows XP Logon Sound.wav');
-  private confirmAnswerSound: HTMLAudioElement = new Audio('assets/sounds/winxpsounds/Windows XP Exclamation.wav');
+  private questionReadySound: HTMLAudioElement = new Audio('assets/sounds/logon.wav');
+  private confirmAnswerSound: HTMLAudioElement = new Audio('assets/sounds/exclamation.wav');
   private correctAnswer: string = '';
 
   constructor(
