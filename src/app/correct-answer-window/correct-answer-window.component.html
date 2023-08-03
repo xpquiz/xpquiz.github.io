@@ -1,0 +1,13 @@
+<div class="window">
+  <app-window-title-bar iconPath="assets/icons/success.png" title="You did it!"></app-window-title-bar>
+  <div class="window-body">
+    <div class="window-body_title">
+      <label><b>Congratulations!</b></label>
+      <label>You earned {{this.questionScore}} points!</label>
+      <label>Come back in 3 hours for another question!</label>
+    </div>
+
+    <app-icon-button iconPath="assets/icons/home.png" title="Return to home"
+                     (onButtonClick)="this.returnHome()"></app-icon-button>
+  </div>
+</div>

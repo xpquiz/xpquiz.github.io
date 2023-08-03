@@ -1,0 +1,15 @@
+button {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+button img {
+  margin: 3px 13px 3px 0px;
+}
+button img.disabled {
+  opacity: 0.5;
+}
+
+/*# sourceMappingURL=icon-button.component.css.map */

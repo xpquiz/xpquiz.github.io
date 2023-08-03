@@ -1,0 +1,84 @@
+.host
+  display: flex
+  flex-direction: column
+  align-items: center
+  justify-content: center
+
+  .window
+    margin: 10px
+
+    &_question
+      &_body
+        &_loading
+          display: flex
+          flex-direction: column
+          align-items: center
+          justify-content: center
+
+          &_title
+            margin: 5px
+
+          &_progress
+            margin: 5px
+
+        &_loaded
+          display: flex
+          flex-direction: column
+          align-items: center
+          justify-content: center
+
+          &_title
+            text-align: center
+            margin: 15px
+            font-weight: bold
+            max-width: 250px
+
+          &_list
+            display: flex
+            flex-direction: column
+            align-items: center
+            justify-content: center
+            width: 100%
+
+            &_option-button
+              margin: 3px
+              width: 100%
+
+              &_bold
+                font-weight: bold
+
+
+    &_check-answer
+      width: 300px
+
+      &_body
+        display: flex
+        flex-direction: row
+        align-items: center
+        justify-content: center
+
+        &_image
+          width: 30%
+          display: flex
+          align-items: initial
+          justify-content: center
+
+        &_question
+          width: 70%
+          display: flex
+          flex-direction: column
+          align-items: center
+          justify-content: center
+
+          &_title
+            margin: 5px
+
+          &_buttons
+            display: flex
+            flex-direction: row
+            align-items: center
+            justify-content: center
+
+            app-icon-button
+              margin: 3px
+

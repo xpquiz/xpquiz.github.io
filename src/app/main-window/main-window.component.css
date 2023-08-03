@@ -1,0 +1,27 @@
+.window-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.window-body_quiz-answered {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.window-body label {
+  margin: 5px;
+}
+.window-body_buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.window-body_buttons app-icon-button {
+  width: 100%;
+  margin: 3px;
+}
+
+/*# sourceMappingURL=main-window.component.css.map */

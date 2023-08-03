@@ -1,0 +1,21 @@
+<div class="window">
+  <app-window-title-bar iconPath="assets/icons/home.png" title="Welcome!"></app-window-title-bar>
+  <div class="window-body">
+    <label>Welcome to &nbsp;<b>XPQuiz</b>!</label>
+
+    <ng-container *ngIf="!this.quizCanBeAnswered">
+      <div class="window-body_quiz-answered">
+        <label>You already answered for now... </label>
+        <label>Come back in: <b>[{{this.countdown}}]</b></label>
+      </div>
+    </ng-container>
+
+    <div class="window-body_buttons">
+      <app-icon-button iconPath="assets/icons/quiz.png" title="New quiz"
+                       (onButtonClick)="this.redirectToQuiz()"
+                       [disabled]="!this.quizCanBeAnswered"></app-icon-button>
+      <app-icon-button iconPath="assets/icons/score.png" title="My score"
+                       (onButtonClick)="this.redirectToScores()"></app-icon-button>
+    </div>
+  </div>
+</div>

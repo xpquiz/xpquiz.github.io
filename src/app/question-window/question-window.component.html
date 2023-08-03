@@ -1,0 +1,58 @@
+<div class="host">
+  <div class="window window_question">
+    <app-window-title-bar iconPath="assets/icons/question.png" title="Question!"></app-window-title-bar>
+    <div class="window-body window_question_body">
+      <ng-container *ngIf="!this.questionLoaded">
+        <div class="window_question_body_loading">
+          <label class="window_question_body_loading_title">Loading your question, please hold on a moment...</label>
+          <progress class="window_question_body_loading_progress"></progress>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="this.questionLoaded">
+        <div class="window_question_body_loaded">
+          <label class="window_question_body_loaded_title">{{this.question}}</label>
+          <div class="window_question_body_loaded_list">
+            <ng-container *ngFor="let answer of this.answers">
+              <button [disabled]="this.selectedAnswer"
+                      [ngClass]="'window_question_body_loaded_list_option-button ' + (answer === this.selectedAnswer ? 'window_question_body_loaded_list_option-button_bold' : '')"
+                      (click)="this.onClickAnswer(answer)">{{ this.getAnswerLabel(answer) }}</button>
+            </ng-container>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <ng-container *ngIf="this.selectedAnswer">
+    <div class="window window_check-answer">
+      <app-window-title-bar iconPath="assets/icons/check-question.png"
+                            title="Check your answer!"></app-window-title-bar>
+      <div class="window-body window_check-answer_body">
+        <div class="window_check-answer_body_image">
+          <img *ngIf="!this.confirmedAnswer"
+            ngSrc="assets/icons/alert.png"
+            alt="" height="40" width="40"/>
+          <img *ngIf="this.confirmedAnswer"
+               ngSrc="assets/icons/loading.png"
+               alt="" height="40" width="40"/>
+        </div>
+        <div class="window_check-answer_body_question">
+          <ng-container *ngIf="!this.confirmedAnswer">
+            <label class="window_check-answer_body_question_title">Are you sure about that?</label>
+            <div class="window_check-answer_body_question_buttons">
+              <app-icon-button iconPath="assets/icons/success.png" title="Yes!"
+                               (onButtonClick)="this.confirmAnswer()"></app-icon-button>
+              <app-icon-button iconPath="assets/icons/critical.png" title="No..."
+                               (onButtonClick)="this.validateAnswer()"></app-icon-button>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="this.confirmedAnswer">
+            <label class="window_check-answer_body_question_title">Ok, checking your answer...</label>
+            <progress [max]="this.progressBarMax" [value]="this.progressBarCurrent"></progress>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>

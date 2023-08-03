@@ -1,0 +1,18 @@
+.window-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.window-body_title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px;
+}
+.window-body_title label {
+  text-align: center;
+}
+
+/*# sourceMappingURL=correct-answer-window.component.css.map */

@@ -1,0 +1,18 @@
+.window-body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.window-body_title {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.window-body_title label {
+  margin: 5px;
+  text-align: center;
+}
+
+/*# sourceMappingURL=score-window.component.css.map */
