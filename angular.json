@@ -97,6 +97,17 @@
             ],
             "scripts": []
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {
+            "message": "Deploying from angular-cli-ghpages",
+            "branch": "gh-pages",
+            "baseHref": "https://xpquiz.github.io",
+            "repo": "https://github.com/xpquiz/xpquiz.github.io.git",
+            "name": "Isahann Hanacleto",
+            "email": "isahanacleto@gmail.com"
+          }
         }
       }
     }
