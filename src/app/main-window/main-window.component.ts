@@ -31,14 +31,13 @@ export class MainWindowComponent implements OnInit {
   private checkIfQuizCanBeAnswered(lastQuizResponseDate: string | null): boolean {
     if (lastQuizResponseDate === null || lastQuizResponseDate === '') return true;
 
+    const now: Date = new Date();
     const lastAnsweredDate: Date = new Date();
-    const nextAnswerDate: Date = new Date();
     const threeHoursInMs: number = 1000 * 60 * 60 * 3;
 
-    lastAnsweredDate.setTime(parseInt(lastQuizResponseDate));
-    nextAnswerDate.setTime(parseInt(lastQuizResponseDate) + threeHoursInMs);
+    lastAnsweredDate.setTime(parseInt(lastQuizResponseDate) + threeHoursInMs);
 
-    return lastAnsweredDate.getTime() >= nextAnswerDate.getTime();
+    return now.getTime() >= lastAnsweredDate.getTime();
   }
 
   private startCountdown(lastQuizResponseDate: string | null): void {
