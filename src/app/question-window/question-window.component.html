@@ -5,7 +5,7 @@
       <ng-container *ngIf="!this.questionLoaded">
         <div class="window_question_body_loading">
           <label class="window_question_body_loading_title">Loading your question, please hold on a moment...</label>
-          <progress class="window_question_body_loading_progress"></progress>
+          <progress class="window_question_body_loading_progress" max="100" [value]="this.loadingProgressBar"></progress>
         </div>
       </ng-container>
 
@@ -49,7 +49,7 @@
           </ng-container>
           <ng-container *ngIf="this.confirmedAnswer">
             <label class="window_check-answer_body_question_title">Ok, checking your answer...</label>
-            <progress [max]="this.progressBarMax" [value]="this.progressBarCurrent"></progress>
+            <progress [max]="this.progressBarMax" [value]="this.answerProgressBar"></progress>
           </ng-container>
         </div>
       </div>
