@@ -3,6 +3,7 @@ import {TriviaService} from "../../service/trivia.service";
 import {TriviaResponse} from "../../model/TriviaResponse";
 import {Router} from "@angular/router";
 import {PathsEnum} from "../../model/PathsEnum";
+import {StorageKeyEnum} from "../../model/StorageKeyEnum";
 
 @Component({
   selector: 'app-question-window',
@@ -17,11 +18,13 @@ export class QuestionWindowComponent implements OnInit {
   public selectedAnswer: string = '';
   public confirmedAnswer: boolean = false;
   public progressBarMax: number = 100;
-  public progressBarCurrent: number = 0;
+  public answerProgressBar: number = 0;
+  public loadingProgressBar: number = 0;
 
   private questionReadySound: HTMLAudioElement = new Audio('assets/sounds/logon.wav');
   private confirmAnswerSound: HTMLAudioElement = new Audio('assets/sounds/exclamation.wav');
   private correctAnswer: string = '';
+
 
   constructor(
     private readonly triviaService: TriviaService,
@@ -30,7 +33,7 @@ export class QuestionWindowComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
-    await new Promise(f => setTimeout(f, 5000));
+    this.startLoadingProgressBar();
     await this.loadQuestion();
   }
 
@@ -55,6 +58,9 @@ export class QuestionWindowComponent implements OnInit {
         .map((value) => ({value, sort: Math.random()}))
         .sort((a, b) => a.sort - b.sort)
         .map(({value}) => value);
+
+      await new Promise(f => setTimeout(f, 3000));
+
       this.questionLoaded = true;
 
       await this.questionReadySound.play();
@@ -67,10 +73,10 @@ export class QuestionWindowComponent implements OnInit {
     while (true) {
       await new Promise(f => setTimeout(f, 400));
 
-      if (this.progressBarCurrent === this.progressBarMax)
+      if (this.answerProgressBar === this.progressBarMax)
         break;
 
-      this.progressBarCurrent += 10;
+      this.answerProgressBar += 10;
     }
 
     await this.redirectFromAnswer();
@@ -86,5 +92,20 @@ export class QuestionWindowComponent implements OnInit {
     const answer: string | null = correctAnswer ? null : this.correctAnswer;
 
     await this.router.navigate(answer === null ? [routeToNavigate] : [routeToNavigate, answer]);
+  }
+
+  private startLoadingProgressBar(): void {
+    new Promise<void>(async (resolve, reject): Promise<void> => {
+      while (true) {
+        this.loadingProgressBar += 10;
+
+        if (this.loadingProgressBar === this.progressBarMax) {
+          resolve();
+          break;
+        }
+
+        await new Promise(f => setTimeout(f, 300));
+      }
+    });
   }
 }
