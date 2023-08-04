@@ -12,10 +12,12 @@
 
     <div class="window-body_buttons">
       <app-icon-button iconPath="assets/icons/quiz.png" title="New quiz"
-                       (onButtonClick)="this.redirectToQuiz()"
+                       (onButtonClick)="this.redirectTo(PathsEnum.QUIZ)"
                        [disabled]="!this.quizCanBeAnswered"></app-icon-button>
       <app-icon-button iconPath="assets/icons/score.png" title="My score"
-                       (onButtonClick)="this.redirectToScores()"></app-icon-button>
+                       (onButtonClick)="this.redirectTo(PathsEnum.SCORES)"></app-icon-button>
+      <app-icon-button iconPath="assets/icons/about.png" title="About"
+                       (onButtonClick)="this.redirectTo(PathsEnum.ABOUT)"></app-icon-button>
     </div>
   </div>
 </div>
