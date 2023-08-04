@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {StorageService} from "../../service/storage.service";
 import {StorageKeyEnum} from "../../model/StorageKeyEnum";
 import {Router} from "@angular/router";
+import {PathsEnum} from "../../model/PathsEnum";
 
 @Component({
   selector: 'app-main-window',
@@ -12,6 +13,8 @@ export class MainWindowComponent implements OnInit {
 
   public quizCanBeAnswered: boolean = true;
   public countdown: string = '';
+
+  protected readonly PathsEnum = PathsEnum;
 
   constructor(
     private readonly storageService: StorageService,
@@ -78,11 +81,7 @@ export class MainWindowComponent implements OnInit {
     });
   }
 
-  public async redirectToScores(): Promise<void> {
-    await this.router.navigateByUrl('scores');
-  }
-
-  public async redirectToQuiz(): Promise<void> {
-    await this.router.navigateByUrl('quiz');
+  public async redirectTo(route: PathsEnum): Promise<void> {
+    await this.router.navigateByUrl(route);
   }
 }

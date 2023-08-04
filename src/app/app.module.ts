@@ -12,6 +12,7 @@ import {WindowTitleBarComponent} from './common/window-title-bar/window-title-ba
 import {ScoreWindowComponent} from './score-window/score-window.component';
 import { CorrectAnswerWindowComponent } from './correct-answer-window/correct-answer-window.component';
 import { WrongAnswerWindowComponent } from './wrong-answer-window/wrong-answer-window.component';
+import { AboutWindowComponent } from './about-window/about-window.component';
 
 @NgModule({
   declarations: [
@@ -23,6 +24,7 @@ import { WrongAnswerWindowComponent } from './wrong-answer-window/wrong-answer-w
     ScoreWindowComponent,
     CorrectAnswerWindowComponent,
     WrongAnswerWindowComponent,
+    AboutWindowComponent,
   ],
     imports: [
         BrowserModule,

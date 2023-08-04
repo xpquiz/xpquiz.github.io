@@ -6,6 +6,7 @@ import {ScoreWindowComponent} from "./score-window/score-window.component";
 import {PathsEnum} from "../model/PathsEnum";
 import {CorrectAnswerWindowComponent} from "./correct-answer-window/correct-answer-window.component";
 import {WrongAnswerWindowComponent} from "./wrong-answer-window/wrong-answer-window.component";
+import {AboutWindowComponent} from "./about-window/about-window.component";
 
 const routes: Routes = [
     {
@@ -16,6 +17,10 @@ const routes: Routes = [
     {
       path: PathsEnum.HOME,
       component: MainWindowComponent
+    },
+    {
+      path: PathsEnum.ABOUT,
+      component: AboutWindowComponent
     },
     {
       path: PathsEnum.SCORES,
