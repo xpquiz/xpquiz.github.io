@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {StorageKeyEnum} from "../model/StorageKeyEnum";
-import * as CryptoJS from 'crypto-js';
+import { AES, enc } from 'crypto-js';
 
 @Injectable({
   providedIn: 'root'
@@ -29,12 +29,12 @@ export class StorageService {
   }
 
   private encrypt(value: string): string {
-    const encrypted = CryptoJS.AES.encrypt(value, this.KEY);
+    const encrypted = AES.encrypt(value, this.KEY);
     return encrypted.toString();
   }
 
   private decrypt(value: string): string {
-    const decrypted = CryptoJS.AES.decrypt(value, this.KEY);
-    return decrypted.toString(CryptoJS.enc.Utf8);
+    const decrypted = AES.decrypt(value, this.KEY);
+    return decrypted.toString(enc.Utf8);
   }
 }
