@@ -61,7 +61,7 @@ export class MainWindowComponent implements OnInit {
 
         if (sameHour && sameMinute && sameSecond) {
           this.quizCanBeAnswered = true;
-          this.storageService.save(StorageKeyEnum.LAST_QUIZ_RESPONSE_DATE, '');
+          this.storageService.clear(StorageKeyEnum.LAST_QUIZ_RESPONSE_DATE);
           resolve();
           break;
         }
