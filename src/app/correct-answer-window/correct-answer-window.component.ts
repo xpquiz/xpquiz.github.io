@@ -32,7 +32,7 @@ export class CorrectAnswerWindowComponent implements OnInit {
 
   private saveCurrentScore(): void {
     const currentScore: string | null = this.storageService.get(StorageKeyEnum.CURRENT_SCORE);
-    let currentScoreNumber: number = currentScore === null ? 0 : parseInt(currentScore);
+    let currentScoreNumber: number = (currentScore === null || currentScore === '') ? 0 : parseInt(currentScore);
 
     currentScoreNumber += this.questionScore;
 
