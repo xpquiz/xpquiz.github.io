@@ -21,7 +21,7 @@ export class ScoreWindowComponent implements OnInit {
   public ngOnInit(): void {
     const currentScore: string | null = this.storageService.get(StorageKeyEnum.CURRENT_SCORE);
 
-    this.score = currentScore === null ? 0 : parseInt(currentScore);
+    this.score = (currentScore === null || currentScore === '') ? 0 : parseInt(currentScore);
   }
 
   public async returnHome(): Promise<void> {
