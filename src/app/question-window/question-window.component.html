@@ -1,6 +1,6 @@
 <div class="host">
   <div class="window window_question">
-    <app-window-title-bar iconPath="assets/icons/question.png" title="Question!"></app-window-title-bar>
+    <app-window-title-bar iconPath="question.png" title="Question!"></app-window-title-bar>
     <div class="window-body window_question_body">
       <ng-container *ngIf="!this.questionLoaded">
         <div class="window_question_body_loading">
@@ -12,6 +12,7 @@
       <ng-container *ngIf="this.questionLoaded">
         <div class="window_question_body_loaded">
           <label class="window_question_body_loaded_title">{{this.question}}</label>
+          <label class="window_question_body_loaded_points">[{{this.questionPoints}} point(s) for this question]</label>
           <div class="window_question_body_loaded_list">
             <ng-container *ngFor="let answer of this.answers">
               <button [disabled]="this.selectedAnswer"
@@ -26,7 +27,7 @@
 
   <ng-container *ngIf="this.selectedAnswer">
     <div class="window window_check-answer">
-      <app-window-title-bar iconPath="assets/icons/check-question.png"
+      <app-window-title-bar iconPath="check-question.png"
                             title="Check your answer!"></app-window-title-bar>
       <div class="window-body window_check-answer_body">
         <div class="window_check-answer_body_image">
@@ -41,9 +42,9 @@
           <ng-container *ngIf="!this.confirmedAnswer">
             <label class="window_check-answer_body_question_title">Are you sure about that?</label>
             <div class="window_check-answer_body_question_buttons">
-              <app-icon-button iconPath="assets/icons/success.png" title="Yes!"
+              <app-icon-button iconPath="yes.png" title="Yes!"
                                (onButtonClick)="this.confirmAnswer()"></app-icon-button>
-              <app-icon-button iconPath="assets/icons/critical.png" title="No..."
+              <app-icon-button iconPath="no.png" title="No..."
                                (onButtonClick)="this.validateAnswer()"></app-icon-button>
             </div>
           </ng-container>

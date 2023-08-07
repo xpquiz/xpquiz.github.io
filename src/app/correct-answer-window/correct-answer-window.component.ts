@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {PathsEnum} from "../../model/PathsEnum";
 import {StorageService} from "../../service/storage.service";
-import {StorageKeyEnum} from "../../model/StorageKeyEnum";
+import {AppStorage, WeekScore} from "../../model/AppStorage";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-correct-answer-window',
@@ -11,14 +12,16 @@ import {StorageKeyEnum} from "../../model/StorageKeyEnum";
 })
 export class CorrectAnswerWindowComponent implements OnInit {
 
-  public questionScore: number = 10;
+  public questionScore: number = 0;
 
   private correctAnswerSound: HTMLAudioElement = new Audio('assets/sounds/tada.wav');
 
   constructor(
     private readonly router: Router,
+    private readonly route: ActivatedRoute,
     private readonly storageService: StorageService
   ) {
+    this.questionScore = parseInt(this.route.snapshot.paramMap.get('points') ?? '0');
   }
 
   public async ngOnInit(): Promise<void> {
@@ -31,12 +34,26 @@ export class CorrectAnswerWindowComponent implements OnInit {
   }
 
   private saveCurrentScore(): void {
-    const currentScore: string | null = this.storageService.get(StorageKeyEnum.CURRENT_SCORE);
-    let currentScoreNumber: number = (currentScore === null || currentScore === '') ? 0 : parseInt(currentScore);
+    const appStorage: AppStorage = this.storageService.get();
+    const currentWeek: number = moment().isoWeek();
+    const newCurrentScoreMap: Map<number, WeekScore> = new Map<number, WeekScore>([[currentWeek, {
+      score: 0,
+      rightAnswers: 0,
+      wrongAnswers: 0,
+    }]]);
+    const currentWeekScoreMap: Map<number, WeekScore> = appStorage.weekScoreMap ?? newCurrentScoreMap;
+    const currentWeekScore: WeekScore = currentWeekScoreMap.get(currentWeek)!;
 
-    currentScoreNumber += this.questionScore;
+    currentWeekScore.rightAnswers += 1;
+    currentWeekScore.score += this.questionScore;
+    currentWeekScoreMap.set(currentWeek, currentWeekScore!);
 
-    this.storageService.save(StorageKeyEnum.CURRENT_SCORE, currentScoreNumber.toString());
-    this.storageService.save(StorageKeyEnum.LAST_QUIZ_RESPONSE_DATE, new Date().getTime().toString());
+    this.storageService.save(
+      {
+        ...appStorage,
+        weekScoreMap: currentWeekScoreMap,
+        lastQuizResponseDate: moment().toISOString()
+      }
+    )
   }
 }

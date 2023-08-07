@@ -1,8 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {StorageService} from "../../service/storage.service";
-import {StorageKeyEnum} from "../../model/StorageKeyEnum";
 import {Router} from "@angular/router";
 import {PathsEnum} from "../../model/PathsEnum";
+import {AppStorage} from "../../model/AppStorage";
+import * as moment from "moment";
+import {Duration, Moment} from "moment";
 
 @Component({
   selector: 'app-main-window',
@@ -12,7 +14,7 @@ import {PathsEnum} from "../../model/PathsEnum";
 export class MainWindowComponent implements OnInit {
 
   public quizCanBeAnswered: boolean = true;
-  public countdown: string = '';
+  public remainingTime: string = '';
 
   protected readonly PathsEnum = PathsEnum;
 
@@ -23,7 +25,8 @@ export class MainWindowComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
-    const lastQuizResponseDate: string | null = this.storageService.get(StorageKeyEnum.LAST_QUIZ_RESPONSE_DATE);
+    const appStorage: AppStorage = this.storageService.get();
+    const lastQuizResponseDate: string | null = appStorage.lastQuizResponseDate;
 
     this.quizCanBeAnswered = this.checkIfQuizCanBeAnswered(lastQuizResponseDate);
 
@@ -31,57 +34,52 @@ export class MainWindowComponent implements OnInit {
       this.startCountdown(lastQuizResponseDate);
   }
 
+  public async redirectTo(route: PathsEnum): Promise<void> {
+    await this.router.navigateByUrl(route);
+  }
+
   private checkIfQuizCanBeAnswered(lastQuizResponseDate: string | null): boolean {
-    if (lastQuizResponseDate === null || lastQuizResponseDate === '') return true;
+    if (lastQuizResponseDate === null) return true;
 
-    const now: Date = new Date();
-    const lastAnsweredDate: Date = new Date();
-    const threeHoursInMs: number = 1000 * 60 * 60 * 3;
+    const now: Moment = moment();
+    const nextResponseMinimumDate: Moment = moment(lastQuizResponseDate).add(3, "hours");
 
-    lastAnsweredDate.setTime(parseInt(lastQuizResponseDate) + threeHoursInMs);
-
-    return now.getTime() >= lastAnsweredDate.getTime();
+    return now.isSame(nextResponseMinimumDate) || now.isAfter(nextResponseMinimumDate);
   }
 
   private startCountdown(lastQuizResponseDate: string | null): void {
-    if (lastQuizResponseDate === null || lastQuizResponseDate === '') return;
+    if (lastQuizResponseDate === null) return;
 
-    const nextAnswerDate: Date = new Date();
-    const threeHoursInMs: number = 1000 * 60 * 60 * 3;
+    const nextResponseMinimumDate: Moment = moment(lastQuizResponseDate).add(3, "hours");
 
-    nextAnswerDate.setTime(parseInt(lastQuizResponseDate) + threeHoursInMs);
-
-    new Promise<void>(async (resolve, reject): Promise<void> => {
+    new Promise<void>(async (resolve): Promise<void> => {
       while (true) {
-        const now: Date = new Date();
+        const now: Moment = moment();
 
-        const sameHour: boolean = now.getUTCHours() === nextAnswerDate.getUTCHours();
-        const sameMinute: boolean = now.getUTCMinutes() === nextAnswerDate.getUTCMinutes();
-        const sameSecond: boolean = now.getUTCSeconds() === nextAnswerDate.getUTCSeconds();
-
-        if (sameHour && sameMinute && sameSecond) {
+        if (now.isSame(nextResponseMinimumDate) || now.isAfter(nextResponseMinimumDate)) {
           this.quizCanBeAnswered = true;
-          this.storageService.clear(StorageKeyEnum.LAST_QUIZ_RESPONSE_DATE);
+          this.clearLastAnsweredDate();
           resolve();
           break;
         }
 
-        const newTime: Date = new Date();
+        const timeLeft: Duration = moment.duration(nextResponseMinimumDate.valueOf() - now.valueOf());
 
-        newTime.setTime(nextAnswerDate.getTime() - now.getTime());
-
-        const hours: number = newTime.getUTCHours();
-        const minutes: number = newTime.getUTCMinutes();
-        const seconds: number = newTime.getUTCSeconds();
-
-        this.countdown = `${hours} h, ${minutes} min, ${seconds} s`
+        this.remainingTime = `${timeLeft.hours()} hours, ${timeLeft.minutes()} minutes, ${timeLeft.seconds()} seconds`
 
         await new Promise(f => setTimeout(f, 1000));
       }
     });
   }
 
-  public async redirectTo(route: PathsEnum): Promise<void> {
-    await this.router.navigateByUrl(route);
+  private clearLastAnsweredDate(): void {
+    const appStorage: AppStorage = this.storageService.get();
+
+    this.storageService.save(
+      {
+        ...appStorage,
+        lastQuizResponseDate: null
+      }
+    );
   }
 }

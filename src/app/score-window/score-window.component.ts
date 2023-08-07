@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {StorageService} from "../../service/storage.service";
 import {Router} from "@angular/router";
-import {StorageKeyEnum} from "../../model/StorageKeyEnum";
 import {PathsEnum} from "../../model/PathsEnum";
+import {AppStorage, WeekScore} from "../../model/AppStorage";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-score-window',
@@ -10,7 +11,11 @@ import {PathsEnum} from "../../model/PathsEnum";
   styleUrls: ['./score-window.component.sass']
 })
 export class ScoreWindowComponent implements OnInit {
-  public score: number = 0;
+  public currentScore: number = 0;
+  public currentWeek: number = 0;
+  public rightAnswers: number = 0;
+  public wrongAnswers: number = 0;
+  public clipboardMessage: string = '';
 
   constructor(
     private readonly router: Router,
@@ -19,13 +24,32 @@ export class ScoreWindowComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    const currentScore: string | null = this.storageService.get(StorageKeyEnum.CURRENT_SCORE);
+    const currentWeek: number = moment().isoWeek();
+    const appStorage: AppStorage = this.storageService.get();
+    const currentWeekScoreMap: Map<number, WeekScore> | undefined = appStorage.weekScoreMap;
 
-    this.score = (currentScore === null || currentScore === '') ? 0 : parseInt(currentScore);
+    this.currentWeek = currentWeek;
+
+    if (currentWeekScoreMap === undefined) return;
+
+    const currentWeekScore: WeekScore = currentWeekScoreMap.get(currentWeek)!;
+
+    this.currentScore = currentWeekScore.score;
+    this.rightAnswers = currentWeekScore.rightAnswers;
+    this.wrongAnswers = currentWeekScore.wrongAnswers;
+    this.assembleClipboardMessage();
   }
 
   public async returnHome(): Promise<void> {
     await this.router.navigateByUrl(PathsEnum.HOME);
   }
 
+  private assembleClipboardMessage() {
+    this.clipboardMessage = `Here's my score for the week on xpquiz.github.io!
+
+Right answers: ${this.rightAnswers}
+Wrong answers: ${this.wrongAnswers}
+Total score: ${this.currentScore}`;
+
+  }
 }
