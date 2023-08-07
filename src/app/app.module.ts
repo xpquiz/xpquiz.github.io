@@ -13,6 +13,7 @@ import {ScoreWindowComponent} from './score-window/score-window.component';
 import { CorrectAnswerWindowComponent } from './correct-answer-window/correct-answer-window.component';
 import { WrongAnswerWindowComponent } from './wrong-answer-window/wrong-answer-window.component';
 import { AboutWindowComponent } from './about-window/about-window.component';
+import {CopyClipboardDirective} from "./directives/CopyClipboardDirective";
 
 @NgModule({
   declarations: [
@@ -25,6 +26,7 @@ import { AboutWindowComponent } from './about-window/about-window.component';
     CorrectAnswerWindowComponent,
     WrongAnswerWindowComponent,
     AboutWindowComponent,
+    CopyClipboardDirective
   ],
     imports: [
         BrowserModule,
