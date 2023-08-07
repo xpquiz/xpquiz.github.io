@@ -3,6 +3,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {PathsEnum} from "../../model/PathsEnum";
 import {StorageService} from "../../service/storage.service";
 import {AppStorage} from "../../model/AppStorage";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-correct-answer-window',
@@ -39,7 +40,7 @@ export class CorrectAnswerWindowComponent implements OnInit {
       {
         ...appStorage,
         currentScore: appStorage.currentScore + this.questionScore,
-        lastQuizResponseDate: new Date()
+        lastQuizResponseDate: moment().toISOString()
       }
     )
   }
