@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {PathsEnum} from "../../model/PathsEnum";
 import {StorageService} from "../../service/storage.service";
-import {AppStorage} from "../../model/AppStorage";
+import {AppStorage, WeekScore} from "../../model/AppStorage";
 import * as moment from "moment";
 
 @Component({
@@ -35,11 +35,23 @@ export class CorrectAnswerWindowComponent implements OnInit {
 
   private saveCurrentScore(): void {
     const appStorage: AppStorage = this.storageService.get();
+    const currentWeek: number = moment().isoWeek();
+    const newCurrentScoreMap: Map<number, WeekScore> = new Map<number, WeekScore>([[currentWeek, {
+      score: 0,
+      rightAnswers: 0,
+      wrongAnswers: 0,
+    }]]);
+    const currentWeekScoreMap: Map<number, WeekScore> = appStorage.weekScoreMap ?? newCurrentScoreMap;
+    const currentWeekScore: WeekScore = currentWeekScoreMap.get(currentWeek)!;
+
+    currentWeekScore.rightAnswers += 1;
+    currentWeekScore.score += this.questionScore;
+    currentWeekScoreMap.set(currentWeek, currentWeekScore!);
 
     this.storageService.save(
       {
         ...appStorage,
-        currentScore: appStorage.currentScore + this.questionScore,
+        weekScoreMap: currentWeekScoreMap,
         lastQuizResponseDate: moment().toISOString()
       }
     )
