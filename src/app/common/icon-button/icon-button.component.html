@@ -1,6 +1,6 @@
 <button [disabled]="this.disabled" (click)="this.onClick()">
   <img
-    [ngSrc]="this.iconPath" [ngClass]="this.disabled ? 'disabled' : ''"
+    [ngSrc]="'assets/icons/20x20/' + this.iconPath" [ngClass]="this.disabled ? 'disabled' : ''"
     alt="" [height]="this.iconSize" [width]="this.iconSize"/>
   {{this.title}}
 </button>
