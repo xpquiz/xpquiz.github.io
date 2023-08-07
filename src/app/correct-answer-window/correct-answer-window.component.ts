@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {PathsEnum} from "../../model/PathsEnum";
 import {StorageService} from "../../service/storage.service";
 import {AppStorage} from "../../model/AppStorage";
@@ -11,14 +11,16 @@ import {AppStorage} from "../../model/AppStorage";
 })
 export class CorrectAnswerWindowComponent implements OnInit {
 
-  public questionScore: number = 10;
+  public questionScore: number = 0;
 
   private correctAnswerSound: HTMLAudioElement = new Audio('assets/sounds/tada.wav');
 
   constructor(
     private readonly router: Router,
+    private readonly route: ActivatedRoute,
     private readonly storageService: StorageService
   ) {
+    this.questionScore = parseInt(this.route.snapshot.paramMap.get('points') ?? '0');
   }
 
   public async ngOnInit(): Promise<void> {
