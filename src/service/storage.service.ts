@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {StorageKeyEnum} from "../model/StorageKeyEnum";
-import { AES, enc } from 'crypto-js';
+import {AES, enc} from 'crypto-js';
+import {AppStorage} from "../model/AppStorage";
 
 @Injectable({
   providedIn: 'root'
@@ -8,33 +8,37 @@ import { AES, enc } from 'crypto-js';
 export class StorageService {
 
   private readonly localStorage: Storage;
-  private readonly KEY: string = 'ENCRYPTION_KEY';
+  private readonly storageKey: string = 'app_storage'
+  private readonly encryptionkey: string = 'ENCRYPTION_KEY_XPQUIZ';
 
   constructor() {
     this.localStorage = window.localStorage;
   }
 
-  public save(key: StorageKeyEnum, value: string): void {
-    this.localStorage.setItem(key, this.encrypt(value));
+  public save(value: AppStorage): void {
+    const stringfiedObject: string = JSON.stringify(value);
+    const encryptedObject: string = this.encrypt(stringfiedObject);
+
+    this.localStorage.setItem(this.storageKey, encryptedObject);
   }
 
-  public get(key: StorageKeyEnum): string | null {
-    const encryptedItem: string | null = this.localStorage.getItem(key);
-
-    return encryptedItem === null ? '' : this.decrypt(encryptedItem);
-  }
-
-  public clear(key: StorageKeyEnum) {
-    this.localStorage.removeItem(key);
+  public get(): AppStorage {
+    const encryptedItem: string | null = this.localStorage.getItem(this.storageKey);
+    return (encryptedItem === null || encryptedItem === '') ?
+      {
+        currentScore: 0,
+        lastQuizResponseDate: null
+      } :
+      JSON.parse(this.decrypt(encryptedItem));
   }
 
   private encrypt(value: string): string {
-    const encrypted = AES.encrypt(value, this.KEY);
+    const encrypted = AES.encrypt(value, this.encryptionkey);
     return encrypted.toString();
   }
 
   private decrypt(value: string): string {
-    const decrypted = AES.decrypt(value, this.KEY);
+    const decrypted = AES.decrypt(value, this.encryptionkey);
     return decrypted.toString(enc.Utf8);
   }
 }

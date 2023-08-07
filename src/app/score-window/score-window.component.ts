@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {StorageService} from "../../service/storage.service";
 import {Router} from "@angular/router";
-import {StorageKeyEnum} from "../../model/StorageKeyEnum";
 import {PathsEnum} from "../../model/PathsEnum";
+import {AppStorage} from "../../model/AppStorage";
 
 @Component({
   selector: 'app-score-window',
@@ -19,9 +19,8 @@ export class ScoreWindowComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    const currentScore: string | null = this.storageService.get(StorageKeyEnum.CURRENT_SCORE);
-
-    this.score = (currentScore === null || currentScore === '') ? 0 : parseInt(currentScore);
+    const appStorage: AppStorage = this.storageService.get();
+    this.score = appStorage.currentScore;
   }
 
   public async returnHome(): Promise<void> {

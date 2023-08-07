@@ -3,7 +3,6 @@ import {TriviaService} from "../../service/trivia.service";
 import {TriviaResponse} from "../../model/TriviaResponse";
 import {Router} from "@angular/router";
 import {PathsEnum} from "../../model/PathsEnum";
-import {StorageKeyEnum} from "../../model/StorageKeyEnum";
 
 @Component({
   selector: 'app-question-window',
