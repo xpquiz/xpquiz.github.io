@@ -2,7 +2,8 @@ import {Component, OnInit} from '@angular/core';
 import {StorageService} from "../../service/storage.service";
 import {Router} from "@angular/router";
 import {PathsEnum} from "../../model/PathsEnum";
-import {AppStorage} from "../../model/AppStorage";
+import {AppStorage, WeekScore} from "../../model/AppStorage";
+import * as moment from "moment";
 
 @Component({
   selector: 'app-score-window',
@@ -10,7 +11,10 @@ import {AppStorage} from "../../model/AppStorage";
   styleUrls: ['./score-window.component.sass']
 })
 export class ScoreWindowComponent implements OnInit {
-  public score: number = 0;
+  public currentScore: number = 0;
+  public currentWeek: number = 0;
+  public rightAnswers: number = 0;
+  public wrongAnswers: number = 0;
 
   constructor(
     private readonly router: Router,
@@ -19,8 +23,19 @@ export class ScoreWindowComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    const currentWeek: number = moment().isoWeek();
     const appStorage: AppStorage = this.storageService.get();
-    this.score = appStorage.currentScore;
+    const currentWeekScoreMap: Map<number, WeekScore> | undefined = appStorage.weekScoreMap;
+
+    this.currentWeek = currentWeek;
+
+    if(currentWeekScoreMap === undefined) return;
+
+    const currentWeekScore: WeekScore = currentWeekScoreMap.get(currentWeek)!;
+
+    this.currentScore = currentWeekScore.score;
+    this.rightAnswers = currentWeekScore.rightAnswers;
+    this.wrongAnswers = currentWeekScore.wrongAnswers;
   }
 
   public async returnHome(): Promise<void> {

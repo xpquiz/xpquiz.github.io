@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {PathsEnum} from "../../model/PathsEnum";
 import {StorageService} from "../../service/storage.service";
-import {AppStorage} from "../../model/AppStorage";
+import {AppStorage, WeekScore} from "../../model/AppStorage";
 import * as moment from "moment";
 
 @Component({
@@ -25,20 +25,33 @@ export class WrongAnswerWindowComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     await this.wrongAnswerSound.play();
-    this.updateStorage();
+    this.saveCurrentScore();
   }
 
   public async returnHome(): Promise<void> {
     await this.router.navigateByUrl(PathsEnum.HOME);
   }
 
-  private updateStorage() {
+  private saveCurrentScore() {
     const appStorage: AppStorage = this.storageService.get();
+    const currentWeek: number = moment().isoWeek();
+    const newCurrentScoreMap: Map<number, WeekScore> = new Map<number, WeekScore>([[currentWeek, {
+      score: 0,
+      rightAnswers: 0,
+      wrongAnswers: 0,
+    }]]);
+    const currentWeekScoreMap: Map<number, WeekScore> = appStorage.weekScoreMap ?? newCurrentScoreMap;
+    const currentWeekScore: WeekScore = currentWeekScoreMap.get(currentWeek)!;
 
-    this.storageService.save({
-      ...appStorage,
-      currentScore: appStorage.currentScore,
-      lastQuizResponseDate: moment().toISOString()
-    });
+    currentWeekScore!.wrongAnswers += 1;
+    currentWeekScoreMap.set(currentWeek, currentWeekScore!);
+
+    this.storageService.save(
+      {
+        ...appStorage,
+        weekScoreMap: currentWeekScoreMap,
+        lastQuizResponseDate: moment().toISOString()
+      }
+    )
   }
 }

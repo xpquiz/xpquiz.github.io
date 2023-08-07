@@ -2,9 +2,20 @@
   <app-window-title-bar iconPath="score.png" title="Score"></app-window-title-bar>
   <div class="window-body">
     <div class="window-body_title">
-      <label>You currently have &nbsp;<b>[{{this.score}}]</b>&nbsp; points!</label>
+      <label class="window-body_title_main">Here are your results for week&nbsp;<b>[{{this.currentWeek}}]</b>!</label>
+      <div class="window-body_title_scores">
+        <div class="window-body_title_scores_titles">
+          <label>Right answers:</label>
+          <label>Wrong answers:</label>
+          <label>Total score:</label>
+        </div>
+        <div class="window-body_title_scores_results">
+          <b><label>[{{this.rightAnswers}}] answers</label></b>
+          <b><label>[{{this.wrongAnswers}}] answers</label></b>
+          <b><label>[{{this.currentScore}}] points</label></b>
+        </div>
+      </div>
     </div>
-
     <app-icon-button iconPath="home.png" title="Return to home"
                      (onButtonClick)="this.returnHome()"></app-icon-button>
   </div>

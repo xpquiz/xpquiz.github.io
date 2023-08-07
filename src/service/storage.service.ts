@@ -16,7 +16,7 @@ export class StorageService {
   }
 
   public save(value: AppStorage): void {
-    const stringfiedObject: string = JSON.stringify(value);
+    const stringfiedObject: string = JSON.stringify(value, this.replacer);
     const encryptedObject: string = this.encrypt(stringfiedObject);
 
     this.localStorage.setItem(this.storageKey, encryptedObject);
@@ -29,7 +29,7 @@ export class StorageService {
         currentScore: 0,
         lastQuizResponseDate: null
       } :
-      JSON.parse(this.decrypt(encryptedItem));
+      JSON.parse(this.decrypt(encryptedItem), this.reviver);
   }
 
   private encrypt(value: string): string {
@@ -41,4 +41,25 @@ export class StorageService {
     const decrypted = AES.decrypt(value, this.encryptionkey);
     return decrypted.toString(enc.Utf8);
   }
+
+  private replacer(key: any, value: any) {
+    if(value instanceof Map) {
+      return {
+        dataType: 'Map',
+        value: Array.from(value.entries()), // or with spread: value: [...value]
+      };
+    } else {
+      return value;
+    }
+  }
+
+  private reviver(key: any, value: any) {
+    if(typeof value === 'object' && value !== null) {
+      if (value.dataType === 'Map') {
+        return new Map(value.value);
+      }
+    }
+    return value;
+  }
+
 }
