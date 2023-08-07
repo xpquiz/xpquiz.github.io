@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {PathsEnum} from "../../model/PathsEnum";
 import {StorageService} from "../../service/storage.service";
-import {StorageKeyEnum} from "../../model/StorageKeyEnum";
+import {AppStorage} from "../../model/AppStorage";
 
 @Component({
   selector: 'app-correct-answer-window',
@@ -31,12 +31,14 @@ export class CorrectAnswerWindowComponent implements OnInit {
   }
 
   private saveCurrentScore(): void {
-    const currentScore: string | null = this.storageService.get(StorageKeyEnum.CURRENT_SCORE);
-    let currentScoreNumber: number = (currentScore === null || currentScore === '') ? 0 : parseInt(currentScore);
+    const appStorage: AppStorage = this.storageService.get();
 
-    currentScoreNumber += this.questionScore;
-
-    this.storageService.save(StorageKeyEnum.CURRENT_SCORE, currentScoreNumber.toString());
-    this.storageService.save(StorageKeyEnum.LAST_QUIZ_RESPONSE_DATE, new Date().getTime().toString());
+    this.storageService.save(
+      {
+        ...appStorage,
+        currentScore: appStorage.currentScore + this.questionScore,
+        lastQuizResponseDate: new Date()
+      }
+    )
   }
 }

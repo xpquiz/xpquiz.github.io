@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {PathsEnum} from "../../model/PathsEnum";
 import {StorageService} from "../../service/storage.service";
-import {StorageKeyEnum} from "../../model/StorageKeyEnum";
+import {AppStorage} from "../../model/AppStorage";
 
 @Component({
   selector: 'app-wrong-answer-window',
@@ -24,11 +24,20 @@ export class WrongAnswerWindowComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     await this.wrongAnswerSound.play();
+    this.updateStorage();
   }
 
   public async returnHome(): Promise<void> {
-    this.storageService.save(StorageKeyEnum.LAST_QUIZ_RESPONSE_DATE, new Date().getTime().toString());
     await this.router.navigateByUrl(PathsEnum.HOME);
   }
 
+  private updateStorage() {
+    const appStorage: AppStorage = this.storageService.get();
+
+    this.storageService.save({
+      ...appStorage,
+      currentScore: appStorage.currentScore,
+      lastQuizResponseDate: new Date()
+    });
+  }
 }
