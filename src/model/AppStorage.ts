@@ -1,4 +1,4 @@
 export interface AppStorage {
   currentScore: number,
-  lastQuizResponseDate: Date | null
+  lastQuizResponseDate: string | null
 }

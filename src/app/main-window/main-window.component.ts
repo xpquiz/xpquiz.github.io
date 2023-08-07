@@ -3,6 +3,8 @@ import {StorageService} from "../../service/storage.service";
 import {Router} from "@angular/router";
 import {PathsEnum} from "../../model/PathsEnum";
 import {AppStorage} from "../../model/AppStorage";
+import * as moment from "moment";
+import {Duration, Moment} from "moment";
 
 @Component({
   selector: 'app-main-window',
@@ -12,7 +14,7 @@ import {AppStorage} from "../../model/AppStorage";
 export class MainWindowComponent implements OnInit {
 
   public quizCanBeAnswered: boolean = true;
-  public countdown: string = '';
+  public remainingTime: string = '';
 
   protected readonly PathsEnum = PathsEnum;
 
@@ -24,7 +26,7 @@ export class MainWindowComponent implements OnInit {
 
   public async ngOnInit(): Promise<void> {
     const appStorage: AppStorage = this.storageService.get();
-    const lastQuizResponseDate: Date | null = appStorage.lastQuizResponseDate;
+    const lastQuizResponseDate: string | null = appStorage.lastQuizResponseDate;
 
     this.quizCanBeAnswered = this.checkIfQuizCanBeAnswered(lastQuizResponseDate);
 
@@ -36,50 +38,34 @@ export class MainWindowComponent implements OnInit {
     await this.router.navigateByUrl(route);
   }
 
-  private checkIfQuizCanBeAnswered(lastQuizResponseDate: Date | null): boolean {
+  private checkIfQuizCanBeAnswered(lastQuizResponseDate: string | null): boolean {
     if (lastQuizResponseDate === null) return true;
 
-    const now: Date = new Date();
-    const lastAnsweredDate: Date = new Date();
-    const threeHoursInMs: number = 1000 * 60 * 60 * 3;
+    const now: Moment = moment();
+    const nextResponseMinimumDate: Moment = moment(lastQuizResponseDate).add(3, "hours");
 
-    lastAnsweredDate.setTime(new Date(lastQuizResponseDate).getTime() + threeHoursInMs);
-
-    return now.getTime() >= lastAnsweredDate.getTime();
+    return now.isSame(nextResponseMinimumDate) || now.isAfter(nextResponseMinimumDate);
   }
 
-  private startCountdown(lastQuizResponseDate: Date | null): void {
+  private startCountdown(lastQuizResponseDate: string | null): void {
     if (lastQuizResponseDate === null) return;
 
-    const nextAnswerDate: Date = new Date();
-    const threeHoursInMs: number = 1000 * 60 * 60 * 3;
+    const nextResponseMinimumDate: Moment = moment(lastQuizResponseDate).add(3, "hours");
 
-    nextAnswerDate.setTime(new Date(lastQuizResponseDate).getTime() + threeHoursInMs);
-
-    new Promise<void>(async (resolve, reject): Promise<void> => {
+    new Promise<void>(async (resolve): Promise<void> => {
       while (true) {
-        const now: Date = new Date();
+        const now: Moment = moment();
 
-        const sameHour: boolean = now.getUTCHours() === nextAnswerDate.getUTCHours();
-        const sameMinute: boolean = now.getUTCMinutes() === nextAnswerDate.getUTCMinutes();
-        const sameSecond: boolean = now.getUTCSeconds() === nextAnswerDate.getUTCSeconds();
-
-        if (sameHour && sameMinute && sameSecond) {
+        if (now.isSame(nextResponseMinimumDate) || now.isAfter(nextResponseMinimumDate)) {
           this.quizCanBeAnswered = true;
           this.clearLastAnsweredDate();
           resolve();
           break;
         }
 
-        const newTime: Date = new Date();
+        const timeLeft: Duration = moment.duration(nextResponseMinimumDate.valueOf() - now.valueOf());
 
-        newTime.setTime(nextAnswerDate.getTime() - now.getTime());
-
-        const hours: number = newTime.getUTCHours();
-        const minutes: number = newTime.getUTCMinutes();
-        const seconds: number = newTime.getUTCSeconds();
-
-        this.countdown = `${hours} h, ${minutes} min, ${seconds} s`
+        this.remainingTime = `${timeLeft.hours()} hours, ${timeLeft.minutes()} minutes, ${timeLeft.seconds()} seconds`
 
         await new Promise(f => setTimeout(f, 1000));
       }
