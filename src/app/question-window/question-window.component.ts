@@ -13,6 +13,7 @@ export class QuestionWindowComponent implements OnInit {
 
   public questionLoaded: boolean = false;
   public question: string = '';
+  public questionPoints: number = 0;
   public answers: string[] = [];
   public selectedAnswer: string = '';
   public confirmedAnswer: boolean = false;
@@ -23,7 +24,6 @@ export class QuestionWindowComponent implements OnInit {
   private questionReadySound: HTMLAudioElement = new Audio('assets/sounds/logon.wav');
   private confirmAnswerSound: HTMLAudioElement = new Audio('assets/sounds/exclamation.wav');
   private correctAnswer: string = '';
-
 
   constructor(
     private readonly triviaService: TriviaService,
@@ -63,6 +63,8 @@ export class QuestionWindowComponent implements OnInit {
       this.questionLoaded = true;
 
       await this.questionReadySound.play();
+
+      this.questionPoints = this.sumQuestionPoints(singleQuiz.difficulty, singleQuiz.isNiche);
     });
   }
 
@@ -87,10 +89,25 @@ export class QuestionWindowComponent implements OnInit {
 
   private async redirectFromAnswer(): Promise<void> {
     const correctAnswer: boolean = this.selectedAnswer === this.correctAnswer;
-    const routeToNavigate: string = correctAnswer ? PathsEnum.CORRECT_ANSWER : PathsEnum.WRONG_ANSWER_NO_PARAM;
-    const answer: string | null = correctAnswer ? null : this.correctAnswer;
 
-    await this.router.navigate(answer === null ? [routeToNavigate] : [routeToNavigate, answer]);
+    if (correctAnswer) {
+      await this.router.navigate([PathsEnum.CORRECT_ANSWER, this.questionPoints]);
+    } else {
+      await this.router.navigate([PathsEnum.WRONG_ANSWER, this.correctAnswer]);
+    }
+  }
+
+  private sumQuestionPoints(questionDifficulty: string, isNiche: boolean): number {
+    const difficultyPointsMap: Map<string, number> = new Map<string, number>([
+      ['easy', 1],
+      ['medium', 3],
+      ['hard', 5]
+    ]);
+
+    const questionPoints: number = difficultyPointsMap.get(questionDifficulty)!;
+    const nichePoints: number = isNiche ? 10 : 0;
+
+    return questionPoints + nichePoints;
   }
 
   private startLoadingProgressBar(): void {
