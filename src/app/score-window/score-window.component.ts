@@ -15,6 +15,7 @@ export class ScoreWindowComponent implements OnInit {
   public currentWeek: number = 0;
   public rightAnswers: number = 0;
   public wrongAnswers: number = 0;
+  public clipboardMessage: string = '';
 
   constructor(
     private readonly router: Router,
@@ -29,17 +30,26 @@ export class ScoreWindowComponent implements OnInit {
 
     this.currentWeek = currentWeek;
 
-    if(currentWeekScoreMap === undefined) return;
+    if (currentWeekScoreMap === undefined) return;
 
     const currentWeekScore: WeekScore = currentWeekScoreMap.get(currentWeek)!;
 
     this.currentScore = currentWeekScore.score;
     this.rightAnswers = currentWeekScore.rightAnswers;
     this.wrongAnswers = currentWeekScore.wrongAnswers;
+    this.assembleClipboardMessage();
   }
 
   public async returnHome(): Promise<void> {
     await this.router.navigateByUrl(PathsEnum.HOME);
   }
 
+  private assembleClipboardMessage() {
+    this.clipboardMessage = `Here's my score for the week on xpquiz.github.io!
+
+Right answers: ${this.rightAnswers}
+Wrong answers: ${this.wrongAnswers}
+Total score: ${this.currentScore}`;
+
+  }
 }
