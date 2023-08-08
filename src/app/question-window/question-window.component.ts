@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TriviaService} from "../../service/trivia.service";
 import {TriviaResponse} from "../../model/TriviaResponse";
 import {Router} from "@angular/router";
-import {PathsEnum} from "../../model/PathsEnum";
+import {PathsEnum} from "../../model/enums/PathsEnum";
 
 @Component({
   selector: 'app-question-window',

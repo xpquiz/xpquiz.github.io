@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Router} from "@angular/router";
-import {PathsEnum} from "../../model/PathsEnum";
+import {PathsEnum} from "../../model/enums/PathsEnum";
 
 @Component({
   selector: 'app-about-window',

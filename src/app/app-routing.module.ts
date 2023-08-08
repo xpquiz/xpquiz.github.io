@@ -3,7 +3,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {QuestionWindowComponent} from "./question-window/question-window.component";
 import {MainWindowComponent} from "./main-window/main-window.component";
 import {ScoreWindowComponent} from "./score-window/score-window.component";
-import {PathsEnum} from "../model/PathsEnum";
+import {PathsEnum} from "../model/enums/PathsEnum";
 import {CorrectAnswerWindowComponent} from "./correct-answer-window/correct-answer-window.component";
 import {WrongAnswerWindowComponent} from "./wrong-answer-window/wrong-answer-window.component";
 import {AboutWindowComponent} from "./about-window/about-window.component";

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {PathsEnum} from "../../model/PathsEnum";
+import {PathsEnum} from "../../model/enums/PathsEnum";
 import {StorageService} from "../../service/storage.service";
 import {AppStorage, WeekScore} from "../../model/AppStorage";
 import * as moment from "moment";
