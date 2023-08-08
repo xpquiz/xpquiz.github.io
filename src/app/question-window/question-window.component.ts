@@ -3,6 +3,10 @@ import {TriviaService} from "../../service/trivia.service";
 import {TriviaResponse} from "../../model/TriviaResponse";
 import {Router} from "@angular/router";
 import {PathsEnum} from "../../model/enums/PathsEnum";
+import {AppStorage} from "../../model/AppStorage";
+import {Moment} from "moment";
+import * as moment from "moment/moment";
+import {StorageService} from "../../service/storage.service";
 
 @Component({
   selector: 'app-question-window',
@@ -27,13 +31,33 @@ export class QuestionWindowComponent implements OnInit {
 
   constructor(
     private readonly triviaService: TriviaService,
-    private readonly router: Router
+    private readonly router: Router,
+    private readonly storageService: StorageService
   ) {
   }
 
   public async ngOnInit(): Promise<void> {
+    const quizCanBeAnswered: boolean = this.checkIfQuizCanBeAnswered();
+
+    if (!quizCanBeAnswered) {
+      await this.returnHome();
+      return;
+    }
+
     this.startLoadingProgressBar();
     await this.loadQuestion();
+  }
+
+  private checkIfQuizCanBeAnswered(): boolean {
+    const appStorage: AppStorage = this.storageService.get();
+    const lastQuizResponseDate: string | null = appStorage.lastQuizResponseDate;
+
+    if (lastQuizResponseDate === null) return true;
+
+    const now: Moment = moment();
+    const nextResponseMinimumDate: Moment = moment(lastQuizResponseDate).add(3, "hours");
+
+    return now.isSame(nextResponseMinimumDate) || now.isAfter(nextResponseMinimumDate);
   }
 
   public async onClickAnswer(selectedAnswer: string) {
@@ -123,5 +147,9 @@ export class QuestionWindowComponent implements OnInit {
         await new Promise(f => setTimeout(f, 300));
       }
     });
+  }
+
+  private async returnHome() {
+    await this.router.navigateByUrl(PathsEnum.HOME);
   }
 }

@@ -4,6 +4,7 @@ import {PathsEnum} from "../../model/enums/PathsEnum";
 import {StorageService} from "../../service/storage.service";
 import {AppStorage, WeekScore} from "../../model/AppStorage";
 import * as moment from "moment";
+import {Moment} from "moment/moment";
 
 @Component({
   selector: 'app-correct-answer-window',
@@ -25,8 +26,27 @@ export class CorrectAnswerWindowComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
+    const quizCanBeAnswered: boolean = this.checkIfQuizCanBeAnswered();
+
+    if (!quizCanBeAnswered) {
+      await this.returnHome();
+      return;
+    }
+
     await this.correctAnswerSound.play();
     this.saveCurrentScore();
+  }
+
+  private checkIfQuizCanBeAnswered(): boolean {
+    const appStorage: AppStorage = this.storageService.get();
+    const lastQuizResponseDate: string | null = appStorage.lastQuizResponseDate;
+
+    if (lastQuizResponseDate === null) return true;
+
+    const now: Moment = moment();
+    const nextResponseMinimumDate: Moment = moment(lastQuizResponseDate).add(3, "hours");
+
+    return now.isSame(nextResponseMinimumDate) || now.isAfter(nextResponseMinimumDate);
   }
 
   public async returnHome(): Promise<void> {
