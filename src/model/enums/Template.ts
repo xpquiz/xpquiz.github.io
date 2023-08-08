@@ -7,7 +7,7 @@ export interface TemplateParams {
 
 export interface WeekScoreTemplateParams extends TemplateParams {
   week: number,
-  rightAnswer: number,
+  rightAnswers: number,
   wrongAnswers: number,
   totalScore: number
 }

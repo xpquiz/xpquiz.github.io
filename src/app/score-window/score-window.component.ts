@@ -27,7 +27,7 @@ export class ScoreWindowComponent implements OnInit {
   ) {
   }
 
-  public ngOnInit(): void {
+  public async ngOnInit(): Promise<void> {
     const currentWeek: number = moment().isoWeek();
     const appStorage: AppStorage = this.storageService.get();
     const currentWeekScoreMap: Map<number, WeekScore> | undefined = appStorage.weekScoreMap;
@@ -42,7 +42,7 @@ export class ScoreWindowComponent implements OnInit {
     this.rightAnswers = currentWeekScore.rightAnswers;
     this.wrongAnswers = currentWeekScore.wrongAnswers;
 
-    this.assembleClipboardText();
+    await this.assembleClipboardText();
   }
 
   public async returnHome(): Promise<void> {
@@ -57,14 +57,14 @@ export class ScoreWindowComponent implements OnInit {
     this.displayClipboardMessage = false;
   }
 
-  private assembleClipboardText() {
+  private async assembleClipboardText(): Promise<void> {
     const templateParams: WeekScoreTemplateParams = {
       week: this.currentWeek,
-      rightAnswer: this.rightAnswers,
+      rightAnswers: this.rightAnswers,
       wrongAnswers: this.wrongAnswers,
       totalScore: this.currentScore
     };
 
-    this.clipboardText = this.templateService.render(TemplateEnum.WEEK_SCORE, templateParams);
+    this.clipboardText = await this.templateService.render(TemplateEnum.WEEK_SCORE, templateParams);
   }
 }

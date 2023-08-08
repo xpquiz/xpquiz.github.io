@@ -1,20 +1,24 @@
 import {Injectable} from '@angular/core';
 import {TemplateEnum, TemplateParams} from "../model/enums/Template";
-import * as Mustache from "mustache";
-import fs from "fs";
+import Mustache from "mustache";
+import {HttpClient} from "@angular/common/http";
+import {firstValueFrom, take} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TemplateService {
 
-  constructor() {
+
+  constructor(
+    private readonly http: HttpClient
+  ) {
   }
 
-  public render(template: TemplateEnum, params: TemplateParams): string {
-    const stringTemplate: string = fs.readFileSync(template, {encoding: 'utf8'});
+  public async render(template: TemplateEnum, params: TemplateParams): Promise<string> {
+    const templateString: string = await firstValueFrom(this.http.get(template, {responseType: 'text'}));
 
-    return Mustache.render(stringTemplate, params);
+    return Mustache.render(templateString, params);
   }
 }
 
