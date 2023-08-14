@@ -17,6 +17,7 @@ export class ScoreWindowComponent implements OnInit {
   public currentWeek: number = 0;
   public rightAnswers: number = 0;
   public wrongAnswers: number = 0;
+  public previousScores: Map<number, WeekScore> | null = null;
   public clipboardText: string = '';
   public displayClipboardMessage: boolean = false;
 
@@ -58,7 +59,11 @@ export class ScoreWindowComponent implements OnInit {
   private retrieveScore(): void {
     const currentWeek: number = moment().isoWeek();
     const currentWeekScore: WeekScore = this.appStorageService.retrieveScoreByWeek(currentWeek);
+    const previousScoresMap: Map<number, WeekScore> = this.appStorageService.retrieveAppStorage().weekScoreMap!;
 
+    // previousScoresMap.delete(currentWeek);
+
+    this.previousScores = previousScoresMap;
     this.currentScore = currentWeekScore.score;
     this.rightAnswers = currentWeekScore.rightAnswers;
     this.wrongAnswers = currentWeekScore.wrongAnswers;

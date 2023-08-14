@@ -5,9 +5,9 @@
       <label class="window-body_title_main">Here are your results for week&nbsp;<b>[{{this.currentWeek}}]</b>!</label>
       <div class="window-body_title_scores">
         <div class="window-body_title_scores_titles">
-          <label>Right answers:</label>
-          <label>Wrong answers:</label>
-          <label>Total score:</label>
+          <label>🟩 Right answers:</label>
+          <label>🟥 Wrong answers:</label>
+          <label>🟦 Total score:</label>
         </div>
         <div class="window-body_title_scores_results">
           <b><label>[{{this.rightAnswers}}] answers</label></b>
@@ -17,8 +17,27 @@
       </div>
     </div>
 
+    <div class="window-body_previous-scores">
+      <label class="window-body_previous-scores_title">Here are your previous results:</label>
+      <ul class="tree-view">
+        <li>
+          <ng-container *ngFor="let keyValue of previousScores! | keyvalue">
+            <details>
+              <summary>🗓 Week <b>{{keyValue.key}}</b></summary>
+              <ul>
+                <li>🟩 <b>{{keyValue.value.rightAnswers}}</b> right answers</li>
+                <li>🟥 <b>{{keyValue.value.wrongAnswers}}</b> wrong answers</li>
+                <li>🟦 <b>{{keyValue.value.score}}</b> total points</li>
+              </ul>
+            </details>
+          </ng-container>
+        </li>
+      </ul>
+    </div>
+
     <div class="window-body_buttons">
-      <app-icon-button iconPath="copy.png" title="Share score" [copy-clipboard]="this.clipboardText" (click)="this.showClipboardMessage()"></app-icon-button>
+      <app-icon-button iconPath="copy.png" title="Share score" [copy-clipboard]="this.clipboardText"
+                       (click)="this.showClipboardMessage()"></app-icon-button>
       <app-icon-button iconPath="home.png" title="Return to home"
                        (onButtonClick)="this.returnHome()"></app-icon-button>
     </div>
