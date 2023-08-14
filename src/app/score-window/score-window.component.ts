@@ -61,7 +61,7 @@ export class ScoreWindowComponent implements OnInit {
     const currentWeekScore: WeekScore = this.appStorageService.retrieveScoreByWeek(currentWeek);
     const previousScoresMap: Map<number, WeekScore> = this.appStorageService.retrieveAppStorage().weekScoreMap!;
 
-    // previousScoresMap.delete(currentWeek);
+    previousScoresMap.delete(currentWeek);
 
     this.previousScores = previousScoresMap;
     this.currentScore = currentWeekScore.score;
