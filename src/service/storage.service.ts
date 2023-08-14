@@ -22,14 +22,13 @@ export class StorageService {
     this.localStorage.setItem(this.storageKey, encryptedObject);
   }
 
-  public get(): AppStorage {
+  public get(): AppStorage | null {
     const encryptedItem: string | null = this.localStorage.getItem(this.storageKey);
-    return (encryptedItem === null || encryptedItem === '') ?
-      {
-        currentScore: 0,
-        lastQuizResponseDate: null
-      } :
-      JSON.parse(this.decrypt(encryptedItem), this.reviver);
+
+    if (encryptedItem === null || encryptedItem === '')
+      return null;
+    else
+      return JSON.parse(this.decrypt(encryptedItem), this.reviver);
   }
 
   private encrypt(value: string): string {
@@ -43,7 +42,7 @@ export class StorageService {
   }
 
   private replacer(key: any, value: any) {
-    if(value instanceof Map) {
+    if (value instanceof Map) {
       return {
         dataType: 'Map',
         value: Array.from(value.entries()), // or with spread: value: [...value]
@@ -54,7 +53,7 @@ export class StorageService {
   }
 
   private reviver(key: any, value: any) {
-    if(typeof value === 'object' && value !== null) {
+    if (typeof value === 'object' && value !== null) {
       if (value.dataType === 'Map') {
         return new Map(value.value);
       }
