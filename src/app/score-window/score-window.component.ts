@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {StorageService} from "../../service/storage.service";
 import {Router} from "@angular/router";
 import {PathsEnum} from "../../model/enums/PathsEnum";
-import {AppStorage, WeekScore} from "../../model/AppStorage";
-import * as moment from "moment";
+import {WeekScore} from "../../model/AppStorage";
+import moment from "moment";
 import {TemplateService} from "../../service/template.service";
 import {TemplateEnum, WeekScoreTemplateParams} from "../../model/enums/Template";
+import {AppStorageService} from "../../service/app-storage.service";
 
 @Component({
   selector: 'app-score-window',
@@ -22,26 +22,13 @@ export class ScoreWindowComponent implements OnInit {
 
   constructor(
     private readonly router: Router,
-    private readonly storageService: StorageService,
-    private readonly templateService: TemplateService
+    private readonly templateService: TemplateService,
+    private readonly appStorageService: AppStorageService
   ) {
   }
 
   public async ngOnInit(): Promise<void> {
-    const currentWeek: number = moment().isoWeek();
-    const appStorage: AppStorage = this.storageService.get();
-    const currentWeekScoreMap: Map<number, WeekScore> | undefined = appStorage.weekScoreMap;
-
-    this.currentWeek = currentWeek;
-
-    if (currentWeekScoreMap === undefined) return;
-
-    const currentWeekScore: WeekScore = currentWeekScoreMap.get(currentWeek)!;
-
-    this.currentScore = currentWeekScore.score;
-    this.rightAnswers = currentWeekScore.rightAnswers;
-    this.wrongAnswers = currentWeekScore.wrongAnswers;
-
+    this.retrieveScore();
     await this.assembleClipboardText();
   }
 
@@ -66,5 +53,15 @@ export class ScoreWindowComponent implements OnInit {
     };
 
     this.clipboardText = await this.templateService.render(TemplateEnum.WEEK_SCORE, templateParams);
+  }
+
+  private retrieveScore(): void {
+    const currentWeek: number = moment().isoWeek();
+    const currentWeekScore: WeekScore = this.appStorageService.retrieveScoreByWeek(currentWeek);
+
+    this.currentScore = currentWeekScore.score;
+    this.rightAnswers = currentWeekScore.rightAnswers;
+    this.wrongAnswers = currentWeekScore.wrongAnswers;
+    this.currentWeek = currentWeek;
   }
 }
