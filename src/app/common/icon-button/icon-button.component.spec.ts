@@ -1,6 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { IconButtonComponent } from './icon-button.component';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
+import {IconButtonComponent} from './icon-button.component';
+import spyOn = jest.spyOn;
+import SpyInstance = jest.SpyInstance;
+import {NgOptimizedImage} from "@angular/common";
 
 describe('IconButtonComponent', () => {
   let component: IconButtonComponent;
@@ -8,7 +10,8 @@ describe('IconButtonComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [IconButtonComponent]
+      declarations: [IconButtonComponent],
+      imports: [NgOptimizedImage]
     });
     fixture = TestBed.createComponent(IconButtonComponent);
     component = fixture.componentInstance;
@@ -18,4 +21,12 @@ describe('IconButtonComponent', () => {
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('should emit onButtonClick when clicking on the button', () => {
+    const onButtonClickSpy: SpyInstance = spyOn(component.onButtonClick, 'emit');
+
+    component.onClick();
+
+    expect(onButtonClickSpy).toBeCalled();
+  })
 });

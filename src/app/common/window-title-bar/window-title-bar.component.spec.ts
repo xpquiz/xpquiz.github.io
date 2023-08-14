@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
 import { WindowTitleBarComponent } from './window-title-bar.component';
+import {NgOptimizedImage} from "@angular/common";
 
 describe('WindowTitleBarComponent', () => {
   let component: WindowTitleBarComponent;
@@ -8,7 +8,8 @@ describe('WindowTitleBarComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [WindowTitleBarComponent]
+      declarations: [WindowTitleBarComponent],
+      imports: [NgOptimizedImage]
     });
     fixture = TestBed.createComponent(WindowTitleBarComponent);
     component = fixture.componentInstance;
