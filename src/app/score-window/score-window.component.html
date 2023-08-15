@@ -17,11 +17,11 @@
       </div>
     </div>
 
-    <div class="window-body_previous-scores">
+    <div class="window-body_previous-scores" *ngIf="this.previousScores?.size !== 0">
       <label class="window-body_previous-scores_title">Here are your previous results:</label>
       <ul class="tree-view">
         <li>
-          <ng-container *ngFor="let keyValue of previousScores! | keyvalue">
+          <ng-container *ngFor="let keyValue of this.previousScores! | keyvalue">
             <details>
               <summary>🗓 Week <b>{{keyValue.key}}</b></summary>
               <ul>
