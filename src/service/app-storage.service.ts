@@ -31,7 +31,17 @@ export class AppStorageService {
     const currentWeek: number = moment().isoWeek();
     const appStorage: AppStorage = this.retrieveAppStorage();
     const currentWeekScoreMap: Map<number, WeekScore> = appStorage.weekScoreMap!;
-    const currentWeekScore: WeekScore = currentWeekScoreMap.get(currentWeek)!;
+    let currentWeekScore: WeekScore;
+
+    if(currentWeekScoreMap.has(currentWeek)) {
+      currentWeekScore = currentWeekScoreMap.get(currentWeek)!;
+    } else {
+      currentWeekScore = {
+        score: 0,
+        rightAnswers: 0,
+        wrongAnswers: 0
+      }
+    }
 
     if (correctAnswer) {
       currentWeekScore.rightAnswers += 1;
