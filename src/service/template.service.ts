@@ -2,13 +2,12 @@ import {Injectable} from '@angular/core';
 import {TemplateEnum, TemplateParams} from "../model/enums/Template";
 import Mustache from "mustache";
 import {HttpClient} from "@angular/common/http";
-import {firstValueFrom, take} from "rxjs";
+import {firstValueFrom} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
 export class TemplateService {
-
 
   constructor(
     private readonly http: HttpClient

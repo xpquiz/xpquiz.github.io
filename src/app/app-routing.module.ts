@@ -31,11 +31,11 @@ const routes: Routes = [
       component: QuestionWindowComponent,
     },
     {
-      path: `${PathsEnum.CORRECT_ANSWER}/:points`,
+      path: `${PathsEnum.CORRECT_ANSWER}/:points/:result`,
       component: CorrectAnswerWindowComponent,
     },
     {
-      path: `${PathsEnum.WRONG_ANSWER}/:answer`,
+      path: `${PathsEnum.WRONG_ANSWER}/:result`,
       component: WrongAnswerWindowComponent
     }
   ]

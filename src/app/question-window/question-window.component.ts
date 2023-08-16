@@ -4,6 +4,8 @@ import {TriviaResponse} from "../../model/TriviaResponse";
 import {Router} from "@angular/router";
 import {PathsEnum} from "../../model/enums/PathsEnum";
 import {AppStorageService} from "../../service/app-storage.service";
+import {QuestionResultTemplateParams} from "../../model/enums/Template";
+import {EncryptionService} from "../../service/encryption.service";
 
 @Component({
   selector: 'app-question-window',
@@ -29,6 +31,7 @@ export class QuestionWindowComponent implements OnInit {
   constructor(
     private readonly triviaService: TriviaService,
     private readonly router: Router,
+    private readonly encryptionService: EncryptionService,
     private readonly appStorageService: AppStorageService
   ) {
   }
@@ -96,11 +99,21 @@ export class QuestionWindowComponent implements OnInit {
 
   private async redirectFromAnswer(): Promise<void> {
     const correctAnswer: boolean = this.selectedAnswer === this.correctAnswer;
+    const questionResult: QuestionResultTemplateParams = {
+      question: this.question,
+      selectedAnswer: `${correctAnswer ? '🟩' : '🟥'} ${this.selectedAnswer}`,
+      rightAnswer: this.correctAnswer,
+      wrongAnswers: this.answers.filter(value => value !== this.correctAnswer)
+    };
+
+    const questionResultData: string = this.encryptionService.encrypt(JSON.stringify(questionResult));
 
     if (correctAnswer) {
-      await this.router.navigate([PathsEnum.CORRECT_ANSWER, this.questionPoints]);
+      const questionPointsData: string = this.encryptionService.encrypt(this.questionPoints.toString());
+
+      await this.router.navigate([PathsEnum.CORRECT_ANSWER, questionPointsData, questionResultData]);
     } else {
-      await this.router.navigate([PathsEnum.WRONG_ANSWER, this.correctAnswer]);
+      await this.router.navigate([PathsEnum.WRONG_ANSWER, questionResultData]);
     }
   }
 
