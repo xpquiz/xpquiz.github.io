@@ -24,7 +24,8 @@
               "zone.js"
             ],
             "allowedCommonJsDependencies": [
-              "crypto-js"
+              "crypto-js",
+              "moment"
             ],
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "sass",
