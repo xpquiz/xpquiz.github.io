@@ -4,7 +4,7 @@ import {PathsEnum} from "../../model/enums/PathsEnum";
 import {WeekScore} from "../../model/AppStorage";
 import moment from "moment";
 import {TemplateService} from "../../service/template.service";
-import {TemplateEnum, WeekScoreTemplateParams} from "../../model/enums/Template";
+import {TemplateEnum, WeekScoreTemplateParams} from "../../model/Template";
 import {AppStorageService} from "../../service/app-storage.service";
 
 @Component({
