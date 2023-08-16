@@ -15,6 +15,7 @@ export interface WeekScoreTemplateParams extends TemplateParams {
 
 export interface QuestionResultTemplateParams extends TemplateParams {
   question: string,
+  questionPoints: number | null,
   selectedAnswer: string,
   rightAnswer: string,
   wrongAnswers: string[]

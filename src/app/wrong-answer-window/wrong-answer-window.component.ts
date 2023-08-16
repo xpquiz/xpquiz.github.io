@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {PathsEnum} from "../../model/enums/PathsEnum";
 import {AppStorageService} from "../../service/app-storage.service";
-import {QuestionResultTemplateParams, TemplateEnum} from "../../model/enums/Template";
+import {QuestionResultTemplateParams, TemplateEnum} from "../../model/Template";
 import {EncryptionService} from "../../service/encryption.service";
 import {TemplateService} from "../../service/template.service";
 

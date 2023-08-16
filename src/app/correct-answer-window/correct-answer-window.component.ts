@@ -4,7 +4,7 @@ import {PathsEnum} from "../../model/enums/PathsEnum";
 import {AppStorageService} from "../../service/app-storage.service";
 import {EncryptionService} from "../../service/encryption.service";
 import {TemplateService} from "../../service/template.service";
-import {QuestionResultTemplateParams, TemplateEnum} from "../../model/enums/Template";
+import {QuestionResultTemplateParams, TemplateEnum} from "../../model/Template";
 
 @Component({
   selector: 'app-correct-answer-window',
@@ -57,15 +57,13 @@ export class CorrectAnswerWindowComponent implements OnInit {
   }
 
   private async retrieveRouteParams(): Promise<void> {
-    const encryptedQuestionScore: string = this.route.snapshot.paramMap.get('points')!;
     const encryptedQuestionResult: string = this.route.snapshot.paramMap.get('result')!;
 
-    const decryptedQuestionScore: string = this.encryptionService.decrypt(encryptedQuestionScore);
     const decryptedQuestionResult: string = this.encryptionService.decrypt(encryptedQuestionResult);
     const questionResult: QuestionResultTemplateParams = JSON.parse(decryptedQuestionResult);
     const questionResultText: string = await this.templateService.render(TemplateEnum.QUESTION_RESULT, questionResult);
 
-    this.questionScore = parseInt(decryptedQuestionScore);
+    this.questionScore = questionResult.questionPoints!;
     this.clipboardText = questionResultText;
   }
 }

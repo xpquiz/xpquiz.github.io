@@ -4,7 +4,7 @@ import {TriviaResponse} from "../../model/TriviaResponse";
 import {Router} from "@angular/router";
 import {PathsEnum} from "../../model/enums/PathsEnum";
 import {AppStorageService} from "../../service/app-storage.service";
-import {QuestionResultTemplateParams} from "../../model/enums/Template";
+import {QuestionResultTemplateParams} from "../../model/Template";
 import {EncryptionService} from "../../service/encryption.service";
 
 @Component({
@@ -101,20 +101,14 @@ export class QuestionWindowComponent implements OnInit {
     const correctAnswer: boolean = this.selectedAnswer === this.correctAnswer;
     const questionResult: QuestionResultTemplateParams = {
       question: this.question,
+      questionPoints: correctAnswer ? this.questionPoints : null,
       selectedAnswer: `${correctAnswer ? '🟩' : '🟥'} ${this.selectedAnswer}`,
       rightAnswer: this.correctAnswer,
       wrongAnswers: this.answers.filter(value => value !== this.correctAnswer)
     };
-
     const questionResultData: string = this.encryptionService.encrypt(JSON.stringify(questionResult));
 
-    if (correctAnswer) {
-      const questionPointsData: string = this.encryptionService.encrypt(this.questionPoints.toString());
-
-      await this.router.navigate([PathsEnum.CORRECT_ANSWER, questionPointsData, questionResultData]);
-    } else {
-      await this.router.navigate([PathsEnum.WRONG_ANSWER, questionResultData]);
-    }
+    await this.router.navigate([correctAnswer ? PathsEnum.CORRECT_ANSWER : PathsEnum.WRONG_ANSWER, questionResultData]);
   }
 
   private sumQuestionPoints(questionDifficulty: string, isNiche: boolean): number {

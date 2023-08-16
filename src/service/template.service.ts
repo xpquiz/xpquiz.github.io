@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {TemplateEnum, TemplateParams} from "../model/enums/Template";
+import {TemplateEnum, TemplateParams} from "../model/Template";
 import Mustache from "mustache";
 import {HttpClient} from "@angular/common/http";
 import {firstValueFrom} from "rxjs";
