@@ -6,7 +6,14 @@
       <label>Come back in 3 hours for another question!</label>
     </div>
 
-    <app-icon-button iconPath="home.png" title="Return to home"
-                     (onButtonClick)="this.returnHome()"></app-icon-button>
+    <div class="window-body_buttons">
+      <app-icon-button iconPath="copy.png" title="Share result" [copy-clipboard]="this.clipboardText"
+                       (onButtonClick)="this.showClipboardMessage()"></app-icon-button>
+      <app-icon-button iconPath="home.png" title="Return to home"
+                       (onButtonClick)="this.returnHome()"></app-icon-button>
+    </div>
+    <div *ngIf="this.displayClipboardMessage">
+      <label class="window-body_clipboard-text">Question result copied to clipboard!</label>
+    </div>
   </div>
 </div>
