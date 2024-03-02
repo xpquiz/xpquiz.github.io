@@ -2,7 +2,7 @@
   <app-window-title-bar iconPath="score.png" title="Score"></app-window-title-bar>
   <div class="window-body">
     <div class="window-body_title">
-      <label class="window-body_title_main">Here are your results for week&nbsp;<b>[{{this.currentWeek}}]</b>!</label>
+      <label class="window-body_title_main">Here are your results for year&nbsp;<b>[{{ this.currentYear }}]</b>, week&nbsp;<b>[{{ this.currentWeek }}]</b>!</label>
       <div class="window-body_title_scores">
         <div class="window-body_title_scores_titles">
           <label>🟩 Right answers:</label>
@@ -10,30 +10,58 @@
           <label>🟦 Total score:</label>
         </div>
         <div class="window-body_title_scores_results">
-          <b><label>[{{this.rightAnswers}}] answers</label></b>
-          <b><label>[{{this.wrongAnswers}}] answers</label></b>
-          <b><label>[{{this.currentScore}}] points</label></b>
+          <b><label>[{{ this.currentWeekScore!.rightAnswers }}] answers</label></b>
+          <b><label>[{{ this.currentWeekScore!.wrongAnswers }}] answers</label></b>
+          <b><label>[{{ this.currentWeekScore!.score }}] points</label></b>
         </div>
       </div>
     </div>
 
-    <div class="window-body_previous-scores" *ngIf="this.previousScores?.size !== 0">
-      <label class="window-body_previous-scores_title">Here are your previous results:</label>
+    <fieldset class="window-body_previous-scores" *ngIf="this.previousScores?.size !== 0">
+      <legend>Previous weeks scores</legend>
       <ul class="tree-view">
         <li>
           <ng-container *ngFor="let keyValue of this.previousScores! | keyvalue">
             <details>
-              <summary>🗓 Week <b>{{keyValue.key}}</b></summary>
+              <summary>🗓 Week <b>{{ keyValue.key }}</b></summary>
               <ul>
-                <li>🟩 <b>{{keyValue.value.rightAnswers}}</b> right answers</li>
-                <li>🟥 <b>{{keyValue.value.wrongAnswers}}</b> wrong answers</li>
-                <li>🟦 <b>{{keyValue.value.score}}</b> total points</li>
+                <li>🟩 <b>{{ keyValue.value.rightAnswers }}</b> right answers</li>
+                <li>🟥 <b>{{ keyValue.value.wrongAnswers }}</b> wrong answers</li>
+                <li>🟦 <b>{{ keyValue.value.score }}</b> total points</li>
               </ul>
             </details>
           </ng-container>
         </li>
       </ul>
-    </div>
+    </fieldset>
+
+    <fieldset class="window-body_all-time-score">
+      <legend>All-time score</legend>
+
+      <ul class="tree-view">
+        <li>
+          <ng-container *ngFor="let year of this.yearScoreMap! | keyvalue">
+            <details>
+              <summary class="tree-view_year">📆 Year <b>{{ year.key }}</b></summary>
+              <ul>
+                <li>
+                  <ng-container *ngFor="let week of year.value! | keyvalue">
+                    <details>
+                      <summary>🗓 Week <b>{{ week.key }}</b></summary>
+                      <ul>
+                        <li>🟩 <b>{{ week.value.rightAnswers }}</b> right answers</li>
+                        <li>🟥 <b>{{ week.value.wrongAnswers }}</b> wrong answers</li>
+                        <li>🟦 <b>{{ week.value.score }}</b> total points</li>
+                      </ul>
+                    </details>
+                  </ng-container>
+                </li>
+              </ul>
+            </details>
+          </ng-container>
+        </li>
+      </ul>
+    </fieldset>
 
     <div class="window-body_buttons">
       <app-icon-button iconPath="copy.png" title="Share score" [copy-clipboard]="this.clipboardText"

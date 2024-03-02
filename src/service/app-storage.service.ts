@@ -28,13 +28,17 @@ export class AppStorageService {
   }
 
   public saveAnswer(correctAnswer: boolean, questionScore?: number | null): void {
+    const currentYear: number = moment().year();
     const currentWeek: number = moment().isoWeek();
+
     const appStorage: AppStorage = this.retrieveAppStorage();
-    const currentWeekScoreMap: Map<number, WeekScore> = appStorage.weekScoreMap!;
+    const yearScoreMap: Map<number, Map<number, WeekScore>> = appStorage.yearScoreMap;
+    const weekScoreMap: Map<number, WeekScore> = yearScoreMap.get(currentYear)!;
+
     let currentWeekScore: WeekScore;
 
-    if(currentWeekScoreMap.has(currentWeek)) {
-      currentWeekScore = currentWeekScoreMap.get(currentWeek)!;
+    if (weekScoreMap.has(currentWeek)) {
+      currentWeekScore = weekScoreMap.get(currentWeek)!;
     } else {
       currentWeekScore = {
         score: 0,
@@ -50,13 +54,14 @@ export class AppStorageService {
       currentWeekScore.wrongAnswers += 1;
     }
 
-    currentWeekScoreMap.set(currentWeek, currentWeekScore!);
+    weekScoreMap.set(currentWeek, currentWeekScore);
+    yearScoreMap.set(currentYear, weekScoreMap);
 
     this.storageService.save(
       {
         ...appStorage,
-        weekScoreMap: currentWeekScoreMap,
-        lastQuizResponseDate: moment().toISOString()
+        lastQuizResponseDate: moment().toISOString(),
+        yearScoreMap: yearScoreMap
       }
     )
   }
@@ -72,26 +77,6 @@ export class AppStorageService {
     );
   }
 
-  public retrieveScoreByWeek(currentWeek: number): WeekScore {
-    const appStorage: AppStorage = this.retrieveAppStorage();
-    const currentWeekScoreMap: Map<number, WeekScore> = appStorage.weekScoreMap!;
-
-    if (currentWeekScoreMap.has(currentWeek)) {
-      return currentWeekScoreMap.get(currentWeek)!;
-    } else {
-      const newCurrentWeekScore: WeekScore = {
-        score: 0,
-        rightAnswers: 0,
-        wrongAnswers: 0
-      }
-
-      appStorage.weekScoreMap!.set(currentWeek, newCurrentWeekScore);
-      this.storageService.save(appStorage);
-
-      return newCurrentWeekScore;
-    }
-  }
-
   public retrieveAppStorage(): AppStorage {
     let appStorage: AppStorage | null = this.storageService.get();
 
@@ -102,18 +87,22 @@ export class AppStorageService {
   }
 
   private createNewAppStorage(): AppStorage {
+    const currentYear: number = moment().year();
     const currentWeek: number = moment().isoWeek();
-    const appStorage = {
+
+    const newWeekScoreMap: Map<number, WeekScore> = new Map<number, WeekScore>([[currentWeek, {
+      score: 0,
+      rightAnswers: 0,
+      wrongAnswers: 0,
+    }]]);
+    const newYearScoreMap: Map<number, Map<number, WeekScore>> = new Map<number, Map<number, WeekScore>>([[currentYear, newWeekScoreMap]]);
+
+    const newAppStorage: AppStorage = {
       lastQuizResponseDate: null,
-      weekScoreMap: new Map<number, WeekScore>([[currentWeek, {
-        score: 0,
-        rightAnswers: 0,
-        wrongAnswers: 0,
-      }]])
-    }
+      yearScoreMap: newYearScoreMap
+    };
 
-    this.storageService.save(appStorage);
-    return appStorage;
+    this.storageService.save(newAppStorage);
+    return newAppStorage;
   }
-
 }

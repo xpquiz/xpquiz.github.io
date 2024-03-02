@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {PathsEnum} from "../../model/enums/PathsEnum";
-import {WeekScore} from "../../model/AppStorage";
+import {AppStorage, WeekScore} from "../../model/AppStorage";
 import moment from "moment";
 import {TemplateService} from "../../service/template.service";
 import {TemplateEnum, WeekScoreTemplateParams} from "../../model/Template";
@@ -13,10 +13,10 @@ import {AppStorageService} from "../../service/app-storage.service";
   styleUrls: ['./score-window.component.sass']
 })
 export class ScoreWindowComponent implements OnInit {
-  public currentScore: number = 0;
+  public currentYear: number = 0;
   public currentWeek: number = 0;
-  public rightAnswers: number = 0;
-  public wrongAnswers: number = 0;
+  public yearScoreMap: Map<number, Map<number, WeekScore>> | null = null;
+  public currentWeekScore: WeekScore | null = null;
   public previousScores: Map<number, WeekScore> | null = null;
   public clipboardText: string = '';
   public displayClipboardMessage: boolean = false;
@@ -48,25 +48,31 @@ export class ScoreWindowComponent implements OnInit {
   private async assembleClipboardText(): Promise<void> {
     const templateParams: WeekScoreTemplateParams = {
       week: this.currentWeek,
-      rightAnswers: this.rightAnswers,
-      wrongAnswers: this.wrongAnswers,
-      totalScore: this.currentScore
+      rightAnswers: this.currentWeekScore!.rightAnswers,
+      wrongAnswers: this.currentWeekScore!.wrongAnswers,
+      totalScore: this.currentWeekScore!.score
     };
 
     this.clipboardText = await this.templateService.render(TemplateEnum.WEEK_SCORE, templateParams);
   }
 
   private retrieveScore(): void {
+    const currentYear: number = moment().year();
     const currentWeek: number = moment().isoWeek();
-    const currentWeekScore: WeekScore = this.appStorageService.retrieveScoreByWeek(currentWeek);
-    const previousScoresMap: Map<number, WeekScore> = this.appStorageService.retrieveAppStorage().weekScoreMap!;
+
+    const appStorage: AppStorage = this.appStorageService.retrieveAppStorage();
+
+    const currentYearScore: Map<number, WeekScore> = appStorage.yearScoreMap.get(currentYear)!;
+    const currentWeekScore: WeekScore = structuredClone(currentYearScore.get(currentWeek)!);
+    const previousScoresMap: Map<number, WeekScore> = structuredClone(currentYearScore);
 
     previousScoresMap.delete(currentWeek);
 
+    this.yearScoreMap = appStorage.yearScoreMap;
+    this.currentWeekScore = currentWeekScore;
     this.previousScores = previousScoresMap;
-    this.currentScore = currentWeekScore.score;
-    this.rightAnswers = currentWeekScore.rightAnswers;
-    this.wrongAnswers = currentWeekScore.wrongAnswers;
+
+    this.currentYear = currentYear;
     this.currentWeek = currentWeek;
   }
 }

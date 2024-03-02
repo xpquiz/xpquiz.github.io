@@ -1,5 +1,4 @@
-import { Injectable } from '@angular/core';
-import {AppStorage} from "../model/AppStorage";
+import {Injectable} from '@angular/core';
 import {AES, enc} from "crypto-js";
 
 @Injectable({
@@ -8,9 +7,6 @@ import {AES, enc} from "crypto-js";
 export class EncryptionService {
 
   private readonly encryptionkey: string = 'ENCRYPTION_KEY_XPQUIZ';
-
-  constructor() {
-  }
 
   public encrypt(value: string): string {
     const encrypted = AES.encrypt(value, this.encryptionkey);
