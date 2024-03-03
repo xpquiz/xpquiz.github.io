@@ -61,9 +61,9 @@ export class ScoreWindowComponent implements OnInit {
     const currentWeek: number = moment().isoWeek();
 
     const appStorage: AppStorage = this.appStorageService.retrieveAppStorage();
+    const currentYearScore: Map<number, WeekScore> = this.appStorageService.retrieveScoreForYear(currentYear);
+    const currentWeekScore: WeekScore = this.appStorageService.retrieveScoreForYearAndWeek(currentYear, currentWeek);
 
-    const currentYearScore: Map<number, WeekScore> = appStorage.yearScoreMap.get(currentYear)!;
-    const currentWeekScore: WeekScore = structuredClone(currentYearScore.get(currentWeek)!);
     const previousScoresMap: Map<number, WeekScore> = structuredClone(currentYearScore);
 
     previousScoresMap.delete(currentWeek);
@@ -71,7 +71,6 @@ export class ScoreWindowComponent implements OnInit {
     this.yearScoreMap = appStorage.yearScoreMap;
     this.currentWeekScore = currentWeekScore;
     this.previousScores = previousScoresMap;
-
     this.currentYear = currentYear;
     this.currentWeek = currentWeek;
   }

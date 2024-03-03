@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {PathsEnum} from "../../model/enums/PathsEnum";
 import {AppStorage} from "../../model/AppStorage";
-import * as moment from "moment";
+import moment from "moment";
 import {Duration, Moment} from "moment";
 import {AppStorageService} from "../../service/app-storage.service";
 
@@ -40,7 +40,7 @@ export class MainWindowComponent implements OnInit {
 
     if (appStorage.lastQuizResponseDate === null) return;
 
-    const nextResponseMinimumDate: Moment = moment(appStorage.lastQuizResponseDate).add(3, "hours");
+    const nextResponseMinimumDate: Moment = moment(appStorage.lastQuizResponseDate).add(3, "seconds");
 
     new Promise<void>(async (resolve): Promise<void> => {
       while (true) {
@@ -60,5 +60,18 @@ export class MainWindowComponent implements OnInit {
         await new Promise(f => setTimeout(f, 1000));
       }
     });
+  }
+
+  clearWeek() {
+    const currentYear: number = moment().year();
+    const currentWeek: number = moment().isoWeek();
+
+    this.appStorageService.clearWeek(currentYear, currentWeek);
+  }
+
+  clearYear() {
+    const currentYear: number = moment().year();
+
+    this.appStorageService.clearYear(currentYear);
   }
 }

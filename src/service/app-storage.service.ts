@@ -33,19 +33,26 @@ export class AppStorageService {
 
     const appStorage: AppStorage = this.retrieveAppStorage();
     const yearScoreMap: Map<number, Map<number, WeekScore>> = appStorage.yearScoreMap;
+
+    if (!yearScoreMap.has(currentYear))
+      yearScoreMap.set(currentYear, new Map<number, WeekScore>([
+        [currentWeek, {
+          score: 0,
+          rightAnswers: 0,
+          wrongAnswers: 0
+        }]
+      ]));
+
     const weekScoreMap: Map<number, WeekScore> = yearScoreMap.get(currentYear)!;
 
-    let currentWeekScore: WeekScore;
-
-    if (weekScoreMap.has(currentWeek)) {
-      currentWeekScore = weekScoreMap.get(currentWeek)!;
-    } else {
-      currentWeekScore = {
+    if (!weekScoreMap.has(currentWeek))
+      weekScoreMap.set(currentWeek, {
         score: 0,
         rightAnswers: 0,
         wrongAnswers: 0
-      }
-    }
+      });
+
+    const currentWeekScore: WeekScore = weekScoreMap.get(currentWeek)!;
 
     if (correctAnswer) {
       currentWeekScore.rightAnswers += 1;
@@ -63,7 +70,7 @@ export class AppStorageService {
         lastQuizResponseDate: moment().toISOString(),
         yearScoreMap: yearScoreMap
       }
-    )
+    );
   }
 
   public clearLastAnsweredDate(): void {
@@ -78,12 +85,60 @@ export class AppStorageService {
   }
 
   public retrieveAppStorage(): AppStorage {
-    let appStorage: AppStorage | null = this.storageService.get();
+    return this.storageService.get()??this.createNewAppStorage();
+  }
 
-    if (appStorage === null)
-      appStorage = this.createNewAppStorage();
+  public clearWeek(currentYear: number, currentWeek: number) {
+    const appStorage: AppStorage = this.storageService.get()!;
 
-    return appStorage;
+    appStorage.yearScoreMap.get(currentYear)?.delete(currentWeek);
+
+    this.storageService.save(appStorage);
+  }
+
+  public clearYear(currentYear: number) {
+    const appStorage: AppStorage = this.storageService.get()!;
+
+    appStorage.yearScoreMap.delete(currentYear);
+
+    this.storageService.save(appStorage);
+  }
+
+  public retrieveScoreForYear(currentYear: number): Map<number, WeekScore> {
+    const appStorage: AppStorage = this.retrieveAppStorage();
+
+    if (!appStorage.yearScoreMap.has(currentYear)) {
+      appStorage.yearScoreMap.set(currentYear, new Map<number, WeekScore>());
+
+      this.storageService.save(appStorage);
+    }
+
+    return appStorage.yearScoreMap.get(currentYear)!;
+  }
+
+  public retrieveScoreForYearAndWeek(currentYear: number, currentWeek: number): WeekScore {
+    const appStorage: AppStorage = this.retrieveAppStorage();
+
+    if (!appStorage.yearScoreMap.has(currentYear)) {
+      appStorage.yearScoreMap.set(currentYear, new Map<number, WeekScore>());
+
+      this.storageService.save(appStorage);
+    }
+
+    const currentYearScoreMap: Map<number, WeekScore> = appStorage.yearScoreMap.get(currentYear)!;
+
+    if (!currentYearScoreMap.has(currentWeek)) {
+      currentYearScoreMap.set(currentWeek, {
+        score: 0,
+        rightAnswers: 0,
+        wrongAnswers: 0
+      })
+      appStorage.yearScoreMap.set(currentYear, currentYearScoreMap);
+
+      this.storageService.save(appStorage);
+    }
+
+    return currentYearScoreMap.get(currentWeek)!;
   }
 
   private createNewAppStorage(): AppStorage {
@@ -103,6 +158,7 @@ export class AppStorageService {
     };
 
     this.storageService.save(newAppStorage);
+
     return newAppStorage;
   }
 }
