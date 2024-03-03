@@ -9,7 +9,7 @@ import {EncryptionService} from "./encryption.service";
 export class StorageService {
 
   private readonly localStorage: Storage;
-  private readonly storageKey: string = 'app_storage'
+  private readonly storageKey: string = 'app_storage_v2'
 
   constructor(
     private readonly encryptionService: EncryptionService

@@ -1,6 +1,6 @@
 export interface AppStorage {
   lastQuizResponseDate: string | null,
-  weekScoreMap: Map<number, WeekScore> | undefined
+  yearScoreMap: Map<number, Map<number, WeekScore>>
 }
 
 export interface WeekScore {
