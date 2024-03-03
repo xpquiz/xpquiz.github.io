@@ -39,7 +39,7 @@ export class MainWindowComponent implements OnInit {
 
     if (appStorage.lastQuizResponseDate === null) return;
 
-    const nextResponseMinimumDate: Moment = moment(appStorage.lastQuizResponseDate).add(3, "seconds");
+    const nextResponseMinimumDate: Moment = moment(appStorage.lastQuizResponseDate).add(3, "hours");
 
     new Promise<void>(async (resolve): Promise<void> => {
       while (true) {
