@@ -2,8 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {PathsEnum} from "../../model/enums/PathsEnum";
 import {AppStorage} from "../../model/AppStorage";
-import moment from "moment";
-import {Duration, Moment} from "moment";
+import moment, {Duration, Moment} from "moment";
 import {AppStorageService} from "../../service/app-storage.service";
 
 @Component({
@@ -60,18 +59,5 @@ export class MainWindowComponent implements OnInit {
         await new Promise(f => setTimeout(f, 1000));
       }
     });
-  }
-
-  clearWeek() {
-    const currentYear: number = moment().year();
-    const currentWeek: number = moment().isoWeek();
-
-    this.appStorageService.clearWeek(currentYear, currentWeek);
-  }
-
-  clearYear() {
-    const currentYear: number = moment().year();
-
-    this.appStorageService.clearYear(currentYear);
   }
 }
