@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TriviaService} from "../../service/trivia.service";
 import {TriviaResponse} from "../../model/TriviaResponse";
 import {Router} from "@angular/router";
@@ -6,15 +6,17 @@ import {PathsEnum} from "../../model/enums/PathsEnum";
 import {AppStorageService} from "../../service/app-storage.service";
 import {QuestionResultTemplateParams} from "../../model/Template";
 import {EncryptionService} from "../../service/encryption.service";
+import {Subscription} from "rxjs";
 
 @Component({
   selector: 'app-question-window',
   templateUrl: './question-window.component.html',
   styleUrls: ['./question-window.component.sass']
 })
-export class QuestionWindowComponent implements OnInit {
+export class QuestionWindowComponent implements OnInit, OnDestroy {
 
   public questionLoaded: boolean = false;
+  public showQuestion: boolean = false;
   public question: string = '';
   public questionPoints: number = 0;
   public answers: string[] = [];
@@ -27,6 +29,7 @@ export class QuestionWindowComponent implements OnInit {
   private questionReadySound: HTMLAudioElement = new Audio('assets/sounds/logon.wav');
   private confirmAnswerSound: HTMLAudioElement = new Audio('assets/sounds/exclamation.wav');
   private correctAnswer: string = '';
+  private getQuizzesSubscription: Subscription | undefined;
 
   constructor(
     private readonly triviaService: TriviaService,
@@ -43,7 +46,11 @@ export class QuestionWindowComponent implements OnInit {
     }
 
     this.startLoadingProgressBar();
-    await this.loadQuestion();
+    this.loadQuestion();
+  }
+
+  public ngOnDestroy() {
+    this.getQuizzesSubscription?.unsubscribe();
   }
 
   public async onClickAnswer(selectedAnswer: string) {
@@ -57,8 +64,8 @@ export class QuestionWindowComponent implements OnInit {
     return selectedAnswer ? `> ${answer} <` : answer;
   }
 
-  private async loadQuestion() {
-    this.triviaService.getQuizzes().subscribe(async (response: TriviaResponse[]): Promise<void> => {
+  private loadQuestion(): void {
+    this.getQuizzesSubscription = this.triviaService.getQuizzes().subscribe((response: TriviaResponse[]): void => {
       const singleQuiz: TriviaResponse = response[0];
 
       this.question = singleQuiz.question.text;
@@ -68,13 +75,8 @@ export class QuestionWindowComponent implements OnInit {
         .sort((a, b) => a.sort - b.sort)
         .map(({value}) => value);
 
-      await new Promise(f => setTimeout(f, 3000));
-
-      this.questionLoaded = true;
-
-      await this.questionReadySound.play();
-
       this.questionPoints = this.sumQuestionPoints(singleQuiz.difficulty, singleQuiz.isNiche);
+      this.questionLoaded = true;
     });
   }
 
@@ -124,19 +126,26 @@ export class QuestionWindowComponent implements OnInit {
     return questionPoints + nichePoints;
   }
 
-  private startLoadingProgressBar(): void {
-    new Promise<void>(async (resolve, reject): Promise<void> => {
-      while (true) {
-        this.loadingProgressBar += 10;
+  private async startLoadingProgressBar(): Promise<void> {
+    let revertProgressBar: boolean = false;
 
-        if (this.loadingProgressBar === this.progressBarMax) {
-          resolve();
+    while (true) {
+      if(this.loadingProgressBar === 100) {
+        revertProgressBar = true;
+
+        if(this.questionLoaded){
+          this.showQuestion = true;
+          await this.questionReadySound.play();
           break;
         }
-
-        await new Promise(f => setTimeout(f, 300));
+      } else if(this.loadingProgressBar === 0) {
+        revertProgressBar = false;
       }
-    });
+
+      this.loadingProgressBar += revertProgressBar ? -10 : 10;
+
+      await new Promise(f => setTimeout(f, 300));
+    }
   }
 
   private async returnHome() {
