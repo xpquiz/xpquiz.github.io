@@ -2,14 +2,14 @@
   <div class="window window_question">
     <app-window-title-bar iconPath="question.png" title="Question!"></app-window-title-bar>
     <div class="window-body window_question_body">
-      <ng-container *ngIf="!this.questionLoaded">
+      <ng-container *ngIf="!this.showQuestion">
         <div class="window_question_body_loading">
           <label class="window_question_body_loading_title">Loading your question, please hold on a moment...</label>
           <progress class="window_question_body_loading_progress" max="100" [value]="this.loadingProgressBar"></progress>
         </div>
       </ng-container>
 
-      <ng-container *ngIf="this.questionLoaded">
+      <ng-container *ngIf="this.showQuestion">
         <div class="window_question_body_loaded">
           <label class="window_question_body_loaded_title">{{this.question}}</label>
           <label class="window_question_body_loaded_points">[{{this.questionPoints}} point(s) for this question]</label>
