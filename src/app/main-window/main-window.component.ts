@@ -34,30 +34,27 @@ export class MainWindowComponent implements OnInit {
     await this.router.navigateByUrl(route);
   }
 
-  private startCountdown(): void {
+  private async startCountdown(): Promise<void> {
     const appStorage: AppStorage = this.appStorageService.retrieveAppStorage();
 
     if (appStorage.lastQuizResponseDate === null) return;
 
     const nextResponseMinimumDate: Moment = moment(appStorage.lastQuizResponseDate).add(3, "hours");
 
-    new Promise<void>(async (resolve): Promise<void> => {
-      while (true) {
-        const now: Moment = moment();
+    while (true) {
+      const now: Moment = moment();
 
-        if (now.isSame(nextResponseMinimumDate) || now.isAfter(nextResponseMinimumDate)) {
-          this.quizCanBeAnswered = true;
-          this.appStorageService.clearLastAnsweredDate();
-          resolve();
-          break;
-        }
-
-        const timeLeft: Duration = moment.duration(nextResponseMinimumDate.valueOf() - now.valueOf());
-
-        this.remainingTime = `${timeLeft.hours()} hours, ${timeLeft.minutes()} minutes, ${timeLeft.seconds()} seconds`
-
-        await new Promise(f => setTimeout(f, 1000));
+      if (now.isSame(nextResponseMinimumDate) || now.isAfter(nextResponseMinimumDate)) {
+        this.quizCanBeAnswered = true;
+        this.appStorageService.clearLastAnsweredDate();
+        break;
       }
-    });
+
+      const timeLeft: Duration = moment.duration(nextResponseMinimumDate.valueOf() - now.valueOf());
+
+      this.remainingTime = `${timeLeft.hours()} hours, ${timeLeft.minutes()} minutes, ${timeLeft.seconds()} seconds`
+
+      await new Promise(f => setTimeout(f, 1000));
+    }
   }
 }
