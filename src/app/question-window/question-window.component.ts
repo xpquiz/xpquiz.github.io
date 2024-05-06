@@ -46,10 +46,7 @@ export class QuestionWindowComponent implements OnInit, OnDestroy {
     }
 
     this.startLoadingProgressBar();
-
-    while(!this.questionLoaded) {
-      await this.loadQuestion();
-    }
+    await this.loadQuestion();
   }
 
   public ngOnDestroy() {
@@ -68,11 +65,7 @@ export class QuestionWindowComponent implements OnInit, OnDestroy {
   }
 
   private async loadQuestion(): Promise<void> {
-    const questions: Question[] = await this.triviaService.fetchQuestion()
-
-    if (questions.length === 0)
-      return;
-
+    const questions: Question[] = await this.triviaService.fetchQuestion();
     const singleQuiz: Question = questions[0];
 
     this.question = singleQuiz.question;
