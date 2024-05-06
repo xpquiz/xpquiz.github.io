@@ -1,12 +1,12 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {TriviaService} from "../../service/trivia.service";
-import {TriviaResponse} from "../../model/TriviaResponse";
 import {Router} from "@angular/router";
 import {PathsEnum} from "../../model/enums/PathsEnum";
 import {AppStorageService} from "../../service/app-storage.service";
 import {QuestionResultTemplateParams} from "../../model/Template";
 import {EncryptionService} from "../../service/encryption.service";
 import {Subscription} from "rxjs";
+import {Question} from "../../model/questions/Question";
 
 @Component({
   selector: 'app-question-window',
@@ -46,7 +46,10 @@ export class QuestionWindowComponent implements OnInit, OnDestroy {
     }
 
     this.startLoadingProgressBar();
-    this.loadQuestion();
+
+    while(!this.questionLoaded) {
+      await this.loadQuestion();
+    }
   }
 
   public ngOnDestroy() {
@@ -64,20 +67,23 @@ export class QuestionWindowComponent implements OnInit, OnDestroy {
     return selectedAnswer ? `> ${answer} <` : answer;
   }
 
-  private loadQuestion(): void {
-    this.getQuizzesSubscription = this.triviaService.getQuizzes().subscribe((response: TriviaResponse[]): void => {
-      const singleQuiz: TriviaResponse = response[0];
+  private async loadQuestion(): Promise<void> {
+    const questions: Question[] = await this.triviaService.fetchQuestion()
 
-      this.question = singleQuiz.question.text;
-      this.correctAnswer = singleQuiz.correctAnswer;
-      this.answers = [singleQuiz.correctAnswer, ...singleQuiz.incorrectAnswers]
-        .map((value) => ({value, sort: Math.random()}))
-        .sort((a, b) => a.sort - b.sort)
-        .map(({value}) => value);
+    if (questions.length === 0)
+      return;
 
-      this.questionPoints = this.sumQuestionPoints(singleQuiz.difficulty, singleQuiz.isNiche);
-      this.questionLoaded = true;
-    });
+    const singleQuiz: Question = questions[0];
+
+    this.question = singleQuiz.question;
+    this.correctAnswer = singleQuiz.correctAnswer;
+    this.answers = [singleQuiz.correctAnswer, ...singleQuiz.incorrectAnswers]
+      .map((value) => ({value, sort: Math.random()}))
+      .sort((a, b) => a.sort - b.sort)
+      .map(({value}) => value);
+
+    this.questionPoints = this.sumQuestionPoints(singleQuiz.difficulty, singleQuiz.isNiche);
+    this.questionLoaded = true;
   }
 
   public async confirmAnswer(): Promise<void> {
@@ -130,15 +136,15 @@ export class QuestionWindowComponent implements OnInit, OnDestroy {
     let revertProgressBar: boolean = false;
 
     while (true) {
-      if(this.loadingProgressBar === 100) {
+      if (this.loadingProgressBar === 100) {
         revertProgressBar = true;
 
-        if(this.questionLoaded){
+        if (this.questionLoaded) {
           this.showQuestion = true;
           await this.questionReadySound.play();
           break;
         }
-      } else if(this.loadingProgressBar === 0) {
+      } else if (this.loadingProgressBar === 0) {
         revertProgressBar = false;
       }
 
