@@ -9,6 +9,7 @@ import {
   QuizAPIResponseAnswers,
   QuizAPIResponseCorrectAnswers
 } from "../model/questions/QuizAPIResponse";
+import {environment} from "../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -28,10 +29,13 @@ export class TriviaService {
   }
 
   public async fetchQuestion(): Promise<Question[]> {
-    const randomNumber: number = this.randomIntFromInterval(0, this.questionMethods.length - 1);
-    const randomQuestionMethod: Function = this.questionMethods[randomNumber];
+    while(true) {
+      const randomNumber: number = this.randomIntFromInterval(0, this.questionMethods.length - 1);
+      const randomQuestionMethod: Function = this.questionMethods[randomNumber];
+      const questions: Question[] = await randomQuestionMethod.call(this);
 
-    return await randomQuestionMethod.call(this);
+      if(questions.length !== 0) return questions;
+    }
   }
 
   private randomIntFromInterval(min: number, max: number): number { // min and max included
@@ -39,7 +43,7 @@ export class TriviaService {
   }
 
   private async getQuestionsTheTriviaApi(): Promise<Question[]> {
-    const url: string = `https://the-trivia-api.com/v2/questions?limit=${this.questionLimit}`;
+    const url: string = `${environment.theTriviaApiUrl}?limit=${this.questionLimit}`;
 
     const response: TheTriviaApiResponse[] = await firstValueFrom(
       this.httpClient.get<TheTriviaApiResponse[]>(url)
@@ -57,7 +61,7 @@ export class TriviaService {
   }
 
   private async getQuestionsOpenTriviaDB(): Promise<Question[]> {
-    const url: string = `https://opentdb.com/api.php?amount=${this.questionLimit}`;
+    const url: string = `${environment.openTriviaDBUrl}?amount=${this.questionLimit}`;
 
     const response: OpenTriviaDBResponse = await firstValueFrom(
       this.httpClient.get<OpenTriviaDBResponse>(url)
@@ -75,10 +79,10 @@ export class TriviaService {
   }
 
   private async getQuestionsQuizAPI(): Promise<Question[]> {
-    const url: string = `https://quizapi.io/api/v1/questions?limit=${this.questionLimit}`;
+    const url: string = `${environment.quizAPIUrl}?limit=${this.questionLimit}`;
     const response: QuizAPIResponse[] = await firstValueFrom(
       this.httpClient.get<QuizAPIResponse[]>(url, {
-        headers: {'X-Api-Key': 'c8rwvbv03gd8DIxfd6DH5qFDqiXuM0IPRW7Wnrgo'}
+        headers: {'X-Api-Key': environment.quizAPIKey}
       })
     );
 
