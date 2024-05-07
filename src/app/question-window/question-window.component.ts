@@ -66,16 +66,16 @@ export class QuestionWindowComponent implements OnInit, OnDestroy {
 
   private async loadQuestion(): Promise<void> {
     const questions: Question[] = await this.triviaService.fetchQuestion();
-    const singleQuiz: Question = questions[0];
+    const singleQuestion: Question = questions[0];
 
-    this.question = singleQuiz.question;
-    this.correctAnswer = singleQuiz.correctAnswer;
-    this.answers = [singleQuiz.correctAnswer, ...singleQuiz.incorrectAnswers]
+    this.question = singleQuestion.question;
+    this.correctAnswer = singleQuestion.correctAnswer;
+    this.answers = [singleQuestion.correctAnswer, ...singleQuestion.incorrectAnswers]
       .map((value) => ({value, sort: Math.random()}))
       .sort((a, b) => a.sort - b.sort)
       .map(({value}) => value);
 
-    this.questionPoints = this.sumQuestionPoints(singleQuiz.difficulty, singleQuiz.isNiche);
+    this.questionPoints = this.sumQuestionPoints(singleQuestion.difficulty, singleQuestion.isNiche);
     this.questionLoaded = true;
   }
 

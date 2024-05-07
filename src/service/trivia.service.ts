@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {booleanAttribute, Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {firstValueFrom} from "rxjs";
 import {TheTriviaApiResponse} from "../model/questions/TheTriviaApiResponse";
@@ -97,9 +97,9 @@ export class TriviaService {
           continue;
 
         const answerKey: string = `${key}_correct`;
-        const isAnswerCorrect: boolean = res.correct_answers[answerKey as keyof QuizAPIResponseCorrectAnswers];
+        const isAnswerCorrect: string = res.correct_answers[answerKey as keyof QuizAPIResponseCorrectAnswers];
 
-        if (isAnswerCorrect && correctAnswer === undefined) {
+        if (booleanAttribute(isAnswerCorrect) && correctAnswer === undefined) {
           correctAnswer = answer;
           continue;
         }
