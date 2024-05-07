@@ -27,15 +27,13 @@
     "response_code": 0,
     "results": [
       {
-        "type": "multiple",
-        "difficulty": "medium",
-        "category": "Entertainment: Video Games",
-        "question": "Which one of the first four titles of the &quot;Grand Theft Auto&quot; franchise started the series of iconic image grid cover arts?",
-        "correct_answer": "Grand Theft Auto III",
+        "type": "Ym9vbGVhbg==",
+        "difficulty": "bWVkaXVt",
+        "category": "RW50ZXJ0YWlubWVudDogSmFwYW5lc2UgQW5pbWUgJiBNYW5nYQ==",
+        "question": "VGhlIGFuaW1hdGVkIGZpbG0gIlNwaXJpdGVkIEF3YXkiIHdvbiB0aGUgQWNhZGVteSBBd2FyZCBmb3IgQmVzdCBBbmltYXRlZCBGZWF0dXJlIGF0IHRoZSA3NXRoIEFjYWRlbXkgQXdhcmRzIGluIDIwMDMu",
+        "correct_answer": "VHJ1ZQ==",
         "incorrect_answers": [
-          "Grand Theft Auto",
-          "Grand Theft Auto II",
-          "Grand Theft Auto Vice City"
+          "RmFsc2U="
         ]
       }
     ]
