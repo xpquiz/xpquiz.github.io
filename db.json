@@ -1,0 +1,77 @@
+{
+  "theTriviaApi": [
+    {
+      "category": "society_and_culture",
+      "id": "622a1c367cc59eab6f950408",
+      "correctAnswer": "Rosa Parks",
+      "incorrectAnswers": [
+        "Angela Davis",
+        "Dorothy Cotton",
+        "Fanny Lou Hamer"
+      ],
+      "question": {
+        "text": "Which civil right activist is famous for refusing to give up her seat on a bus to make way for a white person?"
+      },
+      "tags": [
+        "general_knowledge",
+        "people",
+        "society_and_culture"
+      ],
+      "type": "text_choice",
+      "difficulty": "medium",
+      "regions": [],
+      "isNiche": false
+    }
+  ],
+  "openTriviaDb": {
+    "response_code": 0,
+    "results": [
+      {
+        "type": "multiple",
+        "difficulty": "medium",
+        "category": "Entertainment: Video Games",
+        "question": "Which one of the first four titles of the &quot;Grand Theft Auto&quot; franchise started the series of iconic image grid cover arts?",
+        "correct_answer": "Grand Theft Auto III",
+        "incorrect_answers": [
+          "Grand Theft Auto",
+          "Grand Theft Auto II",
+          "Grand Theft Auto Vice City"
+        ]
+      }
+    ]
+  },
+  "quizApi": [
+    {
+      "id": 616,
+      "question": "How do we check if a given variable is empty?",
+      "description": null,
+      "answers": {
+        "answer_a": "With the null() function.",
+        "answer_b": "With the empty() function.",
+        "answer_c": "With the isitnull() function.",
+        "answer_d": "With the isitempty() function.",
+        "answer_e": null,
+        "answer_f": null
+      },
+      "multiple_correct_answers": "false",
+      "correct_answers": {
+        "answer_a_correct": "false",
+        "answer_b_correct": "true",
+        "answer_c_correct": "false",
+        "answer_d_correct": "false",
+        "answer_e_correct": "false",
+        "answer_f_correct": "false"
+      },
+      "correct_answer": "answer_a",
+      "explanation": null,
+      "tip": null,
+      "tags": [
+        {
+          "name": "PHP"
+        }
+      ],
+      "category": "Code",
+      "difficulty": "Easy"
+    }
+  ]
+}

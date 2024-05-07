@@ -11,7 +11,7 @@
 
       <ng-container *ngIf="this.showQuestion">
         <div class="window_question_body_loaded">
-          <label class="window_question_body_loaded_title">{{this.question}}</label>
+          <label class="window_question_body_loaded_title" [innerHTML]="this.question"></label>
           <label class="window_question_body_loaded_points">[{{this.questionPoints}} point(s) for this question]</label>
           <div class="window_question_body_loaded_list">
             <ng-container *ngFor="let answer of this.answers">
