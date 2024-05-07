@@ -61,7 +61,7 @@ export class TriviaService {
   }
 
   private async getQuestionsOpenTriviaDB(): Promise<Question[]> {
-    const url: string = `${environment.openTriviaDBUrl}?amount=${this.questionLimit}`;
+    const url: string = `${environment.openTriviaDBUrl}?amount=${this.questionLimit}&encode=base64`;
 
     const response: OpenTriviaDBResponse = await firstValueFrom(
       this.httpClient.get<OpenTriviaDBResponse>(url)
@@ -69,10 +69,10 @@ export class TriviaService {
 
     return response.results.map(res => {
       return {
-        question: res.question,
-        correctAnswer: res.correct_answer,
-        incorrectAnswers: res.incorrect_answers,
-        difficulty: res.difficulty as 'easy' | 'medium' | 'hard',
+        question: atob(res.question),
+        correctAnswer:  atob(res.correct_answer),
+        incorrectAnswers: res.incorrect_answers.map(r =>  atob(r)),
+        difficulty: atob(res.difficulty) as 'easy' | 'medium' | 'hard',
         isNiche: false,
       }
     });
