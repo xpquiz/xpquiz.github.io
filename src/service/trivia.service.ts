@@ -18,8 +18,8 @@ export class TriviaService {
 
   private readonly questionLimit: number = 1;
   private readonly questionMethods: Function[] = [
-    // this.getQuestionsTheTriviaApi,
-    // this.getQuestionsOpenTriviaDB,
+    this.getQuestionsTheTriviaApi,
+    this.getQuestionsOpenTriviaDB,
     this.getQuestionsQuizAPI,
   ]
 
