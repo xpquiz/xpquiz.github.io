@@ -47,6 +47,7 @@ export class ScoreWindowComponent implements OnInit {
 
   private async assembleClipboardText(): Promise<void> {
     const templateParams: WeekScoreTemplateParams = {
+      year: this.currentYear,
       week: this.currentWeek,
       rightAnswers: this.currentWeekScore!.rightAnswers,
       wrongAnswers: this.currentWeekScore!.wrongAnswers,
