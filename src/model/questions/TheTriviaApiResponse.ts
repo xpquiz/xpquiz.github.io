@@ -1,4 +1,4 @@
-export interface TriviaResponse {
+export interface TheTriviaApiResponse {
   category:
     | 'music'
     | 'sport_and_leisure'
@@ -15,12 +15,12 @@ export interface TriviaResponse {
   difficulty: 'easy' | 'medium' | 'hard';
   regions: string[];
   isNiche: boolean;
-  question: Question;
+  question: TheTriviaApiQuestion;
   correctAnswer: string;
   incorrectAnswers: string[];
   type: 'text_choice';
 }
 
-interface Question {
+interface TheTriviaApiQuestion {
   text: string;
 }
