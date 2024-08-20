@@ -7,6 +7,8 @@ import {PathsEnum} from "../model/enums/PathsEnum";
 import {CorrectAnswerWindowComponent} from "./correct-answer-window/correct-answer-window.component";
 import {WrongAnswerWindowComponent} from "./wrong-answer-window/wrong-answer-window.component";
 import {AboutWindowComponent} from "./about-window/about-window.component";
+import {GameModeWindowComponent} from "./game-mode-window/game-mode-window.component";
+import {QuestionTrifectaWindowComponent} from "./question-trifecta-window/question-trifecta-window.component";
 
 const routes: Routes = [
     {
@@ -27,8 +29,16 @@ const routes: Routes = [
       component: ScoreWindowComponent
     },
     {
-      path: PathsEnum.QUIZ,
+      path: PathsEnum.GAME_MODE,
+      component: GameModeWindowComponent,
+    },
+    {
+      path: `${PathsEnum.QUIZ_NORMAL}`,
       component: QuestionWindowComponent,
+    },
+    {
+      path: `${PathsEnum.QUIZ_TRIFECTA}`,
+      component: QuestionTrifectaWindowComponent,
     },
     {
       path: `${PathsEnum.CORRECT_ANSWER}/:result`,

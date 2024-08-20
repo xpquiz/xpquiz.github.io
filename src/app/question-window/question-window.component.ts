@@ -15,20 +15,19 @@ import {Question} from "../../model/questions/Question";
 })
 export class QuestionWindowComponent implements OnInit, OnDestroy {
 
-  public questionLoaded: boolean = false;
+  public question: Question | undefined;
+
+  private questionLoaded: boolean = false;
   public showQuestion: boolean = false;
-  public question: string = '';
-  public questionPoints: number = 0;
-  public answers: string[] = [];
   public selectedAnswer: string = '';
   public confirmedAnswer: boolean = false;
+
   public progressBarMax: number = 100;
   public answerProgressBar: number = 0;
   public loadingProgressBar: number = 0;
 
   private questionReadySound: HTMLAudioElement = new Audio('assets/sounds/logon.wav');
   private confirmAnswerSound: HTMLAudioElement = new Audio('assets/sounds/exclamation.wav');
-  private correctAnswer: string = '';
   private getQuizzesSubscription: Subscription | undefined;
 
   constructor(
@@ -41,7 +40,7 @@ export class QuestionWindowComponent implements OnInit, OnDestroy {
 
   public async ngOnInit(): Promise<void> {
     if (!this.appStorageService.canQuizBeAnswered()) {
-      await this.returnHome();
+      await this.router.navigateByUrl(PathsEnum.HOME);
       return;
     }
 
@@ -65,17 +64,8 @@ export class QuestionWindowComponent implements OnInit, OnDestroy {
   }
 
   private async loadQuestion(): Promise<void> {
-    const questions: Question[] = await this.triviaService.fetchQuestion();
-    const singleQuestion: Question = questions[0];
-
-    this.question = singleQuestion.question;
-    this.correctAnswer = singleQuestion.correctAnswer;
-    this.answers = [singleQuestion.correctAnswer, ...singleQuestion.incorrectAnswers]
-      .map((value) => ({value, sort: Math.random()}))
-      .sort((a, b) => a.sort - b.sort)
-      .map(({value}) => value);
-
-    this.questionPoints = this.sumQuestionPoints(singleQuestion.difficulty, singleQuestion.isNiche);
+    const questions: Question[] = await this.triviaService.fetchQuestion(1);
+    this.question = questions[0];
     this.questionLoaded = true;
   }
 
@@ -99,30 +89,17 @@ export class QuestionWindowComponent implements OnInit, OnDestroy {
   }
 
   private async redirectFromAnswer(): Promise<void> {
-    const correctAnswer: boolean = this.selectedAnswer === this.correctAnswer;
+    const correctAnswer: boolean = this.selectedAnswer === this.question!.correctAnswer;
     const questionResult: QuestionResultTemplateParams = {
-      question: this.question,
-      questionPoints: correctAnswer ? this.questionPoints : null,
+      question: this.question!.question,
+      questionPoints: correctAnswer ? this.question!.points : null,
       selectedAnswer: `${correctAnswer ? '🟩' : '🟥'} ${this.selectedAnswer}`,
-      rightAnswer: this.correctAnswer,
-      wrongAnswers: this.answers.filter(value => value !== this.correctAnswer)
+      rightAnswer: this.question!.correctAnswer,
+      wrongAnswers: this.question!.answers.filter(value => value !== this.question!.correctAnswer)
     };
     const questionResultData: string = this.encryptionService.encrypt(JSON.stringify(questionResult));
 
     await this.router.navigate([correctAnswer ? PathsEnum.CORRECT_ANSWER : PathsEnum.WRONG_ANSWER, questionResultData]);
-  }
-
-  private sumQuestionPoints(questionDifficulty: string, isNiche: boolean): number {
-    const difficultyPointsMap: Map<string, number> = new Map<string, number>([
-      ['easy', 1],
-      ['medium', 3],
-      ['hard', 5]
-    ]);
-
-    const questionPoints: number = difficultyPointsMap.get(questionDifficulty)!;
-    const nichePoints: number = isNiche ? 10 : 0;
-
-    return questionPoints + nichePoints;
   }
 
   private async startLoadingProgressBar(): Promise<void> {
@@ -145,9 +122,5 @@ export class QuestionWindowComponent implements OnInit, OnDestroy {
 
       await new Promise(f => setTimeout(f, 300));
     }
-  }
-
-  private async returnHome() {
-    await this.router.navigateByUrl(PathsEnum.HOME);
   }
 }
