@@ -1,0 +1,21 @@
+<div class="window">
+  <app-window-title-bar iconPath="question.png" title="Pick your game mode!"></app-window-title-bar>
+  <div class="window-body">
+    <label>Pick your game mode!</label>
+
+    <div class="window-body_modes">
+      <ng-container *ngFor="let mode of this.gameModes">
+        <app-icon-text-button
+          [iconPath]="mode.title + '.png'"
+          [title]="mode.title.toUpperCase().replace('-', ' ')"
+          [description]="mode.description"
+          (onButtonClick)="this.router.navigateByUrl('quiz-' + mode.title)"
+          [disabled]="mode.questions < 0"
+        ></app-icon-text-button>
+      </ng-container>
+    </div>
+
+    <app-icon-button iconPath="home.png" title="Return home"
+                     (onButtonClick)="this.router.navigateByUrl(PathsEnum.HOME)"></app-icon-button>
+  </div>
+</div>

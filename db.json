@@ -1,24 +1,65 @@
 {
   "theTriviaApi": [
     {
-      "category": "society_and_culture",
-      "id": "622a1c367cc59eab6f950408",
-      "correctAnswer": "Rosa Parks",
+      "category": "sport_and_leisure",
+      "id": "62417da50f96c4efe8d773db",
+      "correctAnswer": "San Francisco 49ers",
       "incorrectAnswers": [
-        "Angela Davis",
-        "Dorothy Cotton",
-        "Fanny Lou Hamer"
+        "San Francisco Jaguars",
+        "San Francisco Pistons",
+        "San Francisco Predators"
       ],
       "question": {
-        "text": "Which civil right activist is famous for refusing to give up her seat on a bus to make way for a white person?"
+        "text": "Which of these is an American Football team based in San Francisco?"
       },
       "tags": [
-        "general_knowledge",
-        "people",
-        "society_and_culture"
+        "sport"
       ],
       "type": "text_choice",
       "difficulty": "medium",
+      "regions": [],
+      "isNiche": false
+    },
+    {
+      "category": "history",
+      "id": "622a1c367cc59eab6f9503ac",
+      "correctAnswer": "Germany",
+      "incorrectAnswers": [
+        "Switzerland",
+        "Denmark",
+        "France"
+      ],
+      "question": {
+        "text": "Which country was first to operate an old age pension scheme?"
+      },
+      "tags": [
+        "history"
+      ],
+      "type": "text_choice",
+      "difficulty": "hard",
+      "regions": [],
+      "isNiche": false
+    },
+    {
+      "category": "arts_and_literature",
+      "id": "649b4f4f828109028d236251",
+      "correctAnswer": "A Spider",
+      "incorrectAnswers": [
+        "A Pig",
+        "A Sheep",
+        "A Horse"
+      ],
+      "question": {
+        "text": "In E.B. White's classic children's book \"Charlotte's Web\", what kind of animal is Charlotte?"
+      },
+      "tags": [
+        "animals",
+        "childrens_literature",
+        "arts_and_literature",
+        "literature"
+      ],
+      "type": "text_choice",
+      "difficulty": "easy",
       "regions": [],
       "isNiche": false
     }
@@ -27,13 +68,39 @@
     "response_code": 0,
     "results": [
       {
-        "type": "Ym9vbGVhbg==",
+        "type": "bXVsdGlwbGU=",
         "difficulty": "bWVkaXVt",
-        "category": "RW50ZXJ0YWlubWVudDogSmFwYW5lc2UgQW5pbWUgJiBNYW5nYQ==",
-        "question": "VGhlIGFuaW1hdGVkIGZpbG0gIlNwaXJpdGVkIEF3YXkiIHdvbiB0aGUgQWNhZGVteSBBd2FyZCBmb3IgQmVzdCBBbmltYXRlZCBGZWF0dXJlIGF0IHRoZSA3NXRoIEFjYWRlbXkgQXdhcmRzIGluIDIwMDMu",
-        "correct_answer": "VHJ1ZQ==",
+        "category": "SGlzdG9yeQ==",
+        "question": "V2hlbiBkaWQgdGhlIENyaXNpcyBvZiB0aGUgVGhpcmQgQ2VudHVyeSBiZWdpbj8=",
+        "correct_answer": "MjM1IEFE",
         "incorrect_answers": [
-          "RmFsc2U="
+          "MjM1IEJD",
+          "MjQyIEFE",
+          "MjEwIEFE"
+        ]
+      },
+      {
+        "type": "bXVsdGlwbGU=",
+        "difficulty": "bWVkaXVt",
+        "category": "RW50ZXJ0YWlubWVudDogVmlkZW8gR2FtZXM=",
+        "question": "V2hpY2ggb2YgdGhlc2UgQ291bnRlci1TdHJpa2UgbWFwcyBpcyBhIGJvbWIgZGVmdXNlIHNjZW5hcmlvPw==",
+        "correct_answer": "UHJvZGlneQ==",
+        "incorrect_answers": [
+          "NzQ3",
+          "SGF2YW5h",
+          "T2lscmln"
+        ]
+      },
+      {
+        "type": "bXVsdGlwbGU=",
+        "difficulty": "bWVkaXVt",
+        "category": "RW50ZXJ0YWlubWVudDogVmlkZW8gR2FtZXM=",
+        "question": "V2hhdCBpcyB0aGUgd29ybGQncyBmaXJzdCB2aWRlbyBnYW1lIGNvbnNvbGU/",
+        "correct_answer": "TWFnbmF2b3ggT2R5c3NleQ==",
+        "incorrect_answers": [
+          "Q29sZWNvIFRlbHN0YXI=",
+          "TmludGVuZG8gQ29sb3IgVFYgR2FtZQ==",
+          "QXRhcmkgMjYwMA=="
         ]
       }
     ]
@@ -70,6 +137,71 @@
       ],
       "category": "Code",
       "difficulty": "Easy"
+    },
+    {
+      "id": 1,
+      "question": "How to delete a directory in Linux?",
+      "description": "delete folder",
+      "answers": {
+        "answer_a": "ls",
+        "answer_b": "delete",
+        "answer_c": "remove",
+        "answer_d": "rmdir",
+        "answer_e": null,
+        "answer_f": null
+      },
+      "multiple_correct_answers": "false",
+      "correct_answers": {
+        "answer_a_correct": "false",
+        "answer_b_correct": "false",
+        "answer_c_correct": "false",
+        "answer_d_correct": "true",
+        "answer_e_correct": "false",
+        "answer_f_correct": "false"
+      },
+      "explanation": "rmdir deletes an empty directory",
+      "tip": null,
+      "tags": [],
+      "category": "linux",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 3,
+      "question": "How to check the current disk usage on Linux?",
+      "description": "check current disk usage",
+      "answers": {
+        "answer_a": "df",
+        "answer_b": "usage",
+        "answer_c": "uptime",
+        "answer_d": "free",
+        "answer_e": null,
+        "answer_f": null
+      },
+      "multiple_correct_answers": "false",
+      "correct_answers": {
+        "answer_a_correct": "true",
+        "answer_b_correct": "false",
+        "answer_c_correct": "false",
+        "answer_d_correct": "false",
+        "answer_e_correct": "false",
+        "answer_f_correct": "false"
+      },
+      "correct_answer": "answer_a",
+      "explanation": "df shows you the current disk usage",
+      "tip": "df",
+      "tags": [
+        {
+          "name": "Linux"
+        },
+        {
+          "name": "BASH"
+        },
+        {
+          "name": "cmd"
+        }
+      ],
+      "category": "uncategorized",
+      "difficulty": "easy"
     }
   ]
 }
