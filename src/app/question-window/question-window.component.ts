@@ -7,6 +7,7 @@ import {QuestionResultTemplateParams} from "../../model/Template";
 import {EncryptionService} from "../../service/encryption.service";
 import {Subscription} from "rxjs";
 import {Question} from "../../model/questions/Question";
+import {GameMode} from "../../model/enums/GameModesEnum";
 
 @Component({
   selector: 'app-question-window',
@@ -99,7 +100,7 @@ export class QuestionWindowComponent implements OnInit, OnDestroy {
     };
     const questionResultData: string = this.encryptionService.encrypt(JSON.stringify(questionResult));
 
-    await this.router.navigate([correctAnswer ? PathsEnum.CORRECT_ANSWER : PathsEnum.WRONG_ANSWER, questionResultData]);
+    await this.router.navigate([(correctAnswer ? PathsEnum.CORRECT_ANSWER : PathsEnum.WRONG_ANSWER), GameMode.NORMAL.title, questionResultData]);
   }
 
   private async startLoadingProgressBar(): Promise<void> {

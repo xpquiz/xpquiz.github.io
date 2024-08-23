@@ -5,7 +5,8 @@ import {Router} from "@angular/router";
 import {EncryptionService} from "../../service/encryption.service";
 import {AppStorageService} from "../../service/app-storage.service";
 import {PathsEnum} from "../../model/enums/PathsEnum";
-import {first} from "rxjs";
+import {QuestionResultTrifectaTemplateParams} from "../../model/Template";
+import {GameMode} from "../../model/enums/GameModesEnum";
 
 @Component({
   selector: 'app-question-trifecta-window',
@@ -15,7 +16,8 @@ import {first} from "rxjs";
 export class QuestionTrifectaWindowComponent {
 
   public questions: Question[] = [];
-  public selectedAnswers: string[] | undefined[] = [];
+  public selectedAnswers: string[] | undefined[] = [undefined, undefined, undefined
+  ];
   public showQuestions: boolean = false;
   public confirmedAnswers: boolean = false;
 
@@ -107,8 +109,53 @@ export class QuestionTrifectaWindowComponent {
     return this.selectedAnswers[index] === answer ? `> ${answer} <` : answer;
   }
 
-  confirmAnswers() {
+  public async confirmAnswers(): Promise<void> {
+    this.confirmedAnswers = true;
 
+    while (true) {
+      await new Promise(f => setTimeout(f, 400));
+
+      if (this.answerProgressBar === this.progressBarMax)
+        break;
+
+      this.answerProgressBar += 10;
+    }
+
+    await this.redirectFromAnswer();
+  }
+
+  private async redirectFromAnswer(): Promise<void> {
+    let correctAnswers: boolean = true;
+    let totalPoints: number = 0;
+
+    for (let i = 0; i <= 2; i++) {
+      if (this.selectedAnswers[i] !== this.questions[i].correctAnswer) {
+        correctAnswers = false;
+        break;
+      }
+    }
+
+    const questionResultTrifecta: QuestionResultTrifectaTemplateParams = {
+      questions: this.questions.map(question => question.question),
+      correctAnswers: this.questions.map(question => question.correctAnswer),
+      selectedAnswers: this.selectedAnswers.map((answer, index) => {
+        const question = this.questions[index];
+        const correctAnswer: boolean = answer === question.correctAnswer
+
+        totalPoints += question.points * 3;
+
+        return {
+          icon: correctAnswer ? '🟩' : '🟥',
+          answer: answer!,
+          points: correctAnswer ? `(${question.points} * 3) = ${question.points * 3} points` : '0'
+        }
+      }),
+      questionPoints: correctAnswers ? totalPoints : 0,
+    };
+
+    const questionResultTrifectaData: string = this.encryptionService.encrypt(JSON.stringify(questionResultTrifecta));
+
+    await this.router.navigate([(correctAnswers ? PathsEnum.CORRECT_ANSWER : PathsEnum.WRONG_ANSWER), GameMode.TRIFECTA.title, questionResultTrifectaData]);
   }
 
   public validateAnswers(): void {

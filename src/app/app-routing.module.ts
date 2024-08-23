@@ -41,11 +41,11 @@ const routes: Routes = [
       component: QuestionTrifectaWindowComponent,
     },
     {
-      path: `${PathsEnum.CORRECT_ANSWER}/:result`,
+      path: `${PathsEnum.CORRECT_ANSWER}/:mode/:result`,
       component: CorrectAnswerWindowComponent,
     },
     {
-      path: `${PathsEnum.WRONG_ANSWER}/:result`,
+      path: `${PathsEnum.WRONG_ANSWER}/:mode/:result`,
       component: WrongAnswerWindowComponent
     }
   ]

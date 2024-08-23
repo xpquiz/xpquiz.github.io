@@ -27,7 +27,7 @@ export class AppStorageService {
     }
   }
 
-  public saveAnswer(correctAnswer: boolean, questionScore?: number | null): void {
+  public saveAnswer(correctAnswer: boolean, questionScore: number | undefined, hoursToPlayAgain: number): void {
     const currentYear: number = moment().year();
     const currentWeek: number = moment().isoWeek();
 
@@ -67,7 +67,9 @@ export class AppStorageService {
     this.storageService.save(
       {
         ...appStorage,
-        lastQuizResponseDate: moment().toISOString(),
+        // using - 3 because i fucked up no the main window, should have been saving something
+        // like "nextQuizResponseDate" instead of this shit
+        lastQuizResponseDate: moment().add(hoursToPlayAgain - 3, 'hours').toISOString(),
         yearScoreMap: yearScoreMap
       }
     );
@@ -86,22 +88,6 @@ export class AppStorageService {
 
   public retrieveAppStorage(): AppStorage {
     return this.storageService.get()??this.createNewAppStorage();
-  }
-
-  public clearWeek(currentYear: number, currentWeek: number) {
-    const appStorage: AppStorage = this.storageService.get()!;
-
-    appStorage.yearScoreMap.get(currentYear)?.delete(currentWeek);
-
-    this.storageService.save(appStorage);
-  }
-
-  public clearYear(currentYear: number) {
-    const appStorage: AppStorage = this.storageService.get()!;
-
-    appStorage.yearScoreMap.delete(currentYear);
-
-    this.storageService.save(appStorage);
   }
 
   public retrieveScoreForYear(currentYear: number): Map<number, WeekScore> {

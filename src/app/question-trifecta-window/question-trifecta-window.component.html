@@ -53,10 +53,10 @@
         <img *ngIf="this.isSelectingAnswers()"
              ngSrc="assets/icons/trifecta.png"
              alt="" height="40" width="40"/>
-        <img *ngIf="this.selectedAllAnswers()"
+        <img *ngIf="this.selectedAllAnswers() && !this.confirmedAnswers"
              ngSrc="assets/icons/alert.png"
              alt="" height="40" width="40"/>
-        <img *ngIf="this.confirmedAnswers"
+        <img *ngIf="this.selectedAllAnswers() && this.confirmedAnswers"
              ngSrc="assets/icons/loading.png"
              alt="" height="40" width="40"/>
       </div>
@@ -64,17 +64,18 @@
         <label class="window_check-answer_body_question_title" *ngIf="this.isSelectingAnswers()">
           Select 3 answers before continuing...
         </label>
-        <label class="window_check-answer_body_question_title" *ngIf="this.selectedAllAnswers()">
+        <label class="window_check-answer_body_question_title"
+               *ngIf="this.selectedAllAnswers() && !this.confirmedAnswers">
           Are you sure about that?
         </label>
         <div class="window_check-answer_body_question_buttons"
-             *ngIf="this.selectedAllAnswers() || this.confirmedAnswers">
+             *ngIf="this.selectedAllAnswers() && !this.confirmedAnswers">
           <app-icon-button iconPath="yes.png" title="Yes!"
                            (onButtonClick)="this.confirmAnswers()"></app-icon-button>
           <app-icon-button iconPath="no.png" title="No..."
                            (onButtonClick)="this.validateAnswers()"></app-icon-button>
         </div>
-        <ng-container *ngIf="this.confirmedAnswers">
+        <ng-container *ngIf="this.selectedAllAnswers() && this.confirmedAnswers">
           <label class="window_check-answer_body_question_title">Ok, checking your answer...</label>
           <progress [max]="this.progressBarMax" [value]="this.answerProgressBar"></progress>
         </ng-container>
