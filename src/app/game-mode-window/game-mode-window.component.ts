@@ -14,7 +14,8 @@ export class GameModeWindowComponent {
 
   protected readonly gameModes: GameMode[] = [
     GameMode.NORMAL,
-    GameMode.TRIFECTA
+    GameMode.TRIFECTA,
+    GameMode.TIME_RUSH,
   ];
 
   constructor(

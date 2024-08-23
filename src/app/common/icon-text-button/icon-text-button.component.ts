@@ -13,6 +13,8 @@ export class IconTextButtonComponent {
   public title: string = '';
   @Input()
   public description: string = '';
+  @Input()
+  public disabled: boolean = false;
   @Output()
   public onButtonClick: EventEmitter<void> = new EventEmitter<void>();
 

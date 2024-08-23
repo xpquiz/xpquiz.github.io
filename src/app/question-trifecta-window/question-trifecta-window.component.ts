@@ -147,7 +147,7 @@ export class QuestionTrifectaWindowComponent {
         return {
           icon: correctAnswer ? '🟩' : '🟥',
           answer: answer!,
-          points: correctAnswer ? `(${question.points} * 3) = ${question.points * 3} points` : '0'
+          points: correctAnswer ? `(${question.points} * 3) = ${question.points * 3}` : '0'
         }
       }),
       questionPoints: correctAnswers ? totalPoints : 0,

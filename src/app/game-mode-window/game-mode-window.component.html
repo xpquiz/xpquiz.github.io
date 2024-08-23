@@ -7,9 +7,10 @@
       <ng-container *ngFor="let mode of this.gameModes">
         <app-icon-text-button
           [iconPath]="mode.title + '.png'"
-          [title]="mode.title.toUpperCase()"
+          [title]="mode.title.toUpperCase().replace('-', ' ')"
           [description]="mode.description"
           (onButtonClick)="this.router.navigateByUrl('quiz-' + mode.title)"
+          [disabled]="mode.questions < 0"
         ></app-icon-text-button>
       </ng-container>
     </div>

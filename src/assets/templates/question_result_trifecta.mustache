@@ -1,19 +1,24 @@
 {{#questions}}
-  👉 {{{.}}} 👈
+👉 {{{.}}}
 {{/questions}}
 
 The answers were...
 
 {{#correctAnswers}}
-  🟥 {{{.}}}
+  🟩 {{{.}}}
 {{/correctAnswers}}
 
 I picked...
 
 {{#selectedAnswers}}
-  {{{icon}}} {{{answer}}} {{{points}}}
+  {{{icon}}} {{{answer}}} - {{{points}}} points
 {{/selectedAnswers}}
 
-{{totalPoints}}
+{{#questionPoints}}
+Earned {{questionPoints}} points in total!
+{{/questionPoints}}
+{{^questionPoints}}
+Need some luck next time...
+{{/questionPoints}}
 
 🤔 XPQuiz - xpquiz.github.io ❔
