@@ -14,6 +14,8 @@ import {GameMode} from "../../model/enums/GameModesEnum";
 })
 export class CorrectAnswerWindowComponent implements OnInit {
 
+  protected readonly PathsEnum = PathsEnum;
+
   public questionScore: number = 0;
   public clipboardText: string = '';
   public displayClipboardMessage: boolean = false;
@@ -21,7 +23,7 @@ export class CorrectAnswerWindowComponent implements OnInit {
   private correctAnswerSound: HTMLAudioElement = new Audio('assets/sounds/tada.wav');
 
   constructor(
-    private readonly router: Router,
+    protected readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly encryptionService: EncryptionService,
     private readonly templateService: TemplateService,
@@ -33,16 +35,12 @@ export class CorrectAnswerWindowComponent implements OnInit {
     await this.retrieveRouteParams();
 
     if (!this.appStorageService.canQuizBeAnswered()) {
-      await this.returnHome();
+      await this.router.navigateByUrl(PathsEnum.HOME);
       return;
     }
 
     await this.correctAnswerSound.play();
     this.saveCurrentScore();
-  }
-
-  public async returnHome(): Promise<void> {
-    await this.router.navigateByUrl(PathsEnum.HOME);
   }
 
   public async showClipboardMessage(): Promise<void> {

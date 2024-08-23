@@ -9,12 +9,11 @@ import {PathsEnum} from "../../model/enums/PathsEnum";
 })
 export class AboutWindowComponent {
 
+  protected readonly PathsEnum = PathsEnum;
+
   constructor(
-    private readonly router: Router
+    public readonly router: Router
   ) {
   }
 
-  public async returnHome(): Promise<void> {
-    await this.router.navigateByUrl(PathsEnum.HOME);
-  }
 }

@@ -67,7 +67,7 @@
       <app-icon-button iconPath="copy.png" title="Share score" [copy-clipboard]="this.clipboardText"
                        (click)="this.showClipboardMessage()"></app-icon-button>
       <app-icon-button iconPath="home.png" title="Return to home"
-                       (onButtonClick)="this.returnHome()"></app-icon-button>
+                       (onButtonClick)="this.router.navigateByUrl(PathsEnum.HOME)"></app-icon-button>
     </div>
     <div *ngIf="this.displayClipboardMessage">
       <label class="window-body_clipboard-text">Score copied to clipboard!</label>

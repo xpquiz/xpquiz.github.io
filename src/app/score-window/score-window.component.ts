@@ -22,7 +22,7 @@ export class ScoreWindowComponent implements OnInit {
   public displayClipboardMessage: boolean = false;
 
   constructor(
-    private readonly router: Router,
+    protected readonly router: Router,
     private readonly templateService: TemplateService,
     private readonly appStorageService: AppStorageService
   ) {
@@ -31,10 +31,6 @@ export class ScoreWindowComponent implements OnInit {
   public async ngOnInit(): Promise<void> {
     this.retrieveScore();
     await this.assembleClipboardText();
-  }
-
-  public async returnHome(): Promise<void> {
-    await this.router.navigateByUrl(PathsEnum.HOME);
   }
 
   public async showClipboardMessage(): Promise<void> {
@@ -75,4 +71,6 @@ export class ScoreWindowComponent implements OnInit {
     this.currentYear = currentYear;
     this.currentWeek = currentWeek;
   }
+
+  protected readonly PathsEnum = PathsEnum;
 }
