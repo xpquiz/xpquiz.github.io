@@ -18,7 +18,7 @@ export class MainWindowComponent implements OnInit {
   protected readonly PathsEnum = PathsEnum;
 
   constructor(
-    private readonly router: Router,
+    protected readonly router: Router,
     private readonly appStorageService: AppStorageService
   ) {
   }
@@ -28,10 +28,6 @@ export class MainWindowComponent implements OnInit {
 
     if (!this.quizCanBeAnswered)
       this.startCountdown();
-  }
-
-  public async redirectTo(route: PathsEnum): Promise<void> {
-    await this.router.navigateByUrl(route);
   }
 
   private async startCountdown(): Promise<void> {

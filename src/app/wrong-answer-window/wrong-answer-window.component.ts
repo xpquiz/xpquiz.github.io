@@ -22,7 +22,7 @@ export class WrongAnswerWindowComponent implements OnInit {
   private wrongAnswerSound: HTMLAudioElement = new Audio('assets/sounds/critical_stop.wav');
 
   constructor(
-    private readonly router: Router,
+    protected readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly encryptionService: EncryptionService,
     private readonly templateService: TemplateService,
@@ -34,16 +34,12 @@ export class WrongAnswerWindowComponent implements OnInit {
     await this.retrieveRouteParams();
 
     if (!this.appStorageService.canQuizBeAnswered()) {
-      await this.returnHome();
+      await this.router.navigateByUrl(PathsEnum.HOME);
       return;
     }
 
     await this.wrongAnswerSound.play();
     this.saveCurrentScore();
-  }
-
-  public async returnHome(): Promise<void> {
-    await this.router.navigateByUrl(PathsEnum.HOME);
   }
 
   public async showClipboardMessage(): Promise<void> {
@@ -71,4 +67,6 @@ export class WrongAnswerWindowComponent implements OnInit {
     this.correctAnswers = 'questions' in questionResult ? questionResult.correctAnswers : [questionResult.rightAnswer];
     this.clipboardText = await this.templateService.render(gameMode.templateEnum, questionResult);
   }
+
+  protected readonly PathsEnum = PathsEnum;
 }
