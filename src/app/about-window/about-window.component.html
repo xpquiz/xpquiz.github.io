@@ -6,7 +6,8 @@
 
     <label>Source code at&nbsp;<b><a href="https://github.com/xpquiz/xpquiz.github.io">GitHub</a></b></label>
     <label>Questions provided by&nbsp;<b><a href="https://the-trivia-api.com/">The Trivia API</a></b>,&nbsp;<b><a
-      href="https://opentdb.com/">Open Trivia Database</a></b>&nbsp;and&nbsp;<b><a href="https://quizapi.io/">QuizAPI</a></b></label>
+      href="https://opentdb.com/">Open Trivia Database</a></b>&nbsp;and&nbsp;<b><a
+      href="https://quizapi.io/">QuizAPI</a></b></label>
     <label>Windows XP theming provided by&nbsp;<b><a href="https://botoxparty.github.io/XP.css/">XP.css</a></b></label>
     <label>Windows XP sounds provided by&nbsp;<b><a href="https://archive.org/details/windowsxpstartup_201910/">The
       Internet Archive</a></b></label>
@@ -14,7 +15,45 @@
       href="https://www.deviantart.com/marchmountain/art/Windows-XP-High-Resolution-Icon-Pack-916042853">marchmountain
       at DeviantArt</a></b></label>
 
-    <app-icon-button iconPath="home.png" title="Return to home"
-                     (onButtonClick)="this.router.navigateByUrl(PathsEnum.HOME)"></app-icon-button>
+    <div class="window-body_buttons">
+      <app-icon-button iconPath="home.png" title="Return home"
+                       (onButtonClick)="this.router.navigateByUrl(PathsEnum.HOME)"></app-icon-button>
+      <app-icon-button iconPath="contact.png" title="Contact us!" [disabled]="this.showFeedbackWindow"
+                       (onButtonClick)="this.toggleFeedbackWindow()"></app-icon-button>
+    </div>
   </div>
 </div>
+
+<div class="window" *ngIf="this.showFeedbackWindow">
+  <app-window-title-bar iconPath="about.png" title="Contact"></app-window-title-bar>
+  <div class="window-body">
+    <form [formGroup]="this.feedbackForm" (ngSubmit)="this.onSubmit()">
+      <label class="window-body_feedback-title">✍️ Feel free to message us about suggestions, feedbacks or compliments!
+        🤔</label>
+
+      <div class="window-body_feedback-inputs">
+        <div class="field-row">
+          <label for="name">Name (*):</label>
+          <input id="name" type="text" formControlName="name" placeholder="Type in your name..."/>
+        </div>
+        <div class="field-row">
+          <label for="message">Message (*):</label>
+          <textarea id="message" rows="8" formControlName="message" placeholder="Write your message..."></textarea>
+        </div>
+      </div>
+
+      <div class="window-body_feedback-inputs-error">
+        <label *ngIf="this.shouldShowErrorMessage('name')">Please type in your name.</label>
+        <label *ngIf="this.shouldShowErrorMessage('message')">Please type your message.</label>
+      </div>
+
+      <div class="window-body_feedback-buttons">
+        <app-icon-button iconPath="no.png" title="Close"
+                         (onButtonClick)="this.toggleFeedbackWindow()"></app-icon-button>
+        <app-icon-button [disabled]="this.shouldDisableSendButton()" iconPath="send.png" title="Send"
+                         type="submit"></app-icon-button>
+      </div>
+    </form>
+  </div>
+</div>
+

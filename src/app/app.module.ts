@@ -17,6 +17,7 @@ import {CopyClipboardDirective} from "./directives/CopyClipboardDirective";
 import { GameModeWindowComponent } from './game-mode-window/game-mode-window.component';
 import { IconTextButtonComponent } from './common/icon-text-button/icon-text-button.component';
 import { QuestionTrifectaWindowComponent } from './question-trifecta-window/question-trifecta-window.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -38,7 +39,8 @@ import { QuestionTrifectaWindowComponent } from './question-trifecta-window/ques
         BrowserModule,
         AppRoutingModule,
         HttpClientModule,
-        NgOptimizedImage
+        NgOptimizedImage,
+        ReactiveFormsModule
     ],
   providers: [],
   bootstrap: [AppComponent]
