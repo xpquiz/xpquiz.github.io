@@ -2,9 +2,10 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {PathsEnum} from "../../model/enums/PathsEnum";
 import {AppStorageService} from "../../service/app-storage.service";
-import {QuestionResultTemplateParams, TemplateEnum} from "../../model/Template";
+import {QuestionResultTemplateParams, QuestionResultTrifectaTemplateParams} from "../../model/Template";
 import {EncryptionService} from "../../service/encryption.service";
 import {TemplateService} from "../../service/template.service";
+import {GameMode} from "../../model/enums/GameModesEnum";
 
 @Component({
   selector: 'app-wrong-answer-window',
@@ -13,14 +14,15 @@ import {TemplateService} from "../../service/template.service";
 })
 export class WrongAnswerWindowComponent implements OnInit {
 
-  public correctAnswer: string | null = '';
+  public correctAnswers: string[] = [];
   public clipboardText: string = '';
   public displayClipboardMessage: boolean = false;
+  public hoursToPlayAgain: number = 0;
 
   private wrongAnswerSound: HTMLAudioElement = new Audio('assets/sounds/critical_stop.wav');
 
   constructor(
-    private readonly router: Router,
+    protected readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly encryptionService: EncryptionService,
     private readonly templateService: TemplateService,
@@ -32,16 +34,12 @@ export class WrongAnswerWindowComponent implements OnInit {
     await this.retrieveRouteParams();
 
     if (!this.appStorageService.canQuizBeAnswered()) {
-      await this.returnHome();
+      await this.router.navigateByUrl(PathsEnum.HOME);
       return;
     }
 
     await this.wrongAnswerSound.play();
     this.saveCurrentScore();
-  }
-
-  public async returnHome(): Promise<void> {
-    await this.router.navigateByUrl(PathsEnum.HOME);
   }
 
   public async showClipboardMessage(): Promise<void> {
@@ -53,16 +51,22 @@ export class WrongAnswerWindowComponent implements OnInit {
   }
 
   private saveCurrentScore() {
-    this.appStorageService.saveAnswer(false);
+    this.appStorageService.saveAnswer(false, undefined, this.hoursToPlayAgain);
   }
 
   private async retrieveRouteParams(): Promise<void> {
+    const routeGameModeTitle: string = this.route.snapshot.paramMap.get('mode')!;
     const encryptedQuestionResult: string = this.route.snapshot.paramMap.get('result')!;
 
     const decryptedQuestionResult: string = this.encryptionService.decrypt(encryptedQuestionResult);
-    const questionResult: QuestionResultTemplateParams = JSON.parse(decryptedQuestionResult);
+    const questionResult: QuestionResultTemplateParams | QuestionResultTrifectaTemplateParams = JSON.parse(decryptedQuestionResult);
+    const gameMode: GameMode = GameMode.getByTitle(routeGameModeTitle);
 
-    this.correctAnswer = questionResult.rightAnswer;
-    this.clipboardText = await this.templateService.render(TemplateEnum.QUESTION_RESULT, questionResult);
+    this.hoursToPlayAgain = gameMode === GameMode.TRIFECTA ? 24 : 3;
+
+    this.correctAnswers = 'questions' in questionResult ? questionResult.correctAnswers : [questionResult.rightAnswer];
+    this.clipboardText = await this.templateService.render(gameMode.templateEnum, questionResult);
   }
+
+  protected readonly PathsEnum = PathsEnum;
 }

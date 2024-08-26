@@ -1,0 +1,7 @@
+<button (click)="this.onClick()" [disabled]="this.disabled">
+  <img
+    [ngSrc]="'assets/icons/30x30/' + this.iconPath"
+    alt="" [height]="this.iconSize" [width]="this.iconSize"/>
+  <label>{{this.title}}</label>
+  <p>{{this.description}}</p>
+</button>

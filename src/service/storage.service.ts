@@ -1,5 +1,4 @@
 import {Injectable} from '@angular/core';
-import {AES, enc} from 'crypto-js';
 import {AppStorage} from "../model/AppStorage";
 import {EncryptionService} from "./encryption.service";
 

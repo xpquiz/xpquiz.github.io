@@ -1,15 +1,69 @@
-.window-body
-  display: flex
-  flex-direction: column
-  align-items: center
-  justify-content: center
+.window
+  margin: 10px
 
-  label
-    margin: 3px
+  &-body
+    display: flex
+    flex-direction: column
+    align-items: center
+    justify-content: center
 
-    &.main
-      margin-bottom: 10px
+    label
+      margin: 3px
+
+      &.main
+        margin-bottom: 10px
+        font-style: italic
+
+    &_buttons
+      display: flex
+      flex-direction: row
+      align-items: center
+      justify-content: center
+      margin: 5px
+
+      app-icon-button
+        margin: 5px
+
+    label.window-body_feedback-title
       font-style: italic
+      margin-bottom: 10px
 
-  app-icon-button
-    margin-top: 15px
+    &_feedback-inputs
+      display: flex
+      flex-direction: column
+      align-items: center
+      justify-content: center
+      margin: 10px
+      width: 300px
+
+      .field-row
+        width: 100%
+
+        textarea
+          border: 1px solid #7f9db9
+
+        label
+          width: 25%
+          display: block
+          text-align: end
+          align-self: flex-start
+
+        input, textarea
+          width: 75%
+
+    &_feedback-inputs-error
+      color: red
+      display: flex
+      flex-direction: column
+      align-items: center
+      justify-content: center
+
+    &_feedback-buttons
+      display: flex
+      flex-direction: row
+      align-items: center
+      justify-content: center
+      margin: 5px
+
+      app-icon-button
+        margin: 5px

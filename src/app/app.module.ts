@@ -14,6 +14,10 @@ import { CorrectAnswerWindowComponent } from './correct-answer-window/correct-an
 import { WrongAnswerWindowComponent } from './wrong-answer-window/wrong-answer-window.component';
 import { AboutWindowComponent } from './about-window/about-window.component';
 import {CopyClipboardDirective} from "./directives/CopyClipboardDirective";
+import { GameModeWindowComponent } from './game-mode-window/game-mode-window.component';
+import { IconTextButtonComponent } from './common/icon-text-button/icon-text-button.component';
+import { QuestionTrifectaWindowComponent } from './question-trifecta-window/question-trifecta-window.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -26,13 +30,17 @@ import {CopyClipboardDirective} from "./directives/CopyClipboardDirective";
     CorrectAnswerWindowComponent,
     WrongAnswerWindowComponent,
     AboutWindowComponent,
-    CopyClipboardDirective
+    CopyClipboardDirective,
+    GameModeWindowComponent,
+    IconTextButtonComponent,
+    QuestionTrifectaWindowComponent
   ],
     imports: [
         BrowserModule,
         AppRoutingModule,
         HttpClientModule,
-        NgOptimizedImage
+        NgOptimizedImage,
+        ReactiveFormsModule
     ],
   providers: [],
   bootstrap: [AppComponent]

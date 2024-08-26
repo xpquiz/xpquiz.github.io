@@ -2,15 +2,16 @@
   <app-window-title-bar iconPath="critical.png" title="Oh no!"></app-window-title-bar>
   <div class="window-body">
     <div class="window-body_title">
-      <label>That was not the right answer! The answer was &nbsp;<b>[{{this.correctAnswer}}]</b></label>
-      <label>Come back in 3 hours for another question!</label>
+      <label>You got it wrong! The correct answer(s) was/were:</label>
+      <label><b>[{{ this.correctAnswers }}]</b></label>
+      <label>Come back in {{ this.hoursToPlayAgain }} hours for another question!</label>
     </div>
 
     <div class="window-body_buttons">
       <app-icon-button iconPath="copy.png" title="Share result" [copy-clipboard]="this.clipboardText"
                        (onButtonClick)="this.showClipboardMessage()"></app-icon-button>
       <app-icon-button iconPath="home.png" title="Return to home"
-                       (onButtonClick)="this.returnHome()"></app-icon-button>
+                       (onButtonClick)="this.router.navigateByUrl(PathsEnum.HOME)"></app-icon-button>
     </div>
     <div *ngIf="this.displayClipboardMessage">
       <label class="window-body_clipboard-text">Question result copied to clipboard!</label>
