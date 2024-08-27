@@ -30,13 +30,15 @@
           &_tri
             display: flex
             align-items: stretch
-            justify-content: center
 
             @media(200px < width < 1000px)
               flex-direction: column
+              height: 400px
+              overflow: auto
 
             @media(width > 1000px)
               flex-direction: row
+              justify-content: center
 
             ul
               margin: 5px

@@ -6,9 +6,14 @@
 
   &_modes
     display: inherit
-    flex-direction: row
     align-items: center
     justify-content: center
+
+    @media(width < 1000px)
+      flex-direction: column
+
+    @media(width > 1000px)
+      flex-direction: row
 
     app-icon-text-button
       margin: 5px
