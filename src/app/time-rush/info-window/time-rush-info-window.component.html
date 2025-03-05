@@ -1,0 +1,46 @@
+<div class="window">
+  <app-window-title-bar iconPath="time-rush-rules.png" title="Time Rush rules"></app-window-title-bar>
+  <div class="window-body">
+
+    <div class="window-body_description">
+      <label class="window-body_description_header-title">🕒&nbsp;&nbsp;&nbsp;&nbsp;<b>Here's how Time Rush works!</b>&nbsp;&nbsp;&nbsp;&nbsp;🕒</label>
+    </div>
+
+    <ul class="tree-view window-body_time-rush-info">
+      <li>
+        🤔 5 random questions! 🤔
+        <ul>
+          <li>⏰ 30 seconds to answer each question</li>
+          <li>🧘‍♂️ 10 seconds break between every question</li>
+          <li>⚠️️ No question confirmation request!</li>
+          <li>✋ Each question score is multiplied by 5</li>
+        </ul>
+      </li>
+      <li>
+        ✅ Guess every answer correctly... ✅
+        <ul>
+          <li>🎰 Get all question points!</li>
+          <li>🕒 Play again in only 3 hours!</li>
+        </ul>
+      </li>
+      <li>
+        ❌But if you make a single mistake,or don't answer in time...❌
+        <ul>
+          <li>No points! Zero! Nada! ゼロ! 零! ноль! 0️⃣!</li>
+          <li>⏳ Wait 72 hours to play again...</li>
+        </ul>
+      </li>
+    </ul>
+
+    <div class="window-body_description">
+      <label class="window-body_description_footer-title">Can you take the challenge?</label>
+    </div>
+
+    <div class="window-body_questions">
+      <app-icon-button iconPath="play.png" title="Let's do it!" (onButtonClick)="this.router.navigateByUrl(PathsEnum.QUIZ_TIME_RUSH_QUESTION)"></app-icon-button>
+      <app-icon-button iconPath="home.png" title="Not now..."
+                       (onButtonClick)="this.router.navigateByUrl(PathsEnum.HOME)"></app-icon-button>
+    </div>
+  </div>
+</div>
+
