@@ -1,0 +1,330 @@
+{
+  "theTriviaApi": [
+    {
+      "category": "film_and_tv",
+      "id": "625740a89da29df7b05f73ee",
+      "correctAnswer": "Gone with the Wind",
+      "incorrectAnswers": [
+        "Downfall",
+        "My Neighbour Totoro",
+        "Up"
+      ],
+      "question": {
+        "text": "Name the movie that matches the following plot summary: 'The daughter of a plantation owner conducts a romance with a roguish profiteer.'"
+      },
+      "tags": [
+        "film"
+      ],
+      "type": "text_choice",
+      "difficulty": "medium",
+      "regions": [],
+      "isNiche": false
+    },
+    {
+      "category": "sport_and_leisure",
+      "id": "6473075ccf09068746f6376e",
+      "correctAnswer": "The latissimus dorsi",
+      "incorrectAnswers": [
+        "The biceps",
+        "The triceps",
+        "The deltoids"
+      ],
+      "question": {
+        "text": "Which muscle group is mainly targeted by wide-grip pull-ups that work the muscles of the shoulders and the arms?"
+      },
+      "tags": [
+        "anatomy",
+        "exercise",
+        "fitness"
+      ],
+      "type": "text_choice",
+      "difficulty": "hard",
+      "regions": [],
+      "isNiche": false
+    },
+    {
+      "category": "music",
+      "id": "622a1c397cc59eab6f950c2c",
+      "correctAnswer": "ABBA",
+      "incorrectAnswers": [
+        "In Flames",
+        "HammerFall",
+        "Katatonia"
+      ],
+      "question": {
+        "text": "Which Swedish pop group released the song 'Gimme! Gimme! Gimme! (A Man After Midnight)'?"
+      },
+      "tags": [
+        "music"
+      ],
+      "type": "text_choice",
+      "difficulty": "easy",
+      "regions": [],
+      "isNiche": false
+    },
+    {
+      "category": "food_and_drink",
+      "id": "627164511ba117625baac957",
+      "correctAnswer": "Iceland",
+      "incorrectAnswers": [
+        "The Czech Republic",
+        "Austria",
+        "Nepal"
+      ],
+      "question": {
+        "text": "Which country is associated with the drink brennivín?"
+      },
+      "tags": [
+        "drink",
+        "alcohol"
+      ],
+      "type": "text_choice",
+      "difficulty": "hard",
+      "regions": [],
+      "isNiche": false
+    },
+    {
+      "category": "music",
+      "id": "622a1c367cc59eab6f950378",
+      "correctAnswer": "Fleetwood Mac",
+      "incorrectAnswers": [
+        "Neil Young",
+        "ABBA",
+        "Elvis Costello"
+      ],
+      "question": {
+        "text": "Who Released The 70's Album 'Rumours'?"
+      },
+      "tags": [
+        "music"
+      ],
+      "type": "text_choice",
+      "difficulty": "medium",
+      "regions": [],
+      "isNiche": false
+    }
+  ],
+  "openTriviaDb": {
+    "response_code": 0,
+    "results": [
+      {
+        "type": "bXVsdGlwbGU=",
+        "difficulty": "bWVkaXVt",
+        "category": "U2NpZW5jZTogQ29tcHV0ZXJz",
+        "question": "SG93IG1hbnkgYnl0ZXMgYXJlIGluIGEgc2luZ2xlIEtpYmlieXRlPw==",
+        "correct_answer": "MTAyNA==",
+        "incorrect_answers": [
+          "MjQwMA==",
+          "MTAwMA==",
+          "MTI0MA=="
+        ]
+      },
+      {
+        "type": "bXVsdGlwbGU=",
+        "difficulty": "ZWFzeQ==",
+        "category": "RW50ZXJ0YWlubWVudDogVmlkZW8gR2FtZXM=",
+        "question": "V2hpY2ggb2YgdGhlIGZvbGxvd2luZyB3YXMgTk9UIGEgcGxheWFibGUgY2hhcmFjdGVyIGluIHRoZSBnYW1lIEtpbmdkb20gSGVhcnRzOiBCaXJ0aCBieSBTbGVlcD8=",
+        "correct_answer": "SWduaXM=",
+        "incorrect_answers": [
+          "VmVudHVz",
+          "VGVycmE=",
+          "QXF1YQ=="
+        ]
+      },
+      {
+        "type": "Ym9vbGVhbg==",
+        "difficulty": "ZWFzeQ==",
+        "category": "VmVoaWNsZXM=",
+        "question": "VGhlIGZ1bGwgRW5nbGlzaCBuYW1lIG9mIHRoZSBjYXIgbWFudWZhY3R1cmVyIEJNVyBpcyBCYXZhcmlhbiBNb3RvciBXb3Jrcw==",
+        "correct_answer": "VHJ1ZQ==",
+        "incorrect_answers": [
+          "RmFsc2U="
+        ]
+      },
+      {
+        "type": "bXVsdGlwbGU=",
+        "difficulty": "ZWFzeQ==",
+        "category": "SGlzdG9yeQ==",
+        "question": "V2hpY2ggbW9kZXJuIGRheSBjb3VudHJ5IGlzIHRoZSByZWdpb24gdGhhdCB3YXMga25vd24gYXMgUGhyeWdpYSBpbiBhbmNpZW50IHRpbWVzPw==",
+        "correct_answer": "VHVya2V5",
+        "incorrect_answers": [
+          "U3lyaWE=",
+          "R3JlZWNl",
+          "RWd5cHQ="
+        ]
+      },
+      {
+        "type": "Ym9vbGVhbg==",
+        "difficulty": "ZWFzeQ==",
+        "category": "R2VuZXJhbCBLbm93bGVkZ2U=",
+        "question": "QSBwYXNvZG9ibGUgaXMgYSB0eXBlIG9mIEl0YWxpYW4gcGFzdGEgc2F1Y2Uu",
+        "correct_answer": "RmFsc2U=",
+        "incorrect_answers": [
+          "VHJ1ZQ=="
+        ]
+      }
+    ]
+  },
+  "quizApi": [
+    {
+      "id": 5866,
+      "question": "How do you call an external API in the Composition API setup function?",
+      "description": "Learning how to make API calls in the Composition API.",
+      "answers": {
+        "answer_a": "Use async\/await or Promises within the 'setup' function to call an API",
+        "answer_b": "Use 'ref()'",
+        "answer_c": "Only use computed properties",
+        "answer_d": "Call it inside 'data()'",
+        "answer_e": null,
+        "answer_f": null
+      },
+      "multiple_correct_answers": "false",
+      "correct_answers": {
+        "answer_a_correct": "true",
+        "answer_b_correct": "false",
+        "answer_c_correct": "false",
+        "answer_d_correct": "false",
+        "answer_e_correct": "false",
+        "answer_f_correct": "false"
+      },
+      "correct_answer": null,
+      "explanation": "You can use async\/await or Promises within the 'setup' function to make external API calls when using the Composition API.",
+      "tip": null,
+      "tags": [
+        {
+          "name": "VueJS"
+        }
+      ],
+      "category": "VueJS",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 1683,
+      "question": "What is the role of the 'sys.exc_info()' function in context managers?",
+      "description": "'sys.exc_info()' can be used to retrieve information about exceptions in the '__exit__' method.",
+      "answers": {
+        "answer_a": "It raises the current exception",
+        "answer_b": "It retrieves information about the current exception being handled",
+        "answer_c": "It logs the exception to the console",
+        "answer_d": "It suppresses the exception",
+        "answer_e": null,
+        "answer_f": null
+      },
+      "multiple_correct_answers": "false",
+      "correct_answers": {
+        "answer_a_correct": "false",
+        "answer_b_correct": "true",
+        "answer_c_correct": "false",
+        "answer_d_correct": "false",
+        "answer_e_correct": "false",
+        "answer_f_correct": "false"
+      },
+      "correct_answer": null,
+      "explanation": "'sys.exc_info()' returns a tuple containing information about the current exception being handled, which is useful for custom logging or error handling in the '__exit__' method of a context manager.",
+      "tip": null,
+      "tags": [
+        {
+          "name": "Python"
+        }
+      ],
+      "category": "Code",
+      "difficulty": "Hard"
+    },
+    {
+      "id": 2176,
+      "question": "Which function in MySQL calculates the total of values in a numeric column?",
+      "description": "Learning MySQL functions for calculating sums.",
+      "answers": {
+        "answer_a": "SUM()",
+        "answer_b": "TOTAL()",
+        "answer_c": "ADD()",
+        "answer_d": "COUNT()",
+        "answer_e": null,
+        "answer_f": null
+      },
+      "multiple_correct_answers": "false",
+      "correct_answers": {
+        "answer_a_correct": "true",
+        "answer_b_correct": "false",
+        "answer_c_correct": "false",
+        "answer_d_correct": "false",
+        "answer_e_correct": "false",
+        "answer_f_correct": "false"
+      },
+      "correct_answer": "answer_a",
+      "explanation": "The 'SUM()' function returns the total of values in a specified numeric column.",
+      "tip": null,
+      "tags": [
+        {
+          "name": "MySQL"
+        }
+      ],
+      "category": "SQL",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 397,
+      "question": "Commands passed to the MySQL daemon are written in",
+      "description": null,
+      "answers": {
+        "answer_a": "English",
+        "answer_b": "The Structured Query Language",
+        "answer_c": "Your Choice From Perl, PHP, Java Or Some Other Languages",
+        "answer_d": "Swedish",
+        "answer_e": "Binary",
+        "answer_f": null
+      },
+      "multiple_correct_answers": "false",
+      "correct_answers": {
+        "answer_a_correct": "false",
+        "answer_b_correct": "true",
+        "answer_c_correct": "false",
+        "answer_d_correct": "false",
+        "answer_e_correct": "false",
+        "answer_f_correct": "false"
+      },
+      "correct_answer": "answer_a",
+      "explanation": null,
+      "tip": null,
+      "tags": [
+        {
+          "name": "MySQL"
+        }
+      ],
+      "category": "SQL",
+      "difficulty": "Easy"
+    },
+    {
+      "id": 4447,
+      "question": "What's the best way to implement virtual lists?",
+      "description": "Understanding list virtualization.",
+      "answers": {
+        "answer_a": "Regular list",
+        "answer_b": "React Virtual with dynamic sizes",
+        "answer_c": "Pagination",
+        "answer_d": "Load all",
+        "answer_e": null,
+        "answer_f": null
+      },
+      "multiple_correct_answers": "false",
+      "correct_answers": {
+        "answer_a_correct": "false",
+        "answer_b_correct": "true",
+        "answer_c_correct": "false",
+        "answer_d_correct": "false",
+        "answer_e_correct": "false",
+        "answer_f_correct": "false"
+      },
+      "correct_answer": null,
+      "explanation": "Using React Virtual with dynamic sizes provides efficient list rendering while handling variable content heights.",
+      "tip": null,
+      "tags": [
+        {
+          "name": "Next.js"
+        }
+      ],
+      "category": "Next.js",
+      "difficulty": "Medium"
+    }
+  ]
+}
