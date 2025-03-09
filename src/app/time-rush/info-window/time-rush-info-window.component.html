@@ -37,7 +37,7 @@
     </div>
 
     <div class="window-body_questions">
-      <app-icon-button iconPath="play.png" title="Let's do it!" (onButtonClick)="this.router.navigateByUrl(PathsEnum.QUIZ_TIME_RUSH_QUESTION)"></app-icon-button>
+      <app-icon-button iconPath="play.png" title="Let's do it!" (onButtonClick)="this.router.navigate(['question'], {relativeTo: this.route})"></app-icon-button>
       <app-icon-button iconPath="home.png" title="Not now..."
                        (onButtonClick)="this.router.navigateByUrl(PathsEnum.HOME)"></app-icon-button>
     </div>

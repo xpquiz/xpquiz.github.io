@@ -1,7 +1,5 @@
 .window
-  margin: 10px
-
-  &_question
+  &_loading
     &_body
       display: flex
       flex-direction: row
@@ -15,15 +13,60 @@
         justify-content: center
 
         &_title
-          margin: 5px
+          margin: 5px 5px 5px 0
           text-align: center
+          font-style: italic
 
         &_progress
-          margin: 5px
+          margin: 5px 5px 5px 0
 
       &_image
-        width: 30%
+        margin: 10px
         display: flex
-        align-items: initial
+        align-items: center
         justify-content: center
+
+  &_question
+    &_body
+      display: flex
+      flex-direction: column
+      align-items: center
+      justify-content: center
+
+      &_title
+        text-align: center
+        margin: 10px
+        font-weight: bold
+        max-width: 250px
+
+      &_points
+        font-style: italic
+        margin: 0px 5px 5px 5px
+
+      &_list
+        display: flex
+        flex-direction: column
+        align-items: center
+        justify-content: center
+        width: 100%
+
+        &_option-button
+          margin: 3px
+          width: 100%
+
+      &_time-remaining
+        ul
+          display: flex
+          flex-direction: column
+          align-items: center
+          justify-content: center
+          margin: 5px
+
+          label
+            font-weight: bold
+            font-style: italic
+            margin: 3px
+
+          progress
+            margin: 5px 5px 5px 0
 

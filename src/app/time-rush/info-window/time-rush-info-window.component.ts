@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {PathsEnum} from "../../../model/enums/PathsEnum";
 import {AppStorageService} from "../../../service/app-storage.service";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Question} from "../../../model/questions/Question";
 import {TriviaService} from "../../../service/trivia.service";
 
@@ -16,6 +16,7 @@ export class TimeRushInfoWindowComponent implements OnInit {
 
   constructor(
     private readonly appStorageService: AppStorageService,
+    protected readonly route: ActivatedRoute,
     protected readonly router: Router
   ) {
   }
