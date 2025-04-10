@@ -1,0 +1,19 @@
+<div class="window">
+  <app-window-title-bar iconPath="success.png" title="You did it!"></app-window-title-bar>
+  <div class="window-body">
+    <div class="window-body_title">
+      <label><b>Congratulations!</b></label>
+      <label>You earned &nbsp;<b>{{ this.totalScore }}</b>&nbsp; points for guessing all 5 answers!</label>
+      <label>Come back in 3 hours to play again!</label>
+    </div>
+    <div class="window-body_buttons">
+      <app-icon-button iconPath="copy.png" title="Share result" [copy-clipboard]="this.clipboardText"
+                       (onButtonClick)="this.showClipboardMessage()"></app-icon-button>
+      <app-icon-button iconPath="home.png" title="Return to home"
+                       (onButtonClick)="this.router.navigateByUrl(PathsEnum.HOME);"></app-icon-button>
+    </div>
+    <div *ngIf="this.displayClipboardMessage">
+      <label class="window-body_clipboard-text">Question result copied to clipboard!</label>
+    </div>
+  </div>
+</div>

@@ -1,7 +1,8 @@
 export enum TemplateEnum {
   WEEK_SCORE = "/assets/templates/week_score.mustache",
   QUESTION_RESULT = "/assets/templates/question_result.mustache",
-  QUESTION_RESULT_TRIFECTA = "/assets/templates/question_result_trifecta.mustache"
+  QUESTION_RESULT_TRIFECTA = "/assets/templates/question_result_trifecta.mustache",
+  QUESTION_RESULT_TIME_RUSH = "/assets/templates/question_result_time_rush.mustache"
 }
 
 export interface TemplateParams {
@@ -40,4 +41,12 @@ interface TrifectaSelectedAnswer {
   icon: string,
   answer: string,
   points: string
+}
+
+// Time-rush
+
+export interface QuestionResultTimeRushTemplateParams extends TemplateParams {
+  correctAnswers: string,
+  answers: string,
+  message: string
 }

@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Question} from "../../model/questions/Question";
 import {TriviaService} from "../../service/trivia.service";
 import {Router} from "@angular/router";
@@ -13,7 +13,7 @@ import {GameMode} from "../../model/enums/GameModesEnum";
   templateUrl: './question-trifecta-window.component.html',
   styleUrls: ['./question-trifecta-window.component.sass']
 })
-export class QuestionTrifectaWindowComponent {
+export class QuestionTrifectaWindowComponent implements OnInit {
 
   public questions: Question[] = [];
   public selectedAnswers: string[] | undefined[] = [undefined, undefined, undefined

@@ -1,0 +1,22 @@
+<div class="window">
+  <app-window-title-bar iconPath="critical.png" title="Oh no!"></app-window-title-bar>
+  <div class="window-body">
+    <div class="window-body_title">
+      <label *ngIf="this.type === 'timeout'">Timeout! You didn't answered in time!</label>
+      <label *ngIf="this.type === 'wrong'">You got it wrong!</label>
+      <label><b>{{ this.correctAnswers }} correct answer(s) out of 5!</b></label>
+      <label><b>[{{ this.answers }}]</b></label>
+      <label>Come back in {{ this.hoursToPlayAgain }} hours to play again!</label>
+    </div>
+
+    <div class="window-body_buttons">
+      <app-icon-button iconPath="copy.png" title="Share result" [copy-clipboard]="this.clipboardText"
+                       (onButtonClick)="this.showClipboardMessage()"></app-icon-button>
+      <app-icon-button iconPath="home.png" title="Return to home"
+                       (onButtonClick)="this.router.navigateByUrl(PathsEnum.HOME)"></app-icon-button>
+    </div>
+    <div *ngIf="this.displayClipboardMessage">
+      <label class="window-body_clipboard-text">Question result copied to clipboard!</label>
+    </div>
+  </div>
+</div>
