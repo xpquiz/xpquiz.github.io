@@ -42,3 +42,11 @@ interface TrifectaSelectedAnswer {
   answer: string,
   points: string
 }
+
+// Time-rush
+
+export interface QuestionResultTimeRushTemplateParams extends TemplateParams {
+  correctAnswers: string,
+  answers: string,
+  message: string
+}

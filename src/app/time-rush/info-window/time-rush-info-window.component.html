@@ -24,7 +24,7 @@
         </ul>
       </li>
       <li>
-        ❌But if you make a single mistake,or don't answer in time...❌
+        ❌ But if you make a single mistake,or don't answer in time... ❌
         <ul>
           <li>No points! Zero! Nada! ゼロ! 零! ноль! 0️⃣!</li>
           <li>⏳ Wait 72 hours to play again...</li>
@@ -37,9 +37,9 @@
     </div>
 
     <div class="window-body_questions">
-      <app-icon-button iconPath="play.png" title="Let's do it!" (onButtonClick)="this.router.navigate(['question'], {relativeTo: this.route})"></app-icon-button>
+      <app-icon-button iconPath="play.png" title="Let's do it!" (onButtonClick)="this.router.navigate([PathsEnum.QUIZ_TIME_RUSH_QUESTION], {relativeTo: this.route})"></app-icon-button>
       <app-icon-button iconPath="home.png" title="Not now..."
-                       (onButtonClick)="this.router.navigateByUrl(PathsEnum.HOME)"></app-icon-button>
+                       (onButtonClick)="this.router.navigateByUrl(PathsEnum.GAME_MODE)"></app-icon-button>
     </div>
   </div>
 </div>

@@ -10,6 +10,13 @@ import {GameModeWindowComponent} from "./game-mode-window/game-mode-window.compo
 import {QuestionTrifectaWindowComponent} from "./question-trifecta-window/question-trifecta-window.component";
 import {TimeRushInfoWindowComponent} from "./time-rush/info-window/time-rush-info-window.component";
 import {TimeRushQuestionWindowComponent} from "./time-rush/question-window/time-rush-question-window.component";
+import {
+  WrongQuestionTimeoutWindowComponent
+} from "./time-rush/wrong-question-timeout-window/wrong-question-timeout-window.component";
+import {
+  AllAnswersCorrectWindowComponent
+} from "./time-rush/all-answers-correct-window/all-answers-correct-window.component";
+import {CorrectAnswerWindowComponent} from "./correct-answer-window/correct-answer-window.component";
 
 const routes: Routes = [
     {
@@ -47,12 +54,24 @@ const routes: Routes = [
         {
           path: PathsEnum.QUIZ_TIME_RUSH_QUESTION,
           component: TimeRushQuestionWindowComponent
+        },
+        {
+          path: `${PathsEnum.QUIZ_TIME_RUSH_WRONG_ANSWER_OR_TIMEOUT}/:type/:questions`,
+          component: WrongQuestionTimeoutWindowComponent
+        },
+        {
+          path: `${PathsEnum.QUIZ_TIME_RUSH_ALL_ANSWERS_CORRECT}/:score`,
+          component: AllAnswersCorrectWindowComponent
         }
       ]
     },
     {
       path: PathsEnum.QUIZ_TRIFECTA,
       component: QuestionTrifectaWindowComponent,
+    },
+    {
+      path: `${PathsEnum.CORRECT_ANSWER}/:mode/:result`,
+      component: CorrectAnswerWindowComponent,
     },
     {
       path: `${PathsEnum.WRONG_ANSWER}/:mode/:result`,
