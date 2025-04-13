@@ -6,7 +6,8 @@ import moment, {Duration, Moment} from "moment";
 import {AppStorageService} from "../../shared/service/app-storage.service";
 import {BaseRepository} from "../../shared/database/repository/base.repository";
 import {BaseEntity} from "../../shared/database/entity/base.entity";
-import {isAfter, isEqual} from "date-fns";
+import {differenceInHours, differenceInMinutes, differenceInSeconds, isAfter, isEqual, sub} from "date-fns";
+import {liveQuery} from "dexie";
 
 @Component({
   selector: 'app-main-window',
@@ -23,40 +24,35 @@ export class MainWindowComponent implements OnInit {
   constructor(
     protected readonly router: Router,
     private readonly baseRepository: BaseRepository,
-
-
-    private readonly appStorageService: AppStorageService
   ) {
   }
 
   public async ngOnInit(): Promise<void> {
-    const base: BaseEntity | undefined = await this.baseRepository.findMainBase();
+    this.baseRepository.findMainBase().subscribe({
+      next: (value: BaseEntity | undefined) => {
+        this.quizCanBeAnswered = isEqual(new Date(), value!.nextQuizResponseDate) || isAfter(new Date(), value!.nextQuizResponseDate);
 
-    this.quizCanBeAnswered = isEqual(new Date(), base!.nextQuizResponseDate) || isAfter(new Date(), base!.nextQuizResponseDate);
-
-    if (!this.quizCanBeAnswered)
-      this.startCountdown();
+        if (!this.quizCanBeAnswered)
+          this.startCountdown(value!);
+      },
+      error: error => {}
+    })
   }
 
-  private async startCountdown(): Promise<void> {
-    const appStorage: AppStorage = this.appStorageService.retrieveAppStorage();
-
-    if (appStorage.lastQuizResponseDate === null) return;
-
-    const nextResponseMinimumDate: Moment = moment(appStorage.lastQuizResponseDate).add(3, "hours");
-
+  private async startCountdown(base: BaseEntity): Promise<void> {
     while (true) {
-      const now: Moment = moment();
+      const currentDate: Date = new Date();
 
-      if (now.isSame(nextResponseMinimumDate) || now.isAfter(nextResponseMinimumDate)) {
+      if (isEqual(new Date(), base.nextQuizResponseDate)) {
         this.quizCanBeAnswered = true;
-        this.appStorageService.clearLastAnsweredDate();
         break;
       }
 
-      const timeLeft: Duration = moment.duration(nextResponseMinimumDate.valueOf() - now.valueOf());
+      const hours: number = differenceInHours(base.nextQuizResponseDate, currentDate);
+      const minutes: number = differenceInMinutes(base.nextQuizResponseDate, currentDate);
+      const seconds: number = differenceInSeconds(base.nextQuizResponseDate, currentDate);
 
-      this.remainingTime = `${timeLeft.hours()} hours, ${timeLeft.minutes()} minutes, ${timeLeft.seconds()} seconds`
+      this.remainingTime = `${hours} hours, ${minutes} minutes, ${seconds} seconds`
 
       await new Promise(f => setTimeout(f, 1000));
     }
