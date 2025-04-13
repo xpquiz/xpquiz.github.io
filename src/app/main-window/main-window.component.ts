@@ -1,9 +1,12 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {PathsEnum} from "../../model/enums/PathsEnum";
-import {AppStorage} from "../../model/AppStorage";
+import {PathsEnum} from "../../shared/model/enums/PathsEnum";
+import {AppStorage} from "../../shared/model/AppStorage";
 import moment, {Duration, Moment} from "moment";
-import {AppStorageService} from "../../service/app-storage.service";
+import {AppStorageService} from "../../shared/service/app-storage.service";
+import {BaseRepository} from "../../shared/database/repository/base.repository";
+import {BaseEntity} from "../../shared/database/entity/base.entity";
+import {isAfter, isEqual} from "date-fns";
 
 @Component({
   selector: 'app-main-window',
@@ -19,12 +22,17 @@ export class MainWindowComponent implements OnInit {
 
   constructor(
     protected readonly router: Router,
+    private readonly baseRepository: BaseRepository,
+
+
     private readonly appStorageService: AppStorageService
   ) {
   }
 
   public async ngOnInit(): Promise<void> {
-    this.quizCanBeAnswered = this.appStorageService.canQuizBeAnswered();
+    const base: BaseEntity | undefined = await this.baseRepository.findMainBase();
+
+    this.quizCanBeAnswered = isEqual(new Date(), base!.nextQuizResponseDate) || isAfter(new Date(), base!.nextQuizResponseDate);
 
     if (!this.quizCanBeAnswered)
       this.startCountdown();

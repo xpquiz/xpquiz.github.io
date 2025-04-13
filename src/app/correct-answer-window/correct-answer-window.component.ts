@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {PathsEnum} from "../../model/enums/PathsEnum";
-import {AppStorageService} from "../../service/app-storage.service";
-import {EncryptionService} from "../../service/encryption.service";
-import {TemplateService} from "../../service/template.service";
-import {QuestionResultTemplateParams, QuestionResultTrifectaTemplateParams} from "../../model/Template";
-import {GameMode} from "../../model/enums/GameModesEnum";
+import {PathsEnum} from "../../shared/model/enums/PathsEnum";
+import {AppStorageService} from "../../shared/service/app-storage.service";
+import {EncryptionService} from "../../shared/service/encryption.service";
+import {TemplateService} from "../../shared/service/template.service";
+import {QuestionResultTemplateParams, QuestionResultTrifectaTemplateParams} from "../../shared/model/Template";
+import {GameMode} from "../../shared/model/enums/GameModesEnum";
 
 @Component({
   selector: 'app-correct-answer-window',

@@ -1,12 +1,12 @@
 import {Component, OnInit} from '@angular/core';
-import {Question} from "../../model/questions/Question";
-import {TriviaService} from "../../service/trivia.service";
+import {Question} from "../../shared/model/questions/Question";
+import {TriviaService} from "../../shared/service/trivia.service";
 import {Router} from "@angular/router";
-import {EncryptionService} from "../../service/encryption.service";
-import {AppStorageService} from "../../service/app-storage.service";
-import {PathsEnum} from "../../model/enums/PathsEnum";
-import {QuestionResultTrifectaTemplateParams} from "../../model/Template";
-import {GameMode} from "../../model/enums/GameModesEnum";
+import {EncryptionService} from "../../shared/service/encryption.service";
+import {AppStorageService} from "../../shared/service/app-storage.service";
+import {PathsEnum} from "../../shared/model/enums/PathsEnum";
+import {QuestionResultTrifectaTemplateParams} from "../../shared/model/Template";
+import {GameMode} from "../../shared/model/enums/GameModesEnum";
 
 @Component({
   selector: 'app-question-trifecta-window',

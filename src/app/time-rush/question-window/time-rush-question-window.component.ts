@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {Question} from "../../../model/questions/Question";
-import {AppStorageService} from "../../../service/app-storage.service";
-import {TriviaService} from "../../../service/trivia.service";
+import {Question} from "../../../shared/model/questions/Question";
+import {AppStorageService} from "../../../shared/service/app-storage.service";
+import {TriviaService} from "../../../shared/service/trivia.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {PathsEnum} from "../../../model/enums/PathsEnum";
+import {PathsEnum} from "../../../shared/model/enums/PathsEnum";
 
 @Component({
   selector: 'app-question-window',

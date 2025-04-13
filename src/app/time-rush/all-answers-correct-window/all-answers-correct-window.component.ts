@@ -1,9 +1,9 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {TemplateService} from "../../../service/template.service";
-import {AppStorageService} from "../../../service/app-storage.service";
-import {QuestionResultTimeRushTemplateParams, TemplateEnum} from "../../../model/Template";
-import {PathsEnum} from 'src/model/enums/PathsEnum';
+import {TemplateService} from "../../../shared/service/template.service";
+import {AppStorageService} from "../../../shared/service/app-storage.service";
+import {QuestionResultTimeRushTemplateParams, TemplateEnum} from "../../../shared/model/Template";
+import {PathsEnum} from 'src/shared/model/enums/PathsEnum';
 import {parse} from "mustache";
 
 @Component({

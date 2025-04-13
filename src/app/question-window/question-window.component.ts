@@ -1,13 +1,13 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {TriviaService} from "../../service/trivia.service";
+import {TriviaService} from "../../shared/service/trivia.service";
 import {Router} from "@angular/router";
-import {PathsEnum} from "../../model/enums/PathsEnum";
-import {AppStorageService} from "../../service/app-storage.service";
-import {QuestionResultTemplateParams} from "../../model/Template";
-import {EncryptionService} from "../../service/encryption.service";
+import {PathsEnum} from "../../shared/model/enums/PathsEnum";
+import {AppStorageService} from "../../shared/service/app-storage.service";
+import {QuestionResultTemplateParams} from "../../shared/model/Template";
+import {EncryptionService} from "../../shared/service/encryption.service";
 import {Subscription} from "rxjs";
-import {Question} from "../../model/questions/Question";
-import {GameMode} from "../../model/enums/GameModesEnum";
+import {Question} from "../../shared/model/questions/Question";
+import {GameMode} from "../../shared/model/enums/GameModesEnum";
 
 @Component({
   selector: 'app-question-window',

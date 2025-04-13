@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Router} from "@angular/router";
-import {PathsEnum} from "../../model/enums/PathsEnum";
+import {PathsEnum} from "../../shared/model/enums/PathsEnum";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 
 @Component({

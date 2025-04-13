@@ -9,7 +9,7 @@ import {
   QuizAPIResponseAnswers,
   QuizAPIResponseCorrectAnswers
 } from "../model/questions/QuizAPIResponse";
-import {environment} from "../environments/environment";
+import {environment} from "../../environments/environment";
 
 
 @Injectable({

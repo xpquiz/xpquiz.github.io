@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {PathsEnum} from "../../../model/enums/PathsEnum";
+import {PathsEnum} from "../../../shared/model/enums/PathsEnum";
 import {ActivatedRoute, Router} from "@angular/router";
-import {TemplateService} from "../../../service/template.service";
-import {AppStorageService} from "../../../service/app-storage.service";
-import {QuestionResultTimeRushTemplateParams, TemplateEnum} from "../../../model/Template";
+import {TemplateService} from "../../../shared/service/template.service";
+import {AppStorageService} from "../../../shared/service/app-storage.service";
+import {QuestionResultTimeRushTemplateParams, TemplateEnum} from "../../../shared/model/Template";
 
 @Component({
   selector: 'app-wrong-question-timeout-window',

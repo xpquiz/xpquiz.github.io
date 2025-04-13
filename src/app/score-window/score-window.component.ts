@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {PathsEnum} from "../../model/enums/PathsEnum";
-import {AppStorage, WeekScore} from "../../model/AppStorage";
+import {PathsEnum} from "../../shared/model/enums/PathsEnum";
+import {AppStorage, WeekScore} from "../../shared/model/AppStorage";
 import moment from "moment";
-import {TemplateService} from "../../service/template.service";
-import {TemplateEnum, WeekScoreTemplateParams} from "../../model/Template";
-import {AppStorageService} from "../../service/app-storage.service";
+import {TemplateService} from "../../shared/service/template.service";
+import {TemplateEnum, WeekScoreTemplateParams} from "../../shared/model/Template";
+import {AppStorageService} from "../../shared/service/app-storage.service";
 
 @Component({
   selector: 'app-score-window',
