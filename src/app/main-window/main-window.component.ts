@@ -43,7 +43,7 @@ export class MainWindowComponent implements OnInit {
     while (true) {
       const currentDate: Date = new Date();
 
-      if (isEqual(new Date(), base.nextQuizResponseDate)) {
+      if (isEqual(currentDate, base.nextQuizResponseDate)) {
         this.quizCanBeAnswered = true;
         break;
       }
