@@ -1,13 +1,15 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {TriviaService} from "../../shared/service/trivia.service";
 import {Router} from "@angular/router";
-import {PathsEnum} from "../../shared/model/enums/PathsEnum";
-import {AppStorageService} from "../../shared/service/app-storage.service";
-import {QuestionResultTemplateParams} from "../../shared/model/Template";
-import {EncryptionService} from "../../shared/service/encryption.service";
 import {Subscription} from "rxjs";
-import {Question} from "../../shared/model/questions/Question";
-import {GameMode} from "../../shared/model/enums/GameModesEnum";
+import {Question} from "../../../shared/model/questions/Question";
+import {TriviaService} from "../../../shared/service/trivia.service";
+import {EncryptionService} from "../../../shared/service/encryption.service";
+import {PathsEnum} from "../../../shared/model/enums/PathsEnum";
+import {QuestionResultTemplateParams} from "../../../shared/model/Template";
+import {GameMode} from "../../../shared/model/enums/GameModesEnum";
+import {BaseRepository} from "../../../shared/database/repository/base.repository";
+import {BaseEntity} from "../../../shared/database/entity/base.entity";
+import {isBefore} from "date-fns";
 
 @Component({
   selector: 'app-question-window',
@@ -35,12 +37,14 @@ export class QuestionWindowComponent implements OnInit, OnDestroy {
     private readonly triviaService: TriviaService,
     private readonly router: Router,
     private readonly encryptionService: EncryptionService,
-    private readonly appStorageService: AppStorageService
+    private readonly baseRepository: BaseRepository,
   ) {
   }
 
   public async ngOnInit(): Promise<void> {
-    if (!this.appStorageService.canQuizBeAnswered()) {
+    const baseEntity: BaseEntity | undefined = await this.baseRepository.findMainBase();
+
+    if (isBefore(new Date(), baseEntity!.nextQuizResponseDate)) {
       await this.router.navigateByUrl(PathsEnum.HOME);
       return;
     }
@@ -100,7 +104,7 @@ export class QuestionWindowComponent implements OnInit, OnDestroy {
     };
     const questionResultData: string = this.encryptionService.encrypt(JSON.stringify(questionResult));
 
-    await this.router.navigate([(correctAnswer ? PathsEnum.CORRECT_ANSWER : PathsEnum.WRONG_ANSWER), GameMode.NORMAL.title, questionResultData]);
+    await this.router.navigate([PathsEnum.RESULT, GameMode.NORMAL.title, questionResultData]);
   }
 
   private async startLoadingProgressBar(): Promise<void> {

@@ -21,5 +21,5 @@ import {DirectivesModule} from "../directives/directives.module";
     DirectivesModule
   ]
 })
-export class TimeRushModule {
+export class TimeRushModeModule {
 }

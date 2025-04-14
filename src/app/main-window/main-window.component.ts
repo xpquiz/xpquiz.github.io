@@ -1,12 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
 import {PathsEnum} from "../../shared/model/enums/PathsEnum";
-import {AppStorage} from "../../shared/model/AppStorage";
-import moment, {Duration, Moment} from "moment";
-import {AppStorageService} from "../../shared/service/app-storage.service";
 import {BaseRepository} from "../../shared/database/repository/base.repository";
 import {BaseEntity} from "../../shared/database/entity/base.entity";
-import {differenceInHours, differenceInMinutes, differenceInSeconds, isAfter, isEqual, sub} from "date-fns";
+import {differenceInHours, differenceInMinutes, differenceInSeconds, isAfter, isEqual} from "date-fns";
 import {liveQuery} from "dexie";
 
 @Component({
@@ -28,14 +25,16 @@ export class MainWindowComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
-    this.baseRepository.findMainBase().subscribe({
+    liveQuery(() => this.baseRepository.findMainBase()).subscribe({
       next: (value: BaseEntity | undefined) => {
         this.quizCanBeAnswered = isEqual(new Date(), value!.nextQuizResponseDate) || isAfter(new Date(), value!.nextQuizResponseDate);
 
         if (!this.quizCanBeAnswered)
           this.startCountdown(value!);
       },
-      error: error => {}
+      error: error => {
+        console.error(`Error happened while trying to find game base entity.`, error);
+      }
     })
   }
 

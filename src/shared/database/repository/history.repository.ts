@@ -10,4 +10,7 @@ export class HistoryRepository {
     return database.history.toArray();
   }
 
+  public async save(newQuestionHistory: HistoryEntity): Promise<void> {
+    await database.history.add(newQuestionHistory);
+  }
 }

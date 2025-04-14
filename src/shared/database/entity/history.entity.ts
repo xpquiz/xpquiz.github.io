@@ -1,7 +1,7 @@
 export interface HistoryEntity {
-  id: number,
+  id?: number,
   date: Date,
-  gameMode: string,
+  gameMode: 'normal' | 'trifecta' | 'time-rush',
   won: boolean,
   correctAnswers: number,
   wrongAnswers: number,

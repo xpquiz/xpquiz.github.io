@@ -1,22 +1,11 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {QuestionWindowComponent} from "./question-window/question-window.component";
 import {MainWindowComponent} from "./main-window/main-window.component";
 import {ScoreWindowComponent} from "./score-window/score-window.component";
 import {PathsEnum} from "../shared/model/enums/PathsEnum";
-import {WrongAnswerWindowComponent} from "./wrong-answer-window/wrong-answer-window.component";
 import {AboutWindowComponent} from "./about-window/about-window.component";
 import {GameModeWindowComponent} from "./game-mode-window/game-mode-window.component";
 import {QuestionTrifectaWindowComponent} from "./question-trifecta-window/question-trifecta-window.component";
-import {TimeRushInfoWindowComponent} from "./time-rush/info-window/time-rush-info-window.component";
-import {TimeRushQuestionWindowComponent} from "./time-rush/question-window/time-rush-question-window.component";
-import {
-  WrongQuestionTimeoutWindowComponent
-} from "./time-rush/wrong-question-timeout-window/wrong-question-timeout-window.component";
-import {
-  AllAnswersCorrectWindowComponent
-} from "./time-rush/all-answers-correct-window/all-answers-correct-window.component";
-import {CorrectAnswerWindowComponent} from "./correct-answer-window/correct-answer-window.component";
 
 const routes: Routes = [
     {
@@ -41,42 +30,17 @@ const routes: Routes = [
       component: GameModeWindowComponent,
     },
     {
-      path: PathsEnum.QUIZ_NORMAL,
-      component: QuestionWindowComponent,
+      path: 'normal-mode',
+      loadChildren: () => import('./normal-mode/normal-mode.module').then(m => m.NormalModeModule)
     },
     {
-      path: PathsEnum.QUIZ_TIME_RUSH,
-      children: [
-        {
-          path: '',
-          component: TimeRushInfoWindowComponent
-        },
-        {
-          path: PathsEnum.QUIZ_TIME_RUSH_QUESTION,
-          component: TimeRushQuestionWindowComponent
-        },
-        {
-          path: `${PathsEnum.QUIZ_TIME_RUSH_WRONG_ANSWER_OR_TIMEOUT}/:type/:questions`,
-          component: WrongQuestionTimeoutWindowComponent
-        },
-        {
-          path: `${PathsEnum.QUIZ_TIME_RUSH_ALL_ANSWERS_CORRECT}/:score`,
-          component: AllAnswersCorrectWindowComponent
-        }
-      ]
+      path: 'time-rush-mode',
+      loadChildren: () => import('./time-rush-mode/time-rush-mode.module').then(m => m.TimeRushModeModule)
     },
     {
       path: PathsEnum.QUIZ_TRIFECTA,
       component: QuestionTrifectaWindowComponent,
     },
-    {
-      path: `${PathsEnum.CORRECT_ANSWER}/:mode/:result`,
-      component: CorrectAnswerWindowComponent,
-    },
-    {
-      path: `${PathsEnum.WRONG_ANSWER}/:mode/:result`,
-      component: WrongAnswerWindowComponent
-    }
   ]
 ;
 

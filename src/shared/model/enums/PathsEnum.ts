@@ -3,7 +3,12 @@ export enum PathsEnum {
   SCORES = 'scores',
   ABOUT = 'about',
   GAME_MODE = 'game-mode',
-  QUIZ_NORMAL = 'quiz-normal',
+
+  // Normal-mode paths
+
+  QUIZ = 'quiz',
+  RESULT = 'result',
+
   QUIZ_TRIFECTA = 'quiz-trifecta',
 
   // Time rush routs
