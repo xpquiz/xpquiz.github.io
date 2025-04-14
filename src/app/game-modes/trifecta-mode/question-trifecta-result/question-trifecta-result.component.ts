@@ -1,35 +1,32 @@
 import {Component} from '@angular/core';
+import {PathsEnum} from "@Shared/model/enums/PathsEnum";
 import {ActivatedRoute, Router} from "@angular/router";
-import {BaseRepository} from "../../../shared/database/repository/base.repository";
-import {BaseEntity} from "../../../shared/database/entity/base.entity";
 import {addHours, isBefore} from "date-fns";
-import {EncryptionService} from "../../../shared/service/encryption.service";
-import {TemplateService} from "../../../shared/service/template.service";
-import {PathsEnum} from 'src/shared/model/enums/PathsEnum';
-import {
-  QuestionResultTemplateParams,
-  QuestionResultTrifectaTemplateParams,
-  TemplateEnum
-} from "../../../shared/model/Template";
-import {HistoryEntity} from "../../../shared/database/entity/history.entity";
-import {HistoryRepository} from "../../../shared/database/repository/history.repository";
+import {EncryptionService} from "@Shared/service/encryption.service";
+import {TemplateService} from "@Shared/service/template.service";
+import {BaseRepository} from "@Shared/database/repository/base.repository";
+import {HistoryRepository} from "@Shared/database/repository/history.repository";
+import {BaseEntity} from "@Shared/database/entity/base.entity";
+import {HistoryEntity} from "@Shared/database/entity/history.entity";
+import {QuestionResultTrifectaTemplateParams, TemplateEnum} from "@Shared/model/Template";
 
 @Component({
-  selector: 'app-result-window',
-  templateUrl: './result-window.component.html',
-  styleUrls: ['./result-window.component.sass']
+  selector: 'app-question-trifecta-result',
+  templateUrl: './question-trifecta-result.component.html',
+  styleUrls: ['./question-trifecta-result.component.sass']
 })
-export class ResultWindowComponent {
-
-  protected readonly PathsEnum = PathsEnum;
-
-  public correctAnswer: boolean = false;
+export class QuestionTrifectaResultComponent {
+  public allAnswersCorrect: boolean = false;
   public questionScore: number = 0;
   public clipboardText: string = '';
   public displayClipboardMessage: boolean = false;
   public hoursToPlayAgain: number = 3;
+  public missedAnswers: string[] = [];
 
+  protected readonly PathsEnum = PathsEnum;
+  private wrongAnswers: number = 0;
   private correctAnswerSound: HTMLAudioElement = new Audio('assets/sounds/tada.wav');
+  private correctAnswers: number = 0;
 
   constructor(
     protected readonly router: Router,
@@ -66,10 +63,10 @@ export class ResultWindowComponent {
     const currentDate: Date = new Date();
     const newQuestionHistory: HistoryEntity = {
       date: currentDate,
-      gameMode: 'normal',
-      won: this.correctAnswer,
-      correctAnswers: this.correctAnswer ? 1 : 0,
-      wrongAnswers: this.correctAnswer ? 0 : 1,
+      gameMode: 'trifecta',
+      won: this.allAnswersCorrect,
+      correctAnswers: this.correctAnswers,
+      wrongAnswers: this.wrongAnswers,
       totalScore: this.questionScore,
     };
     const base: BaseEntity | undefined = await this.baseRepository.findMainBase();
@@ -84,10 +81,19 @@ export class ResultWindowComponent {
     const encryptedQuestionResult: string = this.route.snapshot.paramMap.get('result')!;
 
     const decryptedQuestionResult: string = this.encryptionService.decrypt(encryptedQuestionResult);
-    const questionResult: QuestionResultTemplateParams | QuestionResultTrifectaTemplateParams = JSON.parse(decryptedQuestionResult);
-    const questionResultText: string = await this.templateService.render(TemplateEnum.QUESTION_RESULT, questionResult);
+    const questionResult: QuestionResultTrifectaTemplateParams = JSON.parse(decryptedQuestionResult);
+    const questionResultText: string = await this.templateService.render(TemplateEnum.QUESTION_RESULT_TRIFECTA, questionResult);
 
-    this.correctAnswer = questionResult.questionPoints !== null;
+    this.correctAnswers = questionResult.selectedAnswers
+      .filter(question => question.points !== '0').length;
+    this.wrongAnswers = questionResult.selectedAnswers
+      .filter(question => question.points === '0').length;
+    this.missedAnswers = questionResult.selectedAnswers
+      .filter(question => question.points === '0')
+      .map((question, index) => index)
+      .map((index) => questionResult.correctAnswers[index]);
+    this.allAnswersCorrect = this.correctAnswers === 3 && this.wrongAnswers === 0;
+    this.hoursToPlayAgain = this.allAnswersCorrect ? 3 : 24;
     this.questionScore = questionResult.questionPoints!;
     this.clipboardText = questionResultText;
   }

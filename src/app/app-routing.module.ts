@@ -5,7 +5,7 @@ import {ScoreWindowComponent} from "./score-window/score-window.component";
 import {PathsEnum} from "../shared/model/enums/PathsEnum";
 import {AboutWindowComponent} from "./about-window/about-window.component";
 import {GameModeWindowComponent} from "./game-mode-window/game-mode-window.component";
-import {QuestionTrifectaWindowComponent} from "./question-trifecta-window/question-trifecta-window.component";
+import {QuestionTrifectaWindowComponent} from "./trifecta-mode/question-trifecta-window/question-trifecta-window.component";
 
 const routes: Routes = [
     {

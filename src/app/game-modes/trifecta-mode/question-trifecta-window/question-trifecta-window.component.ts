@@ -1,12 +1,14 @@
 import {Component, OnInit} from '@angular/core';
-import {Question} from "../../shared/model/questions/Question";
-import {TriviaService} from "../../shared/service/trivia.service";
 import {Router} from "@angular/router";
-import {EncryptionService} from "../../shared/service/encryption.service";
-import {AppStorageService} from "../../shared/service/app-storage.service";
-import {PathsEnum} from "../../shared/model/enums/PathsEnum";
-import {QuestionResultTrifectaTemplateParams} from "../../shared/model/Template";
-import {GameMode} from "../../shared/model/enums/GameModesEnum";
+import {Question} from "@Shared/model/questions/Question";
+import {TriviaService} from "@Shared/service/trivia.service";
+import {EncryptionService} from "@Shared/service/encryption.service";
+import {BaseEntity} from "@Shared/database/entity/base.entity";
+import {isBefore} from "date-fns";
+import {BaseRepository} from "@Shared/database/repository/base.repository";
+import {PathsEnum} from "@Shared/model/enums/PathsEnum";
+import {QuestionResultTrifectaTemplateParams} from "@Shared/model/Template";
+import {GameMode} from "@Shared/model/enums/GameModesEnum";
 
 @Component({
   selector: 'app-question-trifecta-window',
@@ -35,12 +37,14 @@ export class QuestionTrifectaWindowComponent implements OnInit {
     private readonly triviaService: TriviaService,
     private readonly router: Router,
     private readonly encryptionService: EncryptionService,
-    private readonly appStorageService: AppStorageService
+    private readonly baseRepository: BaseRepository
   ) {
   }
 
   public async ngOnInit(): Promise<void> {
-    if (!this.appStorageService.canQuizBeAnswered()) {
+    const baseEntity: BaseEntity | undefined = await this.baseRepository.findMainBase();
+
+    if (isBefore(new Date(), baseEntity!.nextQuizResponseDate)) {
       await this.router.navigateByUrl(PathsEnum.HOME);
       return;
     }
@@ -155,7 +159,7 @@ export class QuestionTrifectaWindowComponent implements OnInit {
 
     const questionResultTrifectaData: string = this.encryptionService.encrypt(JSON.stringify(questionResultTrifecta));
 
-    await this.router.navigate([(correctAnswers ? PathsEnum.CORRECT_ANSWER : PathsEnum.WRONG_ANSWER), GameMode.TRIFECTA.title, questionResultTrifectaData]);
+    await this.router.navigate([PathsEnum.QUIZ_TRIFECTA_RESULT, GameMode.TRIFECTA.title, questionResultTrifectaData]);
   }
 
   public validateAnswers(): void {

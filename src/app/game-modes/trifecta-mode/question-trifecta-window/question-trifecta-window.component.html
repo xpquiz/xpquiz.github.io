@@ -4,7 +4,7 @@
     <div class="window-body window_question_body">
       <ng-container *ngIf="!this.showQuestions">
         <div class="window_question_body_image">
-          <img ngSrc="assets/icons/question-loading.png"
+          <img ngSrc="../../../assets/icons/question-loading.png"
                alt="" height="40" width="40"/>
         </div>
         <div class="window_question_body_loading">
@@ -51,13 +51,13 @@
     <div class="window-body window_check-answer_body">
       <div class="window_check-answer_body_image">
         <img *ngIf="this.isSelectingAnswers()"
-             ngSrc="assets/icons/trifecta.png"
+             ngSrc="../../../assets/icons/trifecta.png"
              alt="" height="40" width="40"/>
         <img *ngIf="this.selectedAllAnswers() && !this.confirmedAnswers"
-             ngSrc="assets/icons/alert.png"
+             ngSrc="../../../assets/icons/alert.png"
              alt="" height="40" width="40"/>
         <img *ngIf="this.selectedAllAnswers() && this.confirmedAnswers"
-             ngSrc="assets/icons/loading.png"
+             ngSrc="../../../assets/icons/loading.png"
              alt="" height="40" width="40"/>
       </div>
       <div class="window_check-answer_body_question">
