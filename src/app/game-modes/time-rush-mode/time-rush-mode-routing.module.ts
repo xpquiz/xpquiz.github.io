@@ -1,12 +1,12 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from "@angular/router";
-import {PathsEnum} from "../../shared/model/enums/PathsEnum";
 import {TimeRushInfoWindowComponent} from "./info-window/time-rush-info-window.component";
 import {TimeRushQuestionWindowComponent} from "./question-window/time-rush-question-window.component";
 import {
   WrongQuestionTimeoutWindowComponent
 } from "./wrong-question-timeout-window/wrong-question-timeout-window.component";
 import {AllAnswersCorrectWindowComponent} from "./all-answers-correct-window/all-answers-correct-window.component";
+import {PathsEnum} from "@Shared/model/enums/PathsEnum";
 
 const routes: Routes = [
   {

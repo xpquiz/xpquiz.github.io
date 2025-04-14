@@ -1,6 +1,6 @@
 <div class="window">
   <app-window-title-bar iconPath="home.png" title="Welcome!"></app-window-title-bar>
-  <div class="window-body">
+  <div *ngIf="this.screenLoaded" class="window-body">
     <label>Welcome to &nbsp;<b>XPQuiz</b>!</label>
 
     <ng-container *ngIf="!this.quizCanBeAnswered">
@@ -18,6 +18,22 @@
                        (onButtonClick)="this.router.navigateByUrl(PathsEnum.SCORES)"></app-icon-button>
       <app-icon-button iconPath="about.png" title="About"
                        (onButtonClick)="this.router.navigateByUrl(PathsEnum.ABOUT)"></app-icon-button>
+    </div>
+  </div>
+
+  <div *ngIf="!this.screenLoaded" class="window-body">
+    <label>Welcome to &nbsp;<b>XPQuiz</b>!</label>
+    <label>Loading your information...</label>
+    please wait mf
+
+    <div class="window-body_buttons">
+      <app-icon-button iconPath="quiz.png" title="New quiz"
+                       (onButtonClick)="this.router.navigateByUrl(PathsEnum.GAME_MODE)"
+                       [disabled]="true"></app-icon-button>
+      <app-icon-button iconPath="score.png" title="My score"
+                       (onButtonClick)="this.router.navigateByUrl(PathsEnum.SCORES)" [disabled]="true"></app-icon-button>
+      <app-icon-button iconPath="about.png" title="About"
+                       (onButtonClick)="this.router.navigateByUrl(PathsEnum.ABOUT)" [disabled]="true"></app-icon-button>
     </div>
   </div>
 </div>

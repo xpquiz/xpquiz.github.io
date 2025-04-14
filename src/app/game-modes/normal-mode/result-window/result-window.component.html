@@ -1,15 +1,16 @@
 <div class="window">
-  <app-window-title-bar iconPath="critical.png" title="Oh no!"></app-window-title-bar>
+  <app-window-title-bar *ngIf="this.answerCorrect" iconPath="success.png" title="You did it!"></app-window-title-bar>
+  <app-window-title-bar *ngIf="!this.answerCorrect" iconPath="critical.png" title="Oh no!"></app-window-title-bar>
   <div class="window-body">
-    <div *ngIf="this.correctAnswer" class="window-body_title">
+    <div *ngIf="this.answerCorrect" class="window-body_title">
       <label><b>Congratulations!</b></label>
-      <label>You earned {{ this.questionScore }} points!</label>
+      <label>You earned {{ this.questionScore }} point(s)!</label>
       <label>Come back in 3 hours for another question!</label>
     </div>
 
-    <div *ngIf="!this.correctAnswer" class="window-body_title">
-      <label>You got it wrong! The correct answer(s) was/were:</label>
-      <label><b>[{{ this.correctAnswer }}]</b></label>
+    <div *ngIf="!this.answerCorrect" class="window-body_title">
+      <label>You got it wrong! The correct answer was:</label>
+      <label><b>[{{ this.rightAnswer }}]</b></label>
       <label>Come back in {{ this.hoursToPlayAgain }} hours for another question!</label>
     </div>
 

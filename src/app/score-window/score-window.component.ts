@@ -1,11 +1,10 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {PathsEnum} from "../../shared/model/enums/PathsEnum";
-import {AppStorage, WeekScore} from "../../shared/model/AppStorage";
+import {PathsEnum} from "@Shared/model/enums/PathsEnum";
+import {AppStorage, WeekScore} from "@Shared/model/AppStorage";
 import moment from "moment";
-import {TemplateService} from "../../shared/service/template.service";
-import {TemplateEnum, WeekScoreTemplateParams} from "../../shared/model/Template";
-import {AppStorageService} from "../../shared/service/app-storage.service";
+import {TemplateService} from "@Shared/service/template.service";
+import {TemplateEnum, WeekScoreTemplateParams} from "@Shared/model/Template";
 
 @Component({
   selector: 'app-score-window',
@@ -24,7 +23,6 @@ export class ScoreWindowComponent implements OnInit {
   constructor(
     protected readonly router: Router,
     private readonly templateService: TemplateService,
-    private readonly appStorageService: AppStorageService
   ) {
   }
 
@@ -54,22 +52,22 @@ export class ScoreWindowComponent implements OnInit {
   }
 
   private retrieveScore(): void {
-    const currentYear: number = moment().year();
-    const currentWeek: number = moment().isoWeek();
-
-    const appStorage: AppStorage = this.appStorageService.retrieveAppStorage();
-    const currentYearScore: Map<number, WeekScore> = this.appStorageService.retrieveScoreForYear(currentYear);
-    const currentWeekScore: WeekScore = this.appStorageService.retrieveScoreForYearAndWeek(currentYear, currentWeek);
-
-    const previousScoresMap: Map<number, WeekScore> = structuredClone(currentYearScore);
-
-    previousScoresMap.delete(currentWeek);
-
-    this.yearScoreMap = appStorage.yearScoreMap;
-    this.currentWeekScore = currentWeekScore;
-    this.previousScores = previousScoresMap;
-    this.currentYear = currentYear;
-    this.currentWeek = currentWeek;
+    // const currentYear: number = moment().year();
+    // const currentWeek: number = moment().isoWeek();
+    //
+    // const appStorage: AppStorage = this.appStorageService.retrieveAppStorage();
+    // const currentYearScore: Map<number, WeekScore> = this.appStorageService.retrieveScoreForYear(currentYear);
+    // const currentWeekScore: WeekScore = this.appStorageService.retrieveScoreForYearAndWeek(currentYear, currentWeek);
+    //
+    // const previousScoresMap: Map<number, WeekScore> = structuredClone(currentYearScore);
+    //
+    // previousScoresMap.delete(currentWeek);
+    //
+    // this.yearScoreMap = appStorage.yearScoreMap;
+    // this.currentWeekScore = currentWeekScore;
+    // this.previousScores = previousScoresMap;
+    // this.currentYear = currentYear;
+    // this.currentWeek = currentWeek;
   }
 
   protected readonly PathsEnum = PathsEnum;

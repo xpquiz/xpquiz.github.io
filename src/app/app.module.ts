@@ -9,13 +9,12 @@ import {WindowTitleBarComponent} from './common/window-title-bar/window-title-ba
 import {ScoreWindowComponent} from './score-window/score-window.component';
 import {AboutWindowComponent} from './about-window/about-window.component';
 import {GameModeWindowComponent} from './game-mode-window/game-mode-window.component';
-import {QuestionTrifectaWindowComponent} from './trifecta-mode/question-trifecta-window/question-trifecta-window.component';
 import {ReactiveFormsModule} from "@angular/forms";
-import {TimeRushInfoWindowComponent} from './time-rush-mode/info-window/time-rush-info-window.component';
-import {TimeRushModeModule} from "./time-rush-mode/time-rush-mode.module";
 import {CommonComponentsModule} from "./common/common-components.module";
 import {DirectivesModule} from "./directives/directives.module";
-import {NormalModeModule} from "./normal-mode/normal-mode.module";
+import {TimeRushModeRoutingModule} from "./game-modes/time-rush-mode/time-rush-mode-routing.module";
+import {NormalModeRoutingModule} from "./game-modes/normal-mode/normal-mode-routing.module";
+import {TrifectaModeRoutingModule} from "./game-modes/trifecta-mode/trifecta-mode-routing.module";
 
 @NgModule({
   declarations: [
@@ -24,17 +23,16 @@ import {NormalModeModule} from "./normal-mode/normal-mode.module";
     ScoreWindowComponent,
     AboutWindowComponent,
     GameModeWindowComponent,
-    QuestionTrifectaWindowComponent,
-    TimeRushInfoWindowComponent
   ],
   imports: [
+    NormalModeRoutingModule,
+    TrifectaModeRoutingModule,
+    TimeRushModeRoutingModule,
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
     NgOptimizedImage,
     ReactiveFormsModule,
-    TimeRushModeModule,
-    NormalModeModule,
     CommonComponentsModule,
     DirectivesModule
   ],

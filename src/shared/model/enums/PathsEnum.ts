@@ -5,7 +5,6 @@ export enum PathsEnum {
   GAME_MODE = 'game-mode',
 
   // Normal mode paths
-  QUIZ = 'quiz',
   RESULT = 'result',
 
   // Trifecta mode paths

@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import {Question} from "../../../shared/model/questions/Question";
-import {AppStorageService} from "../../../shared/service/app-storage.service";
-import {TriviaService} from "../../../shared/service/trivia.service";
+import {Question} from "@Shared/model/questions/Question";
+import {TriviaService} from "@Shared/service/trivia.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {PathsEnum} from "../../../shared/model/enums/PathsEnum";
+import {PathsEnum} from "@Shared/model/enums/PathsEnum";
+import {BaseEntity} from "@Shared/database/entity/base.entity";
+import {isBefore} from "date-fns";
+import {BaseRepository} from "@Shared/database/repository/base.repository";
 
 @Component({
   selector: 'app-question-window',
@@ -30,16 +32,20 @@ export class TimeRushQuestionWindowComponent implements OnInit {
   private readonly correctQuestionSound: HTMLAudioElement = new Audio('assets/sounds/logoff.wav');
 
   constructor(
-    private readonly appStorageService: AppStorageService,
     private readonly triviaService: TriviaService,
     protected readonly router: Router,
-    private readonly route: ActivatedRoute
+    private readonly route: ActivatedRoute,
+    private readonly baseRepository: BaseRepository
   ) {
   }
 
   public async ngOnInit(): Promise<void> {
-    if (!this.appStorageService.canQuizBeAnswered())
+    const baseEntity: BaseEntity | undefined = await this.baseRepository.findMainBase();
+
+    if (isBefore(new Date(), baseEntity!.nextQuizResponseDate)) {
       await this.router.navigateByUrl(PathsEnum.HOME);
+      return;
+    }
 
     this.loadProgressBar()
 
@@ -56,7 +62,7 @@ export class TimeRushQuestionWindowComponent implements OnInit {
     if (answer === this.currentQuestion!.correctAnswer) {
       this.totalScore += this.currentQuestion!.points * 5;
 
-      if(this.questions.length === 0) {
+      if (this.questions.length === 0) {
         await this.router.navigate([`../${PathsEnum.QUIZ_TIME_RUSH_ALL_ANSWERS_CORRECT}`, this.totalScore], {relativeTo: this.route});
       } else {
         await this.correctQuestionSound.play();

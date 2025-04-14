@@ -1,9 +1,9 @@
+import { PathsEnum } from '@Shared/model/enums/PathsEnum';
 import {Component, OnInit} from '@angular/core';
-import {PathsEnum} from "../../../shared/model/enums/PathsEnum";
-import {AppStorageService} from "../../../shared/service/app-storage.service";
 import {ActivatedRoute, Router} from "@angular/router";
-import {Question} from "../../../shared/model/questions/Question";
-import {TriviaService} from "../../../shared/service/trivia.service";
+import {BaseEntity} from "@Shared/database/entity/base.entity";
+import {isBefore} from "date-fns";
+import {BaseRepository} from "@Shared/database/repository/base.repository";
 
 @Component({
   selector: 'app-info-window',
@@ -15,15 +15,19 @@ export class TimeRushInfoWindowComponent implements OnInit {
   protected readonly PathsEnum = PathsEnum;
 
   constructor(
-    private readonly appStorageService: AppStorageService,
     protected readonly route: ActivatedRoute,
-    protected readonly router: Router
+    protected readonly router: Router,
+    private readonly baseRepository: BaseRepository
   ) {
   }
 
   public async ngOnInit(): Promise<void> {
-    if (!this.appStorageService.canQuizBeAnswered())
+    const baseEntity: BaseEntity | undefined = await this.baseRepository.findMainBase();
+
+    if (isBefore(new Date(), baseEntity!.nextQuizResponseDate)) {
       await this.router.navigateByUrl(PathsEnum.HOME);
+      return;
+    }
   }
 
 }

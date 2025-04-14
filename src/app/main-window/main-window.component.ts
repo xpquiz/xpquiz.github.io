@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {Router} from "@angular/router";
-import {PathsEnum} from "../../shared/model/enums/PathsEnum";
-import {BaseRepository} from "../../shared/database/repository/base.repository";
-import {BaseEntity} from "../../shared/database/entity/base.entity";
-import {differenceInHours, differenceInMinutes, differenceInSeconds, isAfter, isEqual} from "date-fns";
+import {PathsEnum} from "@Shared/model/enums/PathsEnum";
+import {BaseRepository} from "@Shared/database/repository/base.repository";
+import {BaseEntity} from "@Shared/database/entity/base.entity";
+import {Duration, formatDuration, intervalToDuration, isAfter, isEqual} from "date-fns";
 import {liveQuery} from "dexie";
 
 @Component({
@@ -15,6 +15,7 @@ export class MainWindowComponent implements OnInit {
 
   public quizCanBeAnswered: boolean = true;
   public remainingTime: string = '';
+  public screenLoaded: boolean = false;
 
   protected readonly PathsEnum = PathsEnum;
 
@@ -25,12 +26,16 @@ export class MainWindowComponent implements OnInit {
   }
 
   public async ngOnInit(): Promise<void> {
+    await new Promise(f => setTimeout(f, 1000));
+
     liveQuery(() => this.baseRepository.findMainBase()).subscribe({
       next: (value: BaseEntity | undefined) => {
         this.quizCanBeAnswered = isEqual(new Date(), value!.nextQuizResponseDate) || isAfter(new Date(), value!.nextQuizResponseDate);
 
         if (!this.quizCanBeAnswered)
           this.startCountdown(value!);
+
+        this.screenLoaded = true;
       },
       error: error => {
         console.error(`Error happened while trying to find game base entity.`, error);
@@ -47,11 +52,17 @@ export class MainWindowComponent implements OnInit {
         break;
       }
 
-      const hours: number = differenceInHours(base.nextQuizResponseDate, currentDate);
-      const minutes: number = differenceInMinutes(base.nextQuizResponseDate, currentDate);
-      const seconds: number = differenceInSeconds(base.nextQuizResponseDate, currentDate);
+      const timeToNextQuestion: Duration = intervalToDuration({
+        start: currentDate,
+        end: base.nextQuizResponseDate
+      });
 
-      this.remainingTime = `${hours} hours, ${minutes} minutes, ${seconds} seconds`
+      this.remainingTime = formatDuration(timeToNextQuestion,
+        {
+          format: ['hours', 'minutes', 'seconds'],
+          delimiter: ', '
+        },
+      );
 
       await new Promise(f => setTimeout(f, 1000));
     }

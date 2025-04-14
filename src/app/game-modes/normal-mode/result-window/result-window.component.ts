@@ -17,13 +17,16 @@ import {QuestionResultTemplateParams, TemplateEnum} from "@Shared/model/Template
 })
 export class ResultWindowComponent {
 
-  public correctAnswer: boolean = false;
+  public answerCorrect: boolean = false;
+  public rightAnswer: string = '';
   public questionScore: number = 0;
   public clipboardText: string = '';
   public displayClipboardMessage: boolean = false;
   public hoursToPlayAgain: number = 3;
   protected readonly PathsEnum = PathsEnum;
+
   private correctAnswerSound: HTMLAudioElement = new Audio('assets/sounds/tada.wav');
+  private wrongAnswerSound: HTMLAudioElement = new Audio('assets/sounds/critical_stop.wav');
 
   constructor(
     protected readonly router: Router,
@@ -45,7 +48,7 @@ export class ResultWindowComponent {
 
     await this.retrieveRouteParams();
     await this.saveCurrentScore();
-    await this.correctAnswerSound.play();
+    this.answerCorrect ? await this.correctAnswerSound.play() : await this.wrongAnswerSound.play();
   }
 
   public async showClipboardMessage(): Promise<void> {
@@ -61,9 +64,9 @@ export class ResultWindowComponent {
     const newQuestionHistory: HistoryEntity = {
       date: currentDate,
       gameMode: 'normal',
-      won: this.correctAnswer,
-      correctAnswers: this.correctAnswer ? 1 : 0,
-      wrongAnswers: this.correctAnswer ? 0 : 1,
+      won: this.answerCorrect,
+      correctAnswers: this.answerCorrect ? 1 : 0,
+      wrongAnswers: this.answerCorrect ? 0 : 1,
       totalScore: this.questionScore,
     };
     const base: BaseEntity | undefined = await this.baseRepository.findMainBase();
@@ -81,7 +84,9 @@ export class ResultWindowComponent {
     const questionResult: QuestionResultTemplateParams = JSON.parse(decryptedQuestionResult);
     const questionResultText: string = await this.templateService.render(TemplateEnum.QUESTION_RESULT, questionResult);
 
-    this.correctAnswer = questionResult.questionPoints !== null;
+
+    this.answerCorrect = questionResult.questionPoints !== null;
+    this.rightAnswer = this.answerCorrect ? '' : questionResult.rightAnswer;
     this.questionScore = questionResult.questionPoints!;
     this.clipboardText = questionResultText;
   }

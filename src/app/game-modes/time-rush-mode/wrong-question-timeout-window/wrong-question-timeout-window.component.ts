@@ -1,9 +1,13 @@
 import {Component, OnInit} from '@angular/core';
-import {PathsEnum} from "../../../shared/model/enums/PathsEnum";
+import {PathsEnum} from "@Shared/model/enums/PathsEnum";
 import {ActivatedRoute, Router} from "@angular/router";
-import {TemplateService} from "../../../shared/service/template.service";
-import {AppStorageService} from "../../../shared/service/app-storage.service";
-import {QuestionResultTimeRushTemplateParams, TemplateEnum} from "../../../shared/model/Template";
+import {TemplateService} from "@Shared/service/template.service";
+import {QuestionResultTimeRushTemplateParams, TemplateEnum} from "@Shared/model/Template";
+import {BaseEntity} from "@Shared/database/entity/base.entity";
+import {addHours, isBefore} from "date-fns";
+import {BaseRepository} from "@Shared/database/repository/base.repository";
+import {HistoryEntity} from "@Shared/database/entity/history.entity";
+import {HistoryRepository} from "@Shared/database/repository/history.repository";
 
 @Component({
   selector: 'app-wrong-question-timeout-window',
@@ -16,29 +20,30 @@ export class WrongQuestionTimeoutWindowComponent implements OnInit {
   public displayClipboardMessage: boolean = false;
   public hoursToPlayAgain: number = 72;
   public correctAnswers: number = 0;
-
+  public type: string = '';
   protected readonly PathsEnum = PathsEnum;
   private wrongAnswerSound: HTMLAudioElement = new Audio('assets/sounds/critical_stop.wav');
-  public type: string = '';
 
   constructor(
     protected readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly templateService: TemplateService,
-    private readonly appStorageService: AppStorageService
+    private readonly baseRepository: BaseRepository,
+    private readonly historyRepository: HistoryRepository
   ) {
   }
 
   public async ngOnInit(): Promise<void> {
-    await this.retrieveRouteParams();
+    const baseEntity: BaseEntity | undefined = await this.baseRepository.findMainBase();
 
-    if (!this.appStorageService.canQuizBeAnswered()) {
+    if (isBefore(new Date(), baseEntity!.nextQuizResponseDate)) {
       await this.router.navigateByUrl(PathsEnum.HOME);
       return;
     }
 
+    await this.retrieveRouteParams();
+    await this.saveCurrentScore();
     await this.wrongAnswerSound.play();
-    this.saveCurrentScore();
   }
 
   public async showClipboardMessage(): Promise<void> {
@@ -49,8 +54,22 @@ export class WrongQuestionTimeoutWindowComponent implements OnInit {
     this.displayClipboardMessage = false;
   }
 
-  private saveCurrentScore(): void {
-    this.appStorageService.saveAnswer(false, undefined, this.hoursToPlayAgain);
+  private async saveCurrentScore(): Promise<void> {
+    const currentDate: Date = new Date();
+    const newQuestionHistory: HistoryEntity = {
+      date: currentDate,
+      gameMode: 'time-rush',
+      won: true,
+      correctAnswers: this.correctAnswers,
+      wrongAnswers: 5 - this.correctAnswers,
+      totalScore: 0,
+    };
+    const base: BaseEntity | undefined = await this.baseRepository.findMainBase();
+
+    base!.nextQuizResponseDate = addHours(currentDate, this.hoursToPlayAgain);
+
+    await this.historyRepository.save(newQuestionHistory);
+    await this.baseRepository.updateBase(base);
   }
 
   private async retrieveRouteParams(): Promise<void> {

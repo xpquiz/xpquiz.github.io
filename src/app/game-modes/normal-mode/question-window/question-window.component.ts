@@ -1,14 +1,14 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Subscription} from "rxjs";
-import {Question} from "../../../shared/model/questions/Question";
-import {TriviaService} from "../../../shared/service/trivia.service";
-import {EncryptionService} from "../../../shared/service/encryption.service";
-import {PathsEnum} from "../../../shared/model/enums/PathsEnum";
-import {QuestionResultTemplateParams} from "../../../shared/model/Template";
-import {GameMode} from "../../../shared/model/enums/GameModesEnum";
-import {BaseRepository} from "../../../shared/database/repository/base.repository";
-import {BaseEntity} from "../../../shared/database/entity/base.entity";
+import {Question} from "@Shared/model/questions/Question";
+import {TriviaService} from "@Shared/service/trivia.service";
+import {EncryptionService} from "@Shared/service/encryption.service";
+import {PathsEnum} from "@Shared/model/enums/PathsEnum";
+import {QuestionResultTemplateParams} from "@Shared/model/Template";
+import {GameMode} from "@Shared/model/enums/GameModesEnum";
+import {BaseRepository} from "@Shared/database/repository/base.repository";
+import {BaseEntity} from "@Shared/database/entity/base.entity";
 import {isBefore} from "date-fns";
 
 @Component({
@@ -19,16 +19,13 @@ import {isBefore} from "date-fns";
 export class QuestionWindowComponent implements OnInit, OnDestroy {
 
   public question: Question | undefined;
-
-  private questionLoaded: boolean = false;
   public showQuestion: boolean = false;
   public selectedAnswer: string = '';
   public confirmedAnswer: boolean = false;
-
   public progressBarMax: number = 100;
   public answerProgressBar: number = 0;
   public loadingProgressBar: number = 0;
-
+  private questionLoaded: boolean = false;
   private questionReadySound: HTMLAudioElement = new Audio('assets/sounds/logon.wav');
   private confirmAnswerSound: HTMLAudioElement = new Audio('assets/sounds/exclamation.wav');
   private getQuizzesSubscription: Subscription | undefined;
@@ -36,6 +33,7 @@ export class QuestionWindowComponent implements OnInit, OnDestroy {
   constructor(
     private readonly triviaService: TriviaService,
     private readonly router: Router,
+    private readonly route: ActivatedRoute,
     private readonly encryptionService: EncryptionService,
     private readonly baseRepository: BaseRepository,
   ) {
@@ -68,12 +66,6 @@ export class QuestionWindowComponent implements OnInit, OnDestroy {
     return selectedAnswer ? `> ${answer} <` : answer;
   }
 
-  private async loadQuestion(): Promise<void> {
-    const questions: Question[] = await this.triviaService.fetchQuestion(1);
-    this.question = questions[0];
-    this.questionLoaded = true;
-  }
-
   public async confirmAnswer(): Promise<void> {
     this.confirmedAnswer = true;
 
@@ -93,6 +85,12 @@ export class QuestionWindowComponent implements OnInit, OnDestroy {
     this.selectedAnswer = '';
   }
 
+  private async loadQuestion(): Promise<void> {
+    const questions: Question[] = await this.triviaService.fetchQuestion(1);
+    this.question = questions[0];
+    this.questionLoaded = true;
+  }
+
   private async redirectFromAnswer(): Promise<void> {
     const correctAnswer: boolean = this.selectedAnswer === this.question!.correctAnswer;
     const questionResult: QuestionResultTemplateParams = {
@@ -104,7 +102,7 @@ export class QuestionWindowComponent implements OnInit, OnDestroy {
     };
     const questionResultData: string = this.encryptionService.encrypt(JSON.stringify(questionResult));
 
-    await this.router.navigate([PathsEnum.RESULT, GameMode.NORMAL.title, questionResultData]);
+    await this.router.navigate([PathsEnum.RESULT, questionResultData], {relativeTo: this.route});
   }
 
   private async startLoadingProgressBar(): Promise<void> {

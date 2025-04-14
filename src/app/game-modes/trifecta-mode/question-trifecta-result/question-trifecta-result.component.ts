@@ -26,6 +26,7 @@ export class QuestionTrifectaResultComponent {
   protected readonly PathsEnum = PathsEnum;
   private wrongAnswers: number = 0;
   private correctAnswerSound: HTMLAudioElement = new Audio('assets/sounds/tada.wav');
+  private wrongAnswerSound: HTMLAudioElement = new Audio('assets/sounds/critical_stop.wav');
   private correctAnswers: number = 0;
 
   constructor(
@@ -48,7 +49,7 @@ export class QuestionTrifectaResultComponent {
 
     await this.retrieveRouteParams();
     await this.saveCurrentScore();
-    await this.correctAnswerSound.play();
+    this.allAnswersCorrect ? await this.correctAnswerSound.play() : await this.wrongAnswerSound.play();
   }
 
   public async showClipboardMessage(): Promise<void> {

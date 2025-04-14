@@ -1,10 +1,13 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
-import {TemplateService} from "../../../shared/service/template.service";
-import {AppStorageService} from "../../../shared/service/app-storage.service";
-import {QuestionResultTimeRushTemplateParams, TemplateEnum} from "../../../shared/model/Template";
-import {PathsEnum} from 'src/shared/model/enums/PathsEnum';
-import {parse} from "mustache";
+import {HistoryEntity} from "@Shared/database/entity/history.entity";
+import {BaseEntity} from "@Shared/database/entity/base.entity";
+import {addHours, isBefore} from "date-fns";
+import {BaseRepository} from "@Shared/database/repository/base.repository";
+import {HistoryRepository} from "@Shared/database/repository/history.repository";
+import {TemplateService} from "@Shared/service/template.service";
+import {QuestionResultTimeRushTemplateParams, TemplateEnum} from "@Shared/model/Template";
+import {PathsEnum} from '@Shared/model/enums/PathsEnum';
 
 @Component({
   selector: 'app-all-answers-correct-window',
@@ -13,32 +16,34 @@ import {parse} from "mustache";
 })
 export class AllAnswersCorrectWindowComponent {
 
-  protected readonly PathsEnum = PathsEnum;
-
   public totalScore: number = 0;
   public clipboardText: string = '';
   public displayClipboardMessage: boolean = false;
+  public hoursToPlayAgain: number = 3;
 
+  protected readonly PathsEnum = PathsEnum;
   private correctAnswerSound: HTMLAudioElement = new Audio('assets/sounds/tada.wav');
 
   constructor(
     protected readonly router: Router,
     private readonly route: ActivatedRoute,
     private readonly templateService: TemplateService,
-    private readonly appStorageService: AppStorageService
+    private readonly baseRepository: BaseRepository,
+    private readonly historyRepository: HistoryRepository
   ) {
   }
 
   public async ngOnInit(): Promise<void> {
-    await this.retrieveRouteParams();
+    const baseEntity: BaseEntity | undefined = await this.baseRepository.findMainBase();
 
-    if (!this.appStorageService.canQuizBeAnswered()) {
+    if (isBefore(new Date(), baseEntity!.nextQuizResponseDate)) {
       await this.router.navigateByUrl(PathsEnum.HOME);
       return;
     }
 
+    await this.retrieveRouteParams();
+    await this.saveCurrentScore();
     await this.correctAnswerSound.play();
-    this.saveCurrentScore();
   }
 
   public async showClipboardMessage(): Promise<void> {
@@ -49,8 +54,22 @@ export class AllAnswersCorrectWindowComponent {
     this.displayClipboardMessage = false;
   }
 
-  private saveCurrentScore(): void {
-    this.appStorageService.saveAnswer(true, this.totalScore, 3);
+  private async saveCurrentScore(): Promise<void> {
+    const currentDate: Date = new Date();
+    const newQuestionHistory: HistoryEntity = {
+      date: currentDate,
+      gameMode: 'time-rush',
+      won: true,
+      correctAnswers: 5,
+      wrongAnswers: 0,
+      totalScore: this.totalScore,
+    };
+    const base: BaseEntity | undefined = await this.baseRepository.findMainBase();
+
+    base!.nextQuizResponseDate = addHours(currentDate, this.hoursToPlayAgain);
+
+    await this.historyRepository.save(newQuestionHistory);
+    await this.baseRepository.updateBase(base);
   }
 
   private async retrieveRouteParams(): Promise<void> {
