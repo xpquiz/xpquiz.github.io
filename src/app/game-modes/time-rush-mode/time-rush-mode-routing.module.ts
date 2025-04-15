@@ -10,20 +10,26 @@ import {PathsEnum} from "@Shared/model/enums/PathsEnum";
 
 const routes: Routes = [
   {
-    path: '',
-    component: TimeRushInfoWindowComponent
-  },
-  {
-    path: PathsEnum.QUIZ_TIME_RUSH_QUESTION,
-    component: TimeRushQuestionWindowComponent
-  },
-  {
-    path: `${PathsEnum.QUIZ_TIME_RUSH_WRONG_ANSWER_OR_TIMEOUT}/:type/:questions`,
-    component: WrongQuestionTimeoutWindowComponent
-  },
-  {
-    path: `${PathsEnum.QUIZ_TIME_RUSH_ALL_ANSWERS_CORRECT}/:score`,
-    component: AllAnswersCorrectWindowComponent
+    path: 'time-rush-mode',
+    children: [
+
+      {
+        path: '',
+        component: TimeRushInfoWindowComponent
+      },
+      {
+        path: PathsEnum.QUIZ_TIME_RUSH_QUESTION,
+        component: TimeRushQuestionWindowComponent
+      },
+      {
+        path: `${PathsEnum.QUIZ_TIME_RUSH_WRONG_ANSWER_OR_TIMEOUT}/:type/:questions`,
+        component: WrongQuestionTimeoutWindowComponent
+      },
+      {
+        path: `${PathsEnum.QUIZ_TIME_RUSH_ALL_ANSWERS_CORRECT}/:score`,
+        component: AllAnswersCorrectWindowComponent
+      }
+    ]
   }
 ]
 

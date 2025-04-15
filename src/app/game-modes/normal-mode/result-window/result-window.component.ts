@@ -84,7 +84,6 @@ export class ResultWindowComponent {
     const questionResult: QuestionResultTemplateParams = JSON.parse(decryptedQuestionResult);
     const questionResultText: string = await this.templateService.render(TemplateEnum.QUESTION_RESULT, questionResult);
 
-
     this.answerCorrect = questionResult.questionPoints !== null;
     this.rightAnswer = this.answerCorrect ? '' : questionResult.rightAnswer;
     this.questionScore = questionResult.questionPoints!;

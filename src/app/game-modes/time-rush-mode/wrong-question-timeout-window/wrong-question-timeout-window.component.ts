@@ -62,7 +62,7 @@ export class WrongQuestionTimeoutWindowComponent implements OnInit {
       won: true,
       correctAnswers: this.correctAnswers,
       wrongAnswers: 5 - this.correctAnswers,
-      totalScore: 0,
+      totalScore: null,
     };
     const base: BaseEntity | undefined = await this.baseRepository.findMainBase();
 

@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {Question} from "@Shared/model/questions/Question";
 import {TriviaService} from "@Shared/service/trivia.service";
 import {EncryptionService} from "@Shared/service/encryption.service";
@@ -8,7 +8,6 @@ import {isBefore} from "date-fns";
 import {BaseRepository} from "@Shared/database/repository/base.repository";
 import {PathsEnum} from "@Shared/model/enums/PathsEnum";
 import {QuestionResultTrifectaTemplateParams} from "@Shared/model/Template";
-import {GameMode} from "@Shared/model/enums/GameModesEnum";
 
 @Component({
   selector: 'app-question-trifecta-window',
@@ -22,20 +21,18 @@ export class QuestionTrifectaWindowComponent implements OnInit {
   ];
   public showQuestions: boolean = false;
   public confirmedAnswers: boolean = false;
-
-  private questionLoaded: boolean = false;
-  private questionAmount: number = 3;
-
   public loadingProgressBar: number = 0;
   public answerProgressBar: number = 0;
   public progressBarMax: number = 100;
-
+  private questionLoaded: boolean = false;
+  private questionAmount: number = 3;
   private questionReadySound: HTMLAudioElement = new Audio('assets/sounds/logon.wav');
   private confirmAnswerSound: HTMLAudioElement = new Audio('assets/sounds/exclamation.wav');
 
   constructor(
     private readonly triviaService: TriviaService,
     private readonly router: Router,
+    private readonly route: ActivatedRoute,
     private readonly encryptionService: EncryptionService,
     private readonly baseRepository: BaseRepository
   ) {
@@ -53,38 +50,8 @@ export class QuestionTrifectaWindowComponent implements OnInit {
     await this.loadQuestions();
   }
 
-  private async loadQuestions(): Promise<void> {
-    this.questions = await this.triviaService.fetchQuestion(this.questionAmount);
-    this.questionLoaded = true;
-  }
-
-  private async startLoadingProgressBar(): Promise<void> {
-    let revertProgressBar: boolean = false;
-
-    while (true) {
-      if (this.loadingProgressBar === 100) {
-        revertProgressBar = true;
-
-        if (this.questionLoaded) {
-          this.showQuestions = true;
-          await this.questionReadySound.play();
-          break;
-        }
-      } else if (this.loadingProgressBar === 0) {
-        revertProgressBar = false;
-      }
-
-      this.loadingProgressBar += revertProgressBar ? -10 : 10;
-
-      await new Promise(f => setTimeout(f, 300));
-    }
-  }
-
   public async onClickAnswer(index: number, answer: string): Promise<void> {
-    if (this.selectedAnswers[index] !== undefined)
-      this.selectedAnswers[index] = undefined;
-    else
-      this.selectedAnswers[index] = answer;
+    this.selectedAnswers[index] = this.selectedAnswers[index] !== undefined ? undefined : answer;
 
     if (this.selectedAllAnswers())
       await this.confirmAnswerSound.play();
@@ -128,6 +95,49 @@ export class QuestionTrifectaWindowComponent implements OnInit {
     await this.redirectFromAnswer();
   }
 
+  public validateAnswers(): void {
+    this.selectedAnswers = [];
+  }
+
+  public isSelectingAnswers(): boolean {
+    return this.selectedAnswers[0] === undefined ||
+      this.selectedAnswers[1] === undefined ||
+      this.selectedAnswers[2] === undefined;
+  }
+
+  public selectedAllAnswers(): boolean {
+    return this.selectedAnswers[0] !== undefined &&
+      this.selectedAnswers[1] !== undefined &&
+      this.selectedAnswers[2] !== undefined;
+  }
+
+  private async loadQuestions(): Promise<void> {
+    this.questions = await this.triviaService.fetchQuestion(this.questionAmount);
+    this.questionLoaded = true;
+  }
+
+  private async startLoadingProgressBar(): Promise<void> {
+    let revertProgressBar: boolean = false;
+
+    while (true) {
+      if (this.loadingProgressBar === 100) {
+        revertProgressBar = true;
+
+        if (this.questionLoaded) {
+          this.showQuestions = true;
+          await this.questionReadySound.play();
+          break;
+        }
+      } else if (this.loadingProgressBar === 0) {
+        revertProgressBar = false;
+      }
+
+      this.loadingProgressBar += revertProgressBar ? -10 : 10;
+
+      await new Promise(f => setTimeout(f, 300));
+    }
+  }
+
   private async redirectFromAnswer(): Promise<void> {
     let correctAnswers: boolean = true;
     let totalPoints: number = 0;
@@ -154,27 +164,11 @@ export class QuestionTrifectaWindowComponent implements OnInit {
           points: correctAnswer ? `(${question.points} * 3) = ${question.points * 3}` : '0'
         }
       }),
-      questionPoints: correctAnswers ? totalPoints : 0,
+      questionPoints: correctAnswers ? totalPoints : null,
     };
 
     const questionResultTrifectaData: string = this.encryptionService.encrypt(JSON.stringify(questionResultTrifecta));
 
-    await this.router.navigate([PathsEnum.QUIZ_TRIFECTA_RESULT, GameMode.TRIFECTA.title, questionResultTrifectaData]);
-  }
-
-  public validateAnswers(): void {
-    this.selectedAnswers = [];
-  }
-
-  public isSelectingAnswers(): boolean {
-    return this.selectedAnswers[0] === undefined ||
-      this.selectedAnswers[1] === undefined ||
-      this.selectedAnswers[2] === undefined;
-  }
-
-  public selectedAllAnswers(): boolean {
-    return this.selectedAnswers[0] !== undefined &&
-      this.selectedAnswers[1] !== undefined &&
-      this.selectedAnswers[2] !== undefined;
+    await this.router.navigate([PathsEnum.QUIZ_TRIFECTA_RESULT, questionResultTrifectaData], { relativeTo: this.route });
   }
 }
