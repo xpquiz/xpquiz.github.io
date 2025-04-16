@@ -4,7 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {TemplateService} from "@Shared/service/template.service";
 import {QuestionResultTimeRushTemplateParams, TemplateEnum} from "@Shared/model/Template";
 import {BaseEntity} from "@Shared/database/entity/base.entity";
-import {addHours, isBefore} from "date-fns";
+import {addHours, addSeconds, isBefore} from "date-fns";
 import {BaseRepository} from "@Shared/database/repository/base.repository";
 import {HistoryEntity} from "@Shared/database/entity/history.entity";
 import {HistoryRepository} from "@Shared/database/repository/history.repository";
@@ -59,14 +59,14 @@ export class WrongQuestionTimeoutWindowComponent implements OnInit {
     const newQuestionHistory: HistoryEntity = {
       date: currentDate,
       gameMode: 'time-rush',
-      won: true,
+      won: false,
       correctAnswers: this.correctAnswers,
       wrongAnswers: 5 - this.correctAnswers,
       totalScore: null,
     };
     const base: BaseEntity | undefined = await this.baseRepository.findMainBase();
 
-    base!.nextQuizResponseDate = addHours(currentDate, this.hoursToPlayAgain);
+    base!.nextQuizResponseDate = addSeconds(currentDate, 30);
 
     await this.historyRepository.save(newQuestionHistory);
     await this.baseRepository.updateBase(base);

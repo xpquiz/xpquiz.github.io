@@ -1,0 +1,34 @@
+<ul class="tree-view" *ngIf="this.allTimeScoreInfo !== undefined">
+  <li>
+    <details open>
+      <summary>Wins/Losses</summary>
+      <ul>
+        <li>Total games played: {{ this.allTimeScoreInfo.totalGamesPlayed }}</li>
+        <li>Total wins: {{ this.allTimeScoreInfo.totalWins }}</li>
+        <li>Total losses: {{ this.allTimeScoreInfo.totalLosses }}</li>
+      </ul>
+    </details>
+  </li>
+  <li>
+    <details open>
+      <summary>Answers</summary>
+      <ul>
+        <li>Correct answers: {{ this.allTimeScoreInfo.correctAnswers }}</li>
+        <li>Wrong answers: {{ this.allTimeScoreInfo.wrongAnswers }}</li>
+      </ul>
+    </details>
+  </li>
+  <li>
+    <details open>
+      <summary>General info</summary>
+      <ul>
+        <li>First game played: {{ this.allTimeScoreInfo.firstGamePlayed | date: 'dd/MM/yyyy - HH:mm' }}</li>
+        <li>Last game played: {{ this.allTimeScoreInfo.lastGamePlayed | date: 'dd/MM/yyyy - HH:mm' }}</li>
+        <li>First victory: {{ this.allTimeScoreInfo.firstVictory  | date: 'dd/MM/yyyy - HH:mm'}}</li>
+        <li>Last victory: {{ this.allTimeScoreInfo.lastVictory | date: 'dd/MM/yyyy - HH:mm'}}</li>
+        <li>First defeat: {{ this.allTimeScoreInfo.firstDefeat | date: 'dd/MM/yyyy - HH:mm'}}</li>
+        <li>Last defeat: {{ this.allTimeScoreInfo.lastDefeat  | date: 'dd/MM/yyyy - HH:mm'}}</li>
+      </ul>
+    </details>
+  </li>
+</ul>

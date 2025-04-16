@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {MainWindowComponent} from "./main-window/main-window.component";
-import {ScoreWindowComponent} from "./score-window/score-window.component";
+import {ScoreWindowComponent} from "./score/score-window/score-window.component";
 import {PathsEnum} from "@Shared/model/enums/PathsEnum";
 import {AboutWindowComponent} from "./about-window/about-window.component";
 import {GameModeWindowComponent} from "./game-mode-window/game-mode-window.component";

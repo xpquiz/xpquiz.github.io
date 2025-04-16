@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {PathsEnum} from "@Shared/model/enums/PathsEnum";
 import {ActivatedRoute, Router} from "@angular/router";
-import {addHours, isBefore} from "date-fns";
+import {addHours, addSeconds, isBefore} from "date-fns";
 import {EncryptionService} from "@Shared/service/encryption.service";
 import {TemplateService} from "@Shared/service/template.service";
 import {BaseRepository} from "@Shared/database/repository/base.repository";
@@ -72,7 +72,7 @@ export class QuestionTrifectaResultComponent {
     };
     const base: BaseEntity | undefined = await this.baseRepository.findMainBase();
 
-    base!.nextQuizResponseDate = addHours(currentDate, this.hoursToPlayAgain);
+    base!.nextQuizResponseDate = addSeconds(currentDate, 30);
 
     await this.historyRepository.save(newQuestionHistory);
     await this.baseRepository.updateBase(base);
