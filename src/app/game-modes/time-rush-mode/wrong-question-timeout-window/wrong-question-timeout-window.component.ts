@@ -21,8 +21,10 @@ export class WrongQuestionTimeoutWindowComponent implements OnInit {
   public hoursToPlayAgain: number = 72;
   public correctAnswers: number = 0;
   public type: string = '';
+  public totalPoints: number = 0;
+
   protected readonly PathsEnum = PathsEnum;
-  private wrongAnswerSound: HTMLAudioElement = new Audio('assets/sounds/critical_stop.wav');
+  private readonly wrongAnswerSound: HTMLAudioElement = new Audio('assets/sounds/critical_stop.wav');
 
   constructor(
     protected readonly router: Router,
@@ -62,11 +64,11 @@ export class WrongQuestionTimeoutWindowComponent implements OnInit {
       won: false,
       correctAnswers: this.correctAnswers,
       wrongAnswers: 5 - this.correctAnswers,
-      totalScore: null,
+      totalPoints: this.totalPoints,
     };
     const base: BaseEntity | undefined = await this.baseRepository.findMainBase();
 
-    base!.nextQuizResponseDate = addSeconds(currentDate, 30);
+    base!.nextQuizResponseDate = addSeconds(currentDate, 30);// TODO
 
     await this.historyRepository.save(newQuestionHistory);
     await this.baseRepository.updateBase(base);
@@ -76,6 +78,7 @@ export class WrongQuestionTimeoutWindowComponent implements OnInit {
     this.correctAnswers = parseInt(this.route.snapshot.paramMap.get('questions')!);
     this.type = this.route.snapshot.paramMap.get('type')!;
     this.answers = '\u{1F7E9}'.repeat(this.correctAnswers) + '\u{1F7E5}'.repeat(5 - this.correctAnswers);
+    this.totalPoints = parseInt(this.route.snapshot.paramMap.get('totalPoints')!)
 
     const templateParams: QuestionResultTimeRushTemplateParams = {
       correctAnswers: `👉 ${this.correctAnswers}/5 😠`,

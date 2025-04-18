@@ -22,7 +22,7 @@ export interface WeekScoreTemplateParams extends TemplateParams {
 
 export interface QuestionResultTemplateParams extends TemplateParams {
   question: string,
-  questionPoints: number | null,
+  questionPoints: number,
   selectedAnswer: string,
   rightAnswer: string,
   wrongAnswers: string[]
@@ -34,13 +34,14 @@ export interface QuestionResultTrifectaTemplateParams extends TemplateParams {
   questions: string[],
   correctAnswers: string[],
   selectedAnswers: TrifectaSelectedAnswer[],
-  questionPoints: number | null
+  questionPoints: number
 }
 
 interface TrifectaSelectedAnswer {
   icon: string,
   answer: string,
-  points: string
+  points: string,
+  correct: boolean,
 }
 
 // Time-rush

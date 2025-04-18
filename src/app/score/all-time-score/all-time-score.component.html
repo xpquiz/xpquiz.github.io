@@ -11,6 +11,15 @@
   </li>
   <li>
     <details open>
+      <summary>Points</summary>
+      <ul>
+        <li>Points earned: {{ this.allTimeScoreInfo.totalPointsEarned }}</li>
+        <li>Points missed: {{ this.allTimeScoreInfo.totalPointsMissed }}</li>
+      </ul>
+    </details>
+  </li>
+  <li>
+    <details open>
       <summary>Answers</summary>
       <ul>
         <li>Correct answers: {{ this.allTimeScoreInfo.correctAnswers }}</li>
@@ -24,10 +33,10 @@
       <ul>
         <li>First game played: {{ this.allTimeScoreInfo.firstGamePlayed | date: 'dd/MM/yyyy - HH:mm' }}</li>
         <li>Last game played: {{ this.allTimeScoreInfo.lastGamePlayed | date: 'dd/MM/yyyy - HH:mm' }}</li>
-        <li>First victory: {{ this.allTimeScoreInfo.firstVictory  | date: 'dd/MM/yyyy - HH:mm'}}</li>
-        <li>Last victory: {{ this.allTimeScoreInfo.lastVictory | date: 'dd/MM/yyyy - HH:mm'}}</li>
-        <li>First defeat: {{ this.allTimeScoreInfo.firstDefeat | date: 'dd/MM/yyyy - HH:mm'}}</li>
-        <li>Last defeat: {{ this.allTimeScoreInfo.lastDefeat  | date: 'dd/MM/yyyy - HH:mm'}}</li>
+        <li>First victory: {{ this.allTimeScoreInfo.firstVictory  | date: 'dd/MM/yyyy - HH:mm' }}</li>
+        <li>Last victory: {{ this.allTimeScoreInfo.lastVictory | date: 'dd/MM/yyyy - HH:mm' }}</li>
+        <li>First defeat: {{ this.allTimeScoreInfo.firstDefeat | date: 'dd/MM/yyyy - HH:mm' }}</li>
+        <li>Last defeat: {{ this.allTimeScoreInfo.lastDefeat  | date: 'dd/MM/yyyy - HH:mm' }}</li>
       </ul>
     </details>
   </li>

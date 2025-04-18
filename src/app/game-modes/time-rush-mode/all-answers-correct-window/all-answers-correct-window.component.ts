@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {HistoryEntity} from "@Shared/database/entity/history.entity";
 import {BaseEntity} from "@Shared/database/entity/base.entity";
-import {addHours, addSeconds, isBefore} from "date-fns";
+import {addSeconds, isBefore} from "date-fns";
 import {BaseRepository} from "@Shared/database/repository/base.repository";
 import {HistoryRepository} from "@Shared/database/repository/history.repository";
 import {TemplateService} from "@Shared/service/template.service";
@@ -22,7 +22,7 @@ export class AllAnswersCorrectWindowComponent {
   public hoursToPlayAgain: number = 3;
 
   protected readonly PathsEnum = PathsEnum;
-  private correctAnswerSound: HTMLAudioElement = new Audio('assets/sounds/tada.wav');
+  private readonly  correctAnswerSound: HTMLAudioElement = new Audio('assets/sounds/tada.wav');
 
   constructor(
     protected readonly router: Router,
@@ -62,18 +62,18 @@ export class AllAnswersCorrectWindowComponent {
       won: true,
       correctAnswers: 5,
       wrongAnswers: 0,
-      totalScore: this.totalScore,
+      totalPoints: this.totalScore,
     };
     const base: BaseEntity | undefined = await this.baseRepository.findMainBase();
 
-    base!.nextQuizResponseDate = addSeconds(currentDate, 30);
+    base!.nextQuizResponseDate = addSeconds(currentDate, 30); // TODO
 
     await this.historyRepository.save(newQuestionHistory);
     await this.baseRepository.updateBase(base);
   }
 
   private async retrieveRouteParams(): Promise<void> {
-    this.totalScore = parseInt(this.route.snapshot.paramMap.get('score')!);
+    this.totalScore = parseInt(this.route.snapshot.paramMap.get('totalPoints')!);
 
     const answers: string = '\u{1F7E9}'.repeat(5);
 

@@ -26,7 +26,7 @@ export class TimeRushQuestionWindowComponent implements OnInit {
   private questions: Question[] = []
   private firstInteractionOnScreen: boolean = true;
   private resetTimeRemaining: boolean = false;
-  private totalScore: number = 0;
+  private totalPoints: number = 0;
 
   private readonly questionReadySound: HTMLAudioElement = new Audio('assets/sounds/logon.wav');
   private readonly correctQuestionSound: HTMLAudioElement = new Audio('assets/sounds/logoff.wav');
@@ -50,6 +50,9 @@ export class TimeRushQuestionWindowComponent implements OnInit {
     this.loadProgressBar()
 
     this.questions = await this.triviaService.fetchQuestion(this.questionsAmount);
+    this.totalPoints = this.questions
+      .map(q => q.points * 5)
+      .reduce((p1, p2) => p1 + p2, 0);
     this.currentQuestion = this.questions.pop();
   }
 
@@ -60,10 +63,8 @@ export class TimeRushQuestionWindowComponent implements OnInit {
     this.timeRemainingProgressBar = this.timeRemainingProgressBarMax + 1;
 
     if (answer === this.currentQuestion!.correctAnswer) {
-      this.totalScore += this.currentQuestion!.points * 5;
-
       if (this.questions.length === 0) {
-        await this.router.navigate([`../${PathsEnum.QUIZ_TIME_RUSH_ALL_ANSWERS_CORRECT}`, this.totalScore], {relativeTo: this.route});
+        await this.router.navigate([`../${PathsEnum.QUIZ_TIME_RUSH_ALL_ANSWERS_CORRECT}`, this.totalPoints], {relativeTo: this.route});
       } else {
         await this.correctQuestionSound.play();
         this.currentQuestion = this.questions.pop();
@@ -74,8 +75,8 @@ export class TimeRushQuestionWindowComponent implements OnInit {
     }
   }
 
-  public async wrongQuestionOrTimeExpired(type: string): Promise<void> {
-    await this.router.navigate([`../${PathsEnum.QUIZ_TIME_RUSH_WRONG_ANSWER_OR_TIMEOUT}`, type, this.questionsAmount - this.questions.length - 1], {relativeTo: this.route});
+  public async wrongQuestionOrTimeExpired(type: 'wrong' | 'timeout'): Promise<void> {
+    await this.router.navigate([`../${PathsEnum.QUIZ_TIME_RUSH_WRONG_ANSWER_OR_TIMEOUT}`, this.totalPoints, type, this.questionsAmount - this.questions.length - 1], {relativeTo: this.route});
   }
 
   // Loading bars methods

@@ -6,6 +6,7 @@
       <label *ngIf="this.type === 'wrong'">You got it wrong!</label>
       <label><b>{{ this.correctAnswers }} correct answer(s) out of 5!</b></label>
       <label><b>[{{ this.answers }}]</b></label>
+      <label>You missed [{{ this.totalPoints }}] points...</label>
       <label>Come back in {{ this.hoursToPlayAgain }} hours to play again!</label>
     </div>
 

@@ -25,8 +25,8 @@ export class ResultWindowComponent {
   public hoursToPlayAgain: number = 3;
   protected readonly PathsEnum = PathsEnum;
 
-  private correctAnswerSound: HTMLAudioElement = new Audio('assets/sounds/tada.wav');
-  private wrongAnswerSound: HTMLAudioElement = new Audio('assets/sounds/critical_stop.wav');
+  private readonly correctAnswerSound: HTMLAudioElement = new Audio('assets/sounds/tada.wav');
+  private readonly wrongAnswerSound: HTMLAudioElement = new Audio('assets/sounds/critical_stop.wav');
 
   constructor(
     protected readonly router: Router,
@@ -67,11 +67,11 @@ export class ResultWindowComponent {
       won: this.answerCorrect,
       correctAnswers: this.answerCorrect ? 1 : 0,
       wrongAnswers: this.answerCorrect ? 0 : 1,
-      totalScore: this.questionScore,
+      totalPoints: this.questionScore,
     };
     const base: BaseEntity | undefined = await this.baseRepository.findMainBase();
 
-    base!.nextQuizResponseDate = addSeconds(currentDate, 30);
+    base!.nextQuizResponseDate = addSeconds(currentDate, 30);// TODO
 
     await this.historyRepository.save(newQuestionHistory);
     await this.baseRepository.updateBase(base);

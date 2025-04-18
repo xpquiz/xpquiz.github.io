@@ -95,7 +95,7 @@ export class QuestionWindowComponent implements OnInit, OnDestroy {
     const correctAnswer: boolean = this.selectedAnswer === this.question!.correctAnswer;
     const questionResult: QuestionResultTemplateParams = {
       question: this.question!.question,
-      questionPoints: correctAnswer ? this.question!.points : null,
+      questionPoints: this.question!.points,
       selectedAnswer: `${correctAnswer ? '🟩' : '🟥'} ${this.selectedAnswer}`,
       rightAnswer: this.question!.correctAnswer,
       wrongAnswers: this.question!.answers.filter(value => value !== this.question!.correctAnswer)

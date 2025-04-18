@@ -37,14 +37,16 @@ export class AllTimeScoreComponent implements OnInit, OnDestroy {
           totalGamesPlayed: value.length,
           totalWins: wonGames.length,
           totalLosses: lostGames.length,
+          totalPointsEarned: wonGames.map(h => h.totalPoints).reduce(sumScores, 0),
+          totalPointsMissed: lostGames.map(h => h.totalPoints).reduce(sumScores, 0),
           correctAnswers: gamesCorrectAnswers.reduce(sumScores, 0),
           wrongAnswers: gamesWrongAnswers.reduce(sumScores, 0),
-          firstGamePlayed: gameDates.sort(sortAscendingDate)[0],
-          lastGamePlayed: gameDates.sort(sortDescendingDate)[0],
-          firstVictory: wonGamesDates.sort(sortAscendingDate)[0],
-          lastVictory: wonGamesDates.sort(sortDescendingDate)[0],
-          firstDefeat: lostGamesDates.sort(sortAscendingDate)[0],
-          lastDefeat: lostGamesDates.sort(sortDescendingDate)[0]
+          firstGamePlayed: [...gameDates].sort(sortAscendingDate)[0],
+          lastGamePlayed: [...gameDates].sort(sortDescendingDate)[0],
+          firstVictory: [...wonGamesDates].sort(sortAscendingDate)[0],
+          lastVictory: [...wonGamesDates].sort(sortDescendingDate)[0],
+          firstDefeat: [...lostGamesDates].sort(sortAscendingDate)[0],
+          lastDefeat: [...lostGamesDates].sort(sortDescendingDate)[0]
         };
       },
       error: error => {

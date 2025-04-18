@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {PathsEnum} from "@Shared/model/enums/PathsEnum";
 import {ActivatedRoute, Router} from "@angular/router";
-import {addHours, addSeconds, isBefore} from "date-fns";
+import {addSeconds, isBefore} from "date-fns";
 import {EncryptionService} from "@Shared/service/encryption.service";
 import {TemplateService} from "@Shared/service/template.service";
 import {BaseRepository} from "@Shared/database/repository/base.repository";
@@ -21,13 +21,14 @@ export class QuestionTrifectaResultComponent {
   public clipboardText: string = '';
   public displayClipboardMessage: boolean = false;
   public hoursToPlayAgain: number = 3;
-  public missedAnswers: string[] = [];
+  public missedAnswers: string[][] = [['', '']];
 
   protected readonly PathsEnum = PathsEnum;
-  private wrongAnswers: number = 0;
-  private correctAnswerSound: HTMLAudioElement = new Audio('assets/sounds/tada.wav');
-  private wrongAnswerSound: HTMLAudioElement = new Audio('assets/sounds/critical_stop.wav');
+
+  private readonly correctAnswerSound: HTMLAudioElement = new Audio('assets/sounds/tada.wav');
+  private readonly wrongAnswerSound: HTMLAudioElement = new Audio('assets/sounds/critical_stop.wav');
   private correctAnswers: number = 0;
+  private wrongAnswers: number = 0;
 
   constructor(
     protected readonly router: Router,
@@ -68,11 +69,11 @@ export class QuestionTrifectaResultComponent {
       won: this.allAnswersCorrect,
       correctAnswers: this.correctAnswers,
       wrongAnswers: this.wrongAnswers,
-      totalScore: this.questionScore,
+      totalPoints: this.questionScore,
     };
     const base: BaseEntity | undefined = await this.baseRepository.findMainBase();
 
-    base!.nextQuizResponseDate = addSeconds(currentDate, 30);
+    base!.nextQuizResponseDate = addSeconds(currentDate, 30);// TODO
 
     await this.historyRepository.save(newQuestionHistory);
     await this.baseRepository.updateBase(base);
@@ -86,13 +87,13 @@ export class QuestionTrifectaResultComponent {
     const questionResultText: string = await this.templateService.render(TemplateEnum.QUESTION_RESULT_TRIFECTA, questionResult);
 
     this.correctAnswers = questionResult.selectedAnswers
-      .filter(question => question.points !== '0').length;
+      .filter(question => question.correct).length;
     this.wrongAnswers = questionResult.selectedAnswers
-      .filter(question => question.points === '0').length;
+      .filter(question => !question.correct).length;
     this.missedAnswers = questionResult.selectedAnswers
-      .filter(question => question.points === '0')
+      .filter(question => !question.correct)
       .map((question, index) => index)
-      .map((index) => questionResult.correctAnswers[index]);
+      .map((index) => [questionResult.questions[index], questionResult.correctAnswers[index]]);
     this.allAnswersCorrect = this.correctAnswers === 3 && this.wrongAnswers === 0;
     this.hoursToPlayAgain = this.allAnswersCorrect ? 3 : 24;
     this.questionScore = questionResult.questionPoints!;

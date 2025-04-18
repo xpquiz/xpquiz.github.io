@@ -22,11 +22,11 @@ const routes: Routes = [
         component: TimeRushQuestionWindowComponent
       },
       {
-        path: `${PathsEnum.QUIZ_TIME_RUSH_WRONG_ANSWER_OR_TIMEOUT}/:type/:questions`,
+        path: `${PathsEnum.QUIZ_TIME_RUSH_WRONG_ANSWER_OR_TIMEOUT}/:totalPoints/:type/:questions`,
         component: WrongQuestionTimeoutWindowComponent
       },
       {
-        path: `${PathsEnum.QUIZ_TIME_RUSH_ALL_ANSWERS_CORRECT}/:score`,
+        path: `${PathsEnum.QUIZ_TIME_RUSH_ALL_ANSWERS_CORRECT}/:totalPoints`,
         component: AllAnswersCorrectWindowComponent
       }
     ]

@@ -5,5 +5,5 @@ export interface HistoryEntity {
   won: boolean,
   correctAnswers: number,
   wrongAnswers: number,
-  totalScore: number | null,
+  totalPoints: number,
 }

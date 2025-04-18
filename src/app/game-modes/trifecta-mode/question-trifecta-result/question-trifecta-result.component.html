@@ -10,8 +10,8 @@
 
     <div *ngIf="!this.allAnswersCorrect" class="window-body_title">
       <label>You got it wrong! The correct answer(s) was/were:</label>
-      <ng-container *ngFor="let answer of this.missedAnswers">
-        <label><b>[{{ answer }}]</b></label>
+      <ng-container *ngFor="let answerQuestion of this.missedAnswers">
+        <label><b>[{{ answerQuestion[0] }} - {{ answerQuestion[1] }}]</b></label>
       </ng-container>
       <label>Come back in {{ this.hoursToPlayAgain }} hours for another question!</label>
     </div>
