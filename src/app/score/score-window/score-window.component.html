@@ -21,7 +21,7 @@
           [id]="tab.id"
           [hidden]="!tab.selected"
         >
-          <ng-template [ngComponentOutlet]="tab.component"></ng-template>
+          <ng-template *ngComponentOutlet="tab.component; inputs: {'gameHistory$': this.gameHistory$}"></ng-template>
         </article>
       </ng-container>
     </section>

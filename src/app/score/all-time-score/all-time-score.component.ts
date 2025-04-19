@@ -1,21 +1,19 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {HistoryRepository} from "@Shared/database/repository/history.repository";
-import {liveQuery, Subscription} from "dexie";
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {AllTimeScoreInfo} from "@Shared/model/Score";
 import {HistoryEntity} from "@Shared/database/entity/history.entity";
 import {sortAscendingDate, sortDescendingDate, sumScores} from "@Shared/utils/Functions";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {PathsEnum} from "@Shared/model/enums/PathsEnum";
+import {Observable} from "dexie";
 
 @Component({
   selector: 'app-all-time-score',
   templateUrl: './all-time-score.component.html',
   styleUrls: ['./all-time-score.component.sass']
 })
-export class AllTimeScoreComponent implements OnInit, OnDestroy {
+export class AllTimeScoreComponent implements OnInit {
 
   public allTimeScoreInfo: AllTimeScoreInfo | undefined;
-  private allScoreSubscription: Subscription | undefined;
   public radioFormGroup: FormGroup = this.formBuilder.group({
     category: ['wins-losses']
   });
@@ -38,16 +36,16 @@ export class AllTimeScoreComponent implements OnInit, OnDestroy {
     }
   ]
 
+  @Input()
+  public gameHistory$: Observable<HistoryEntity[]> | undefined;
+
   constructor(
     private readonly formBuilder: FormBuilder,
-    private readonly historyRepository: HistoryRepository
   ) {
   }
 
   public ngOnInit(): void {
-    this.allScoreSubscription = liveQuery(
-      () => this.historyRepository.findAll()
-    ).subscribe({
+    this.gameHistory$!.subscribe({
       next: (value: HistoryEntity[]) => {
         const wonGames: HistoryEntity[] = value.filter((h: HistoryEntity) => h.won);
         const lostGames: HistoryEntity[] = value.filter((h: HistoryEntity) => !h.won);
@@ -74,13 +72,9 @@ export class AllTimeScoreComponent implements OnInit, OnDestroy {
         };
       },
       error: error => {
+        console.error(`Error while fetching score: `, error);
       }
     })
-  }
-
-
-  public ngOnDestroy(): void {
-    this.allScoreSubscription?.unsubscribe();
   }
 
   protected readonly PathsEnum = PathsEnum;

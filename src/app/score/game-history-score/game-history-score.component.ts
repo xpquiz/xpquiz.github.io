@@ -3,11 +3,11 @@ import {HistoryEntity} from "@Shared/database/entity/history.entity";
 import {Observable} from "dexie";
 
 @Component({
-  selector: 'app-mode-score',
-  templateUrl: './mode-score.component.html',
-  styleUrls: ['./mode-score.component.sass']
+  selector: 'app-game-history-score',
+  templateUrl: './game-history-score.component.html',
+  styleUrls: ['./game-history-score.component.sass']
 })
-export class ModeScoreComponent {
+export class GameHistoryScoreComponent {
 
   @Input()
   public gameHistory$: Observable<HistoryEntity[]> | undefined;

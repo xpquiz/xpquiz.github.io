@@ -6,7 +6,6 @@ import {HttpClientModule} from "@angular/common/http";
 import {NgOptimizedImage} from "@angular/common";
 import {MainWindowComponent} from './main-window/main-window.component';
 import {WindowTitleBarComponent} from './common/window-title-bar/window-title-bar.component';
-import {ScoreWindowComponent} from './score/score-window/score-window.component';
 import {AboutWindowComponent} from './about-window/about-window.component';
 import {GameModeWindowComponent} from './game-mode-window/game-mode-window.component';
 import {ReactiveFormsModule} from "@angular/forms";
