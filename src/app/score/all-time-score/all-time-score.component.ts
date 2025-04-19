@@ -4,6 +4,8 @@ import {liveQuery, Subscription} from "dexie";
 import {AllTimeScoreInfo} from "@Shared/model/Score";
 import {HistoryEntity} from "@Shared/database/entity/history.entity";
 import {sortAscendingDate, sortDescendingDate, sumScores} from "@Shared/utils/Functions";
+import {FormBuilder, FormGroup} from "@angular/forms";
+import {PathsEnum} from "@Shared/model/enums/PathsEnum";
 
 @Component({
   selector: 'app-all-time-score',
@@ -14,8 +16,30 @@ export class AllTimeScoreComponent implements OnInit, OnDestroy {
 
   public allTimeScoreInfo: AllTimeScoreInfo | undefined;
   private allScoreSubscription: Subscription | undefined;
+  public radioFormGroup: FormGroup = this.formBuilder.group({
+    category: ['wins-losses']
+  });
+  public categoryRadioButtons: any[] = [
+    {
+      value: 'wins-losses',
+      label: '🏆 Wins/Losses'
+    },
+    {
+      value: 'points',
+      label: '📊 Points'
+    },
+    {
+      value: 'answers',
+      label: '🤔 Answers'
+    },
+    {
+      value: 'dates',
+      label: '📅 Dates'
+    }
+  ]
 
   constructor(
+    private readonly formBuilder: FormBuilder,
     private readonly historyRepository: HistoryRepository
   ) {
   }
@@ -58,4 +82,6 @@ export class AllTimeScoreComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.allScoreSubscription?.unsubscribe();
   }
+
+  protected readonly PathsEnum = PathsEnum;
 }

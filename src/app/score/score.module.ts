@@ -5,6 +5,7 @@ import {CommonComponentsModule} from "../common/common-components.module";
 import {DirectivesModule} from "../directives/directives.module";
 import { AllTimeScoreComponent } from './all-time-score/all-time-score.component';
 import { ModeScoreComponent } from './mode-score/mode-score.component';
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 @NgModule({
@@ -16,7 +17,8 @@ import { ModeScoreComponent } from './mode-score/mode-score.component';
   imports: [
     CommonModule,
     CommonComponentsModule,
-    DirectivesModule
+    DirectivesModule,
+    ReactiveFormsModule
   ], exports: [
     ScoreWindowComponent
   ]
