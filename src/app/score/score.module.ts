@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {AsyncPipe, CommonModule} from '@angular/common';
 import {ScoreWindowComponent} from "./score-window/score-window.component";
 import {CommonComponentsModule} from "../common/common-components.module";
 import {DirectivesModule} from "../directives/directives.module";
@@ -19,7 +19,8 @@ import { GameHistoryScoreComponent } from './game-history-score/game-history-sco
     CommonModule,
     CommonComponentsModule,
     DirectivesModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    AsyncPipe
   ], exports: [
     ScoreWindowComponent
   ]

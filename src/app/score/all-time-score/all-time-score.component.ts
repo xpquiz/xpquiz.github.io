@@ -1,7 +1,7 @@
 import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {AllTimeScoreInfo} from "@Shared/model/Score";
 import {HistoryEntity} from "@Shared/database/entity/history.entity";
-import {sortAscendingDate, sortDescendingDate, sumScores} from "@Shared/utils/Functions";
+import {sortAscendingDate, sortDescendingDate, sumScores} from "@Shared/utils/functions";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {PathsEnum} from "@Shared/model/enums/PathsEnum";
 import {Observable} from "dexie";
@@ -34,7 +34,7 @@ export class AllTimeScoreComponent implements OnInit {
       value: 'dates',
       label: '📅 Dates'
     }
-  ]
+  ];
 
   @Input()
   public gameHistory$: Observable<HistoryEntity[]> | undefined;

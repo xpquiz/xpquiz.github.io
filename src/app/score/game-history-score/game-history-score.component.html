@@ -1,1 +1,36 @@
-<p>game-history-score works!</p>
+<div class="container">
+  <fieldset class="container_fieldset" [formGroup]="this.radioFormGroup">
+    <legend>🕐 Period</legend>
+    <ng-container *ngFor="let radio of this.periodRadioButtons">
+      <div class="field-row">
+        <input [id]="'radio' + radio.value" [value]="radio.value" type="radio" formControlName="category">
+        <label [for]="'radio' + radio.value">{{ radio.label }}</label>
+      </div>
+    </ng-container>
+  </fieldset>
+
+  <div class="container_treeview">
+    <ul class="tree-view container_treeview_scores">
+
+      <li *ngIf="this.filteredList.length === 0">
+        Select a filter...
+      </li>
+      <ng-container *ngFor="let history of this.filteredList">
+        <li>
+          <details>
+            <summary><b>{{ this.getDetailText(history, 0) }}</b></summary>
+            <ul>
+              <li>{{ this.getDetailText(history, 1) }}</li>
+              <li>{{ this.getDetailText(history, 2) }}</li>
+              <li>{{ this.getDetailText(history, 3) }}</li>
+              <li>{{ this.getDetailText(history, 4) }}</li>
+            </ul>
+          </details>
+        </li>
+      </ng-container>
+
+    </ul>
+
+    <app-icon-button class="container_treeview_button" iconPath="copy.png" title="Copy to clipboard"></app-icon-button>
+  </div>
+</div>

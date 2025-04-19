@@ -4,7 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {TemplateService} from "@Shared/service/template.service";
 import {QuestionResultTimeRushTemplateParams, TemplateEnum} from "@Shared/model/Template";
 import {BaseEntity} from "@Shared/database/entity/base.entity";
-import {addHours, addSeconds, isBefore} from "date-fns";
+import {addHours, isBefore} from "date-fns";
 import {BaseRepository} from "@Shared/database/repository/base.repository";
 import {HistoryEntity} from "@Shared/database/entity/history.entity";
 import {HistoryRepository} from "@Shared/database/repository/history.repository";
@@ -68,7 +68,7 @@ export class WrongQuestionTimeoutWindowComponent implements OnInit {
     };
     const base: BaseEntity | undefined = await this.baseRepository.findMainBase();
 
-    base!.nextQuizResponseDate = addSeconds(currentDate, 30);// TODO
+    base!.nextQuizResponseDate = addHours(currentDate, this.hoursToPlayAgain);
 
     await this.historyRepository.save(newQuestionHistory);
     await this.baseRepository.updateBase(base);

@@ -17,6 +17,7 @@
 
       <ng-container *ngFor="let tab of windowTabs">
         <article
+          class="window-body_article"
           role="tabpanel"
           [id]="tab.id"
           [hidden]="!tab.selected"

@@ -21,7 +21,7 @@ export class ScoreWindowComponent implements OnInit {
   public windowTabs: WindowTab[] = [
     {
       id: 'tab-all-time',
-      title: 'All time',
+      title: 'All-time',
       selected: true,
       component: AllTimeScoreComponent,
     },
