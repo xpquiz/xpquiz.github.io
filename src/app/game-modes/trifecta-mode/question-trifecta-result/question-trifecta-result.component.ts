@@ -91,9 +91,13 @@ export class QuestionTrifectaResultComponent {
     this.wrongAnswers = questionResult.selectedAnswers
       .filter(question => !question.correct).length;
     this.missedAnswers = questionResult.selectedAnswers
+      .map((question, index) => ({
+          correct: question.correct,
+          index
+      }))
       .filter(question => !question.correct)
-      .map((question, index) => index)
-      .map((index) => [questionResult.questions[index], questionResult.correctAnswers[index]]);
+      .map((questionWithIndex) => [questionResult.questions[questionWithIndex.index], questionResult.correctAnswers[questionWithIndex.index]]);
+
     this.allAnswersCorrect = this.correctAnswers === 3 && this.wrongAnswers === 0;
     this.hoursToPlayAgain = this.allAnswersCorrect ? 3 : 24;
     this.questionScore = questionResult.questionPoints!;

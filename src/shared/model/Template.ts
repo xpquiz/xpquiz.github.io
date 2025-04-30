@@ -34,7 +34,8 @@ export interface QuestionResultTrifectaTemplateParams extends TemplateParams {
   questions: string[],
   correctAnswers: string[],
   selectedAnswers: TrifectaSelectedAnswer[],
-  questionPoints: number
+  questionPoints: number,
+  won: boolean
 }
 
 interface TrifectaSelectedAnswer {
