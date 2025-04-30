@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkxpquiz_github_io=self.webpackChunkxpquiz_github_io||[]).push([[805],{8805:(M,s,t)=>{t.r(s),t.d(s,{TrifectaModeModule:()=>c});var n=t(177),_=t(8802),u=t(3721),i=t(540);let c=(()=>{class o{static{this.\u0275fac=function(a){return new(a||o)}}static{this.\u0275mod=i.$C({type:o})}static{this.\u0275inj=i.G2t({imports:[n.MD,_.s,u.h]})}}return o})()}}]);

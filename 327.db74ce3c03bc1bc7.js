@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkxpquiz_github_io=self.webpackChunkxpquiz_github_io||[]).push([[327],{8327:(c,s,t)=>{t.r(s),t.d(s,{TimeRushModeModule:()=>m});var u=t(177),n=t(8802),_=t(3721),i=t(540);let m=(()=>{class o{static{this.\u0275fac=function(M){return new(M||o)}}static{this.\u0275mod=i.$C({type:o})}static{this.\u0275inj=i.G2t({imports:[u.MD,n.s,_.h]})}}return o})()}}]);
