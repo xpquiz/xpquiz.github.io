@@ -141,23 +141,26 @@ export class QuestionTrifectaWindowComponent implements OnInit {
   private async redirectFromAnswer(): Promise<void> {
     let totalPoints: number = 0;
 
+    const selectedAnswers = this.selectedAnswers.map((answer, index) => {
+      const question = this.questions[index];
+      const correctAnswer: boolean = answer === question.correctAnswer
+
+      totalPoints += question.points * 3;
+
+      return {
+        icon: correctAnswer ? '🟩' : '🟥',
+        answer: answer!,
+        points: correctAnswer ? `(${question.points} * 3) = ${question.points * 3}` : '0',
+        correct: correctAnswer
+      }
+    });
+
     const questionResultTrifecta: QuestionResultTrifectaTemplateParams = {
       questions: this.questions.map(question => question.question),
       correctAnswers: this.questions.map(question => question.correctAnswer),
-      selectedAnswers: this.selectedAnswers.map((answer, index) => {
-        const question = this.questions[index];
-        const correctAnswer: boolean = answer === question.correctAnswer
-
-        totalPoints += question.points * 3;
-
-        return {
-          icon: correctAnswer ? '🟩' : '🟥',
-          answer: answer!,
-          points: correctAnswer ? `(${question.points} * 3) = ${question.points * 3}` : '0',
-          correct: correctAnswer
-        }
-      }),
+      selectedAnswers,
       questionPoints: totalPoints,
+      won: selectedAnswers.filter(answer => answer.correct).length === 3
     };
 
     const questionResultTrifectaData: string = this.encryptionService.encrypt(JSON.stringify(questionResultTrifecta));
