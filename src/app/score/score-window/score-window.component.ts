@@ -33,7 +33,7 @@ export class ScoreWindowComponent implements OnInit {
     },
     {
       id: 'tab-history',
-      title: 'Game history',
+      title: 'History',
       selected: false,
       component: GameHistoryScoreComponent,
     },

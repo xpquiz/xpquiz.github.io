@@ -1,6 +1,6 @@
 <div class="container">
   <fieldset class="container_fieldset">
-    <legend>🕐 Period</legend>
+    <legend>📆 Period</legend>
     <form [formGroup]="this.radioFormGroup">
       <ng-container *ngFor="let radio of this.periodRadioButtons">
         <div class="field-row">
@@ -15,8 +15,8 @@
   <div class="container_treeview">
     <ul class="tree-view container_treeview_scores">
 
-      <li *ngIf="this.filteredList.length === 0">
-        Select a filter...
+      <li class="container_treeview_scores_empty-label"  *ngIf="this.filteredList.length === 0">
+        No games found!
       </li>
       <ng-container *ngFor="let history of this.filteredList">
         <li>
@@ -31,9 +31,6 @@
           </details>
         </li>
       </ng-container>
-
     </ul>
-
-    <app-icon-button class="container_treeview_button" iconPath="copy.png" title="Copy to clipboard"></app-icon-button>
   </div>
 </div>

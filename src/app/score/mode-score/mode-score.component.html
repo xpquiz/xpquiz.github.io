@@ -1,1 +1,40 @@
-<p>mode-score works!</p>
+<div class="container">
+  <fieldset class="container_fieldset">
+    <legend>🎲 Game mode</legend>
+    <form [formGroup]="this.radioFormGroup">
+      <ng-container *ngFor="let radio of this.gameModeRadioButtons">
+        <div class="field-row">
+          <input [id]="'radio' + radio.value" [value]="radio.value" type="radio"
+                 formControlName="mode">
+          <label [for]="'radio' + radio.value">{{ radio.label }}</label>
+        </div>
+      </ng-container>
+    </form>
+  </fieldset>
+
+  <div class="container_treeview">
+    <ul class="tree-view container_treeview_scores">
+
+      <li class="container_treeview_scores_empty-label" *ngIf="this.radioFormGroup.get('mode')?.value === ''">
+        Select a game mode...
+      </li>
+      <li class="container_treeview_scores_empty-label" *ngIf="this.radioFormGroup.get('mode')?.value !== '' && this.filteredList.length === 0">
+        No games found!
+      </li>
+      <ng-container *ngFor="let history of this.filteredList">
+        <li>
+          <details>
+            <summary><b>{{ this.getDetailText(history, 0) }}</b></summary>
+            <ul>
+              <li>{{ this.getDetailText(history, 1) }}</li>
+              <li>{{ this.getDetailText(history, 2) }}</li>
+              <li>{{ this.getDetailText(history, 3) }}</li>
+              <li>{{ this.getDetailText(history, 4) }}</li>
+            </ul>
+          </details>
+        </li>
+      </ng-container>
+
+    </ul>
+  </div>
+</div>

@@ -4,14 +4,14 @@ import {HistoryEntity} from "@Shared/database/entity/history.entity";
 import {sortAscendingDate, sortDescendingDate, sumScores} from "@Shared/utils/functions";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {PathsEnum} from "@Shared/model/enums/PathsEnum";
-import {Observable} from "dexie";
+import {Observable, Subscription} from "dexie";
 
 @Component({
   selector: 'app-all-time-score',
   templateUrl: './all-time-score.component.html',
   styleUrls: ['./all-time-score.component.sass']
 })
-export class AllTimeScoreComponent implements OnInit {
+export class AllTimeScoreComponent implements OnInit, OnDestroy {
 
   public allTimeScoreInfo: AllTimeScoreInfo | undefined;
   public radioFormGroup: FormGroup = this.formBuilder.group({
@@ -38,6 +38,8 @@ export class AllTimeScoreComponent implements OnInit {
 
   @Input()
   public gameHistory$: Observable<HistoryEntity[]> | undefined;
+  private gameHistorySubscription: Subscription | undefined;
+  protected readonly PathsEnum = PathsEnum;
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -45,7 +47,7 @@ export class AllTimeScoreComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.gameHistory$!.subscribe({
+    this.gameHistorySubscription = this.gameHistory$!.subscribe({
       next: (value: HistoryEntity[]) => {
         const wonGames: HistoryEntity[] = value.filter((h: HistoryEntity) => h.won);
         const lostGames: HistoryEntity[] = value.filter((h: HistoryEntity) => !h.won);
@@ -77,5 +79,7 @@ export class AllTimeScoreComponent implements OnInit {
     })
   }
 
-  protected readonly PathsEnum = PathsEnum;
+  public ngOnDestroy(): void {
+    this.gameHistorySubscription?.unsubscribe();
+  }
 }

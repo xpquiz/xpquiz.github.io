@@ -1,15 +1,16 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {HistoryEntity} from "@Shared/database/entity/history.entity";
 import {Observable} from "dexie";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {format, isSameMonth, isSameWeek, isSameYear} from 'date-fns';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-game-history-score',
   templateUrl: './game-history-score.component.html',
   styleUrls: ['./game-history-score.component.sass']
 })
-export class GameHistoryScoreComponent implements OnInit {
+export class GameHistoryScoreComponent implements OnInit, OnDestroy {
 
   @Input()
   public gameHistory$: Observable<HistoryEntity[]> | undefined;
@@ -35,7 +36,8 @@ export class GameHistoryScoreComponent implements OnInit {
       label: 'All-time'
     }
   ];
-  public filteredList: HistoryEntity[] = []
+  public filteredList: HistoryEntity[] = [];
+  private formSubscription: Subscription | undefined;
 
   constructor(
     private readonly formBuilder: FormBuilder,
@@ -43,9 +45,13 @@ export class GameHistoryScoreComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.radioFormGroup.valueChanges.subscribe(value => {
+    this.formSubscription = this.radioFormGroup.valueChanges.subscribe(value => {
       this.filterListAccordingToPeriod(value.category);
     });
+  }
+
+  public ngOnDestroy(): void {
+    this.formSubscription?.unsubscribe();
   }
 
   public filterListAccordingToPeriod(
@@ -97,4 +103,5 @@ export class GameHistoryScoreComponent implements OnInit {
         return ''
     }
   }
+
 }
