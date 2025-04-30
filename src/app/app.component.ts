@@ -7,7 +7,7 @@ import {Component, OnInit} from '@angular/core';
 })
 export class AppComponent implements OnInit {
 
-  private windowReadySound: HTMLAudioElement = new Audio('assets/sounds/startup.wav');
+  private readonly windowReadySound: HTMLAudioElement = new Audio('assets/sounds/startup.wav');
 
   public async ngOnInit(): Promise<void> {
     await this.windowReadySound.play();

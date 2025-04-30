@@ -1,0 +1,103 @@
+<div class="container">
+  <fieldset class="container_fieldset" [formGroup]="this.radioFormGroup">
+    <legend>🗂 Category</legend>
+    <ng-container *ngFor="let radio of this.categoryRadioButtons">
+      <div class="field-row">
+        <input [id]="'radio' + radio.value" [value]="radio.value" type="radio" formControlName="category">
+        <label [for]="'radio' + radio.value">{{ radio.label }}</label>
+      </div>
+    </ng-container>
+  </fieldset>
+
+  <div class="container_treeview">
+    <ul class="tree-view container_treeview_scores" *ngIf="this.allTimeScoreInfo !== undefined">
+      <li *ngIf="this.radioFormGroup.get('category')?.value === 'wins-losses'">
+        <summary>🏆 Wins/Losses</summary>
+        <ul>
+          <li class="container_treeview_label">
+            <label>🎲 Total games played:</label>
+            <label><b>{{ this.allTimeScoreInfo.totalGamesPlayed }} games</b></label>
+          </li>
+          <li class="container_treeview_label">
+            <label>🥇 Total wins:</label>
+            <label><b>{{ this.allTimeScoreInfo.totalWins }} wins</b></label>
+          </li>
+          <li class="container_treeview_label">
+            <label>🚫 Total losses:</label>
+            <label><b>{{ this.allTimeScoreInfo.totalLosses }} losses</b></label>
+          </li>
+        </ul>
+      </li>
+      <li *ngIf="this.radioFormGroup.get('category')?.value === 'points'">
+        <summary>📊 Points</summary>
+        <ul>
+          <li class="container_treeview_label">
+            <label>📈 Points earned:</label>
+            <label><b>{{ this.allTimeScoreInfo.totalPointsEarned }} points</b></label>
+          </li>
+          <li class="container_treeview_label">
+            <label>📉 Points missed:</label>
+            <label><b>{{ this.allTimeScoreInfo.totalPointsMissed }} points</b></label>
+          </li>
+        </ul>
+      </li>
+      <li *ngIf="this.radioFormGroup.get('category')?.value === 'answers'">
+        <summary>🤔 Answers</summary>
+        <ul>
+          <li class="container_treeview_label">
+            <label>🟩 Correct answers:</label>
+            <label><b>{{ this.allTimeScoreInfo.correctAnswers }} answers</b></label>
+          </li>
+          <li class="container_treeview_label">
+            <label>🟥 Wrong answers:</label>
+            <label><b>{{ this.allTimeScoreInfo.wrongAnswers }} answers</b></label>
+          </li>
+        </ul>
+      </li>
+      <li *ngIf="this.radioFormGroup.get('category')?.value === 'dates'">
+        <summary>📅 Dates</summary>
+        <ul>
+          <li>
+            <summary>🎲 Games</summary>
+            <ul>
+              <li class="container_treeview_label">
+                <label>First:</label>
+                <label><b>{{ this.allTimeScoreInfo.firstGamePlayed | date: 'dd/MM/yyyy - HH:mm' }}</b></label>
+              </li>
+              <li class="container_treeview_label">
+                <label>Last:</label>
+                <label><b>{{ this.allTimeScoreInfo.lastGamePlayed | date: 'dd/MM/yyyy - HH:mm' }}</b></label>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <summary>🥇 Victories</summary>
+            <ul>
+              <li class="container_treeview_label">
+                <label>First:</label>
+                <label><b>{{ this.allTimeScoreInfo.firstVictory | date: 'dd/MM/yyyy - HH:mm' }}</b></label>
+              </li>
+              <li class="container_treeview_label">
+                <label>Last:</label>
+                <label><b>{{ this.allTimeScoreInfo.lastVictory | date: 'dd/MM/yyyy - HH:mm' }}</b></label>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <summary>🚫 Losses</summary>
+            <ul>
+              <li class="container_treeview_label">
+                <label>First:</label>
+                <label><b>{{ this.allTimeScoreInfo.firstDefeat | date: 'dd/MM/yyyy - HH:mm' }}</b></label>
+              </li>
+              <li class="container_treeview_label">
+                <label>Last:</label>
+                <label><b>{{ this.allTimeScoreInfo.lastDefeat | date: 'dd/MM/yyyy - HH:mm' }}</b></label>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</div>

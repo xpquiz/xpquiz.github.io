@@ -1,14 +1,10 @@
 import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
-import {QuestionWindowComponent} from "./question-window/question-window.component";
 import {MainWindowComponent} from "./main-window/main-window.component";
-import {ScoreWindowComponent} from "./score-window/score-window.component";
-import {PathsEnum} from "../model/enums/PathsEnum";
-import {CorrectAnswerWindowComponent} from "./correct-answer-window/correct-answer-window.component";
-import {WrongAnswerWindowComponent} from "./wrong-answer-window/wrong-answer-window.component";
+import {ScoreWindowComponent} from "./score/score-window/score-window.component";
+import {PathsEnum} from "@Shared/model/enums/PathsEnum";
 import {AboutWindowComponent} from "./about-window/about-window.component";
 import {GameModeWindowComponent} from "./game-mode-window/game-mode-window.component";
-import {QuestionTrifectaWindowComponent} from "./question-trifecta-window/question-trifecta-window.component";
 
 const routes: Routes = [
     {
@@ -33,21 +29,17 @@ const routes: Routes = [
       component: GameModeWindowComponent,
     },
     {
-      path: `${PathsEnum.QUIZ_NORMAL}`,
-      component: QuestionWindowComponent,
+      path: 'normal-mode',
+      loadChildren: () => import('./game-modes/normal-mode/normal-mode.module').then(m => m.NormalModeModule)
     },
     {
-      path: `${PathsEnum.QUIZ_TRIFECTA}`,
-      component: QuestionTrifectaWindowComponent,
+      path: 'time-rush-mode',
+      loadChildren: () => import('./game-modes/time-rush-mode/time-rush-mode.module').then(m => m.TimeRushModeModule)
     },
     {
-      path: `${PathsEnum.CORRECT_ANSWER}/:mode/:result`,
-      component: CorrectAnswerWindowComponent,
+      path: 'trifecta-mode',
+      loadChildren: () => import('./game-modes/trifecta-mode/trifecta-mode.module').then(m => m.TrifectaModeModule)
     },
-    {
-      path: `${PathsEnum.WRONG_ANSWER}/:mode/:result`,
-      component: WrongAnswerWindowComponent
-    }
   ]
 ;
 
