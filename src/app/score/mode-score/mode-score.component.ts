@@ -4,6 +4,7 @@ import {Observable} from "dexie";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {format} from "date-fns";
 import {Subscription} from "rxjs";
+import {sortDescendingDate} from "@Shared/utils/functions";
 
 @Component({
   selector: 'app-mode-score',
@@ -22,15 +23,15 @@ export class ModeScoreComponent implements OnInit, OnDestroy {
   public gameModeRadioButtons: any[] = [
     {
       value: 'normal',
-      label: 'Normal'
+      label: '1️⃣ Normal'
     },
     {
       value: 'trifecta',
-      label: 'Trifecta'
+      label: '3️⃣ Trifecta'
     },
     {
       value: 'time-rush',
-      label: 'Time-Rush'
+      label: '5️⃣ 🕔 Time-Rush'
     },
   ];
   public filteredList: HistoryEntity[] = []
@@ -45,7 +46,8 @@ export class ModeScoreComponent implements OnInit, OnDestroy {
     this.formSubscription = this.radioFormGroup.valueChanges.subscribe(value => {
       const history: HistoryEntity[] = this.gameHistory$!.getValue!();
 
-      this.filteredList = history.filter(h => h.gameMode === value.mode);
+      this.filteredList = history.filter(h => h.gameMode === value.mode)
+        .sort((h1, h2) => sortDescendingDate(h1.date, h2.date));
     });
   }
 
@@ -53,23 +55,10 @@ export class ModeScoreComponent implements OnInit, OnDestroy {
     this.formSubscription?.unsubscribe();
   }
 
-  private filterListAccordingToGameMode(mode: 'normal' | 'trifecta' | 'time-rush') {
-    switch(mode) {
-      case "normal":
-        break;
-      case "trifecta":
-        break;
-      case "time-rush":
-        break;
-      default:
-
-    }
-  }
-
   public getDetailText(history: HistoryEntity, section: number): string {
     switch (section) {
       case 0:
-        return `${history.won ? '🟩' : '🟥'} ${history.gameMode.toUpperCase()}`;
+        return `${history.won ? '🟩' : '🟥'} ${history.won ? 'VICTORY' : 'DEFEAT'}`;
       case 1: {
         const camelCaseMode: string = history.gameMode[0].toUpperCase() + history.gameMode.slice(1, history.gameMode.length);
         const victoryDefeatText: string = history.won ? 'and won!' : 'but lost...';

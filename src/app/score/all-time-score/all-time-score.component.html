@@ -1,6 +1,6 @@
 <div class="container">
   <fieldset class="container_fieldset" [formGroup]="this.radioFormGroup">
-    <legend>🗄 Category</legend>
+    <legend>🗂 Category</legend>
     <ng-container *ngFor="let radio of this.categoryRadioButtons">
       <div class="field-row">
         <input [id]="'radio' + radio.value" [value]="radio.value" type="radio" formControlName="category">

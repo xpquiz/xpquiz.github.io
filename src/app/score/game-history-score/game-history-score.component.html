@@ -15,7 +15,10 @@
   <div class="container_treeview">
     <ul class="tree-view container_treeview_scores">
 
-      <li class="container_treeview_scores_empty-label"  *ngIf="this.filteredList.length === 0">
+      <li class="container_treeview_scores_empty-label" *ngIf="this.radioFormGroup.get('category')?.value === ''">
+        Select a game mode...
+      </li>
+      <li class="container_treeview_scores_empty-label" *ngIf="this.radioFormGroup.get('category')?.value !== '' && this.filteredList.length === 0">
         No games found!
       </li>
       <ng-container *ngFor="let history of this.filteredList">

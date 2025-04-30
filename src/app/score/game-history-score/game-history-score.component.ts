@@ -4,6 +4,7 @@ import {Observable} from "dexie";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {format, isSameMonth, isSameWeek, isSameYear} from 'date-fns';
 import { Subscription } from 'rxjs';
+import {sortDescendingDate} from "@Shared/utils/functions";
 
 @Component({
   selector: 'app-game-history-score',
@@ -60,7 +61,8 @@ export class GameHistoryScoreComponent implements OnInit, OnDestroy {
     const history: HistoryEntity[] = this.gameHistory$!.getValue!();
     const currentDate: Date = new Date();
 
-    this.filteredList = this.getFilteredList(history, period, currentDate).reverse();
+    this.filteredList = this.getFilteredList(history, period, currentDate)
+      .sort((h1, h2) => sortDescendingDate(h1.date, h2.date));
   }
 
   public getFilteredList(
@@ -83,7 +85,7 @@ export class GameHistoryScoreComponent implements OnInit, OnDestroy {
   public getDetailText(history: HistoryEntity, section: number): string {
     switch (section) {
       case 0:
-        return `${history.won ? '🟩' : '🟥'} ${history.gameMode.toUpperCase()}`;
+        return `${history.won ? '🟩' : '🟥'} ${history.gameMode.toUpperCase()} - ${format(history.date, 'dd/MM/yyyy')}`;
       case 1: {
         const camelCaseMode: string = history.gameMode[0].toUpperCase() + history.gameMode.slice(1, history.gameMode.length);
         const victoryDefeatText: string = history.won ? 'and won!' : 'but lost...';
