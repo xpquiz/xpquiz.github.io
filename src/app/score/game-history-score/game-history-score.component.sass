@@ -1,0 +1,33 @@
+.container
+  display: flex
+  flex-direction: row
+  align-items: center
+  justify-content: space-evenly
+
+  &_fieldset
+    margin-right: 20px
+
+  &_treeview
+    display: inherit
+    flex-direction: column
+    align-items: center
+    justify-content: center
+
+    &_label
+      display: flex
+      justify-content: space-between
+
+    &_scores
+      width: 230px
+      max-width: 230px
+      height: 140px
+      max-height: 140px
+      overflow: auto
+
+      &_empty-label
+        font-style: italic
+
+    &_button
+      width: 100%
+      margin-top: 10px
+

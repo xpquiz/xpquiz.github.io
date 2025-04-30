@@ -1,0 +1,35 @@
+<div class="window">
+  <app-window-title-bar iconPath="score.png" title="Score"></app-window-title-bar>
+  <div class="window-body">
+    <section class="tabs">
+      <menu role="tablist" aria-label="Sample tabs">
+        <ng-container *ngFor="let tab of windowTabs">
+          <button
+            role="tab"
+            [attr.aria-controls]="tab.id"
+            [attr.aria-selected]="tab.selected"
+            (click)="this.changeSelectedTab(tab)"
+          >
+            {{ tab.title }}
+          </button>
+        </ng-container>
+      </menu>
+
+      <ng-container *ngFor="let tab of windowTabs">
+        <article
+          class="window-body_article"
+          role="tabpanel"
+          [id]="tab.id"
+          [hidden]="!tab.selected"
+        >
+          <ng-template *ngComponentOutlet="tab.component; inputs: {'gameHistory$': this.gameHistory$}"></ng-template>
+        </article>
+      </ng-container>
+    </section>
+
+    <div class="window-body_buttons">
+      <app-icon-button iconPath="home.png" title="Return home"
+                       (onButtonClick)="this.router.navigateByUrl(PathsEnum.HOME)"></app-icon-button>
+    </div>
+  </div>
+</div>

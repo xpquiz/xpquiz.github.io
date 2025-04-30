@@ -1,7 +1,7 @@
 import {Component} from '@angular/core';
 import {Router} from "@angular/router";
-import {PathsEnum} from "../../model/enums/PathsEnum";
-import {GameMode} from "../../model/enums/GameModesEnum";
+import {PathsEnum} from "@Shared/model/enums/PathsEnum";
+import {GameMode} from "@Shared/model/enums/GameModesEnum";
 
 @Component({
   selector: 'app-game-mode-window',
