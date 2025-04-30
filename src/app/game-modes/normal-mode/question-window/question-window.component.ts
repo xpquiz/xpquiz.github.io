@@ -6,7 +6,6 @@ import {TriviaService} from "@Shared/service/trivia.service";
 import {EncryptionService} from "@Shared/service/encryption.service";
 import {PathsEnum} from "@Shared/model/enums/PathsEnum";
 import {QuestionResultTemplateParams} from "@Shared/model/Template";
-import {GameMode} from "@Shared/model/enums/GameModesEnum";
 import {BaseRepository} from "@Shared/database/repository/base.repository";
 import {BaseEntity} from "@Shared/database/entity/base.entity";
 import {isBefore} from "date-fns";
@@ -26,9 +25,9 @@ export class QuestionWindowComponent implements OnInit, OnDestroy {
   public answerProgressBar: number = 0;
   public loadingProgressBar: number = 0;
   private questionLoaded: boolean = false;
-  private questionReadySound: HTMLAudioElement = new Audio('assets/sounds/logon.wav');
-  private confirmAnswerSound: HTMLAudioElement = new Audio('assets/sounds/exclamation.wav');
-  private getQuizzesSubscription: Subscription | undefined;
+  private readonly questionReadySound: HTMLAudioElement = new Audio('assets/sounds/logon.wav');
+  private readonly confirmAnswerSound: HTMLAudioElement = new Audio('assets/sounds/exclamation.wav');
+  private readonly getQuizzesSubscription: Subscription | undefined;
 
   constructor(
     private readonly triviaService: TriviaService,

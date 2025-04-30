@@ -26,7 +26,6 @@ export class TimeRushInfoWindowComponent implements OnInit {
 
     if (isBefore(new Date(), baseEntity!.nextQuizResponseDate)) {
       await this.router.navigateByUrl(PathsEnum.HOME);
-      return;
     }
   }
 

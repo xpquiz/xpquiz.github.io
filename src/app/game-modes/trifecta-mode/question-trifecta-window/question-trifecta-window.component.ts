@@ -25,9 +25,9 @@ export class QuestionTrifectaWindowComponent implements OnInit {
   public answerProgressBar: number = 0;
   public progressBarMax: number = 100;
   private questionLoaded: boolean = false;
-  private questionAmount: number = 3;
-  private questionReadySound: HTMLAudioElement = new Audio('assets/sounds/logon.wav');
-  private confirmAnswerSound: HTMLAudioElement = new Audio('assets/sounds/exclamation.wav');
+  private readonly questionAmount: number = 3;
+  private readonly questionReadySound: HTMLAudioElement = new Audio('assets/sounds/logon.wav');
+  private readonly confirmAnswerSound: HTMLAudioElement = new Audio('assets/sounds/exclamation.wav');
 
   constructor(
     private readonly triviaService: TriviaService,

@@ -2,7 +2,7 @@ import {Component} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {HistoryEntity} from "@Shared/database/entity/history.entity";
 import {BaseEntity} from "@Shared/database/entity/base.entity";
-import {addSeconds, isBefore} from "date-fns";
+import {addHours, isBefore} from "date-fns";
 import {BaseRepository} from "@Shared/database/repository/base.repository";
 import {HistoryRepository} from "@Shared/database/repository/history.repository";
 import {TemplateService} from "@Shared/service/template.service";
@@ -66,7 +66,7 @@ export class AllAnswersCorrectWindowComponent {
     };
     const base: BaseEntity | undefined = await this.baseRepository.findMainBase();
 
-    base!.nextQuizResponseDate = addSeconds(currentDate, 30); // TODO
+    base!.nextQuizResponseDate = addHours(currentDate, 3);
 
     await this.historyRepository.save(newQuestionHistory);
     await this.baseRepository.updateBase(base);
