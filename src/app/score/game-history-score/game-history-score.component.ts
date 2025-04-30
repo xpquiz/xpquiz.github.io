@@ -43,8 +43,8 @@ export class GameHistoryScoreComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.radioFormGroup.get('category')?.valueChanges.subscribe(value => {
-      this.filterListAccordingToPeriod(value);
+    this.radioFormGroup.valueChanges.subscribe(value => {
+      this.filterListAccordingToPeriod(value.category);
     });
   }
 
@@ -96,7 +96,5 @@ export class GameHistoryScoreComponent implements OnInit {
       default:
         return ''
     }
-
   }
-
 }

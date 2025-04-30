@@ -1,12 +1,15 @@
 <div class="container">
-  <fieldset class="container_fieldset" [formGroup]="this.radioFormGroup">
+  <fieldset class="container_fieldset">
     <legend>🕐 Period</legend>
-    <ng-container *ngFor="let radio of this.periodRadioButtons">
-      <div class="field-row">
-        <input [id]="'radio' + radio.value" [value]="radio.value" type="radio" formControlName="category">
-        <label [for]="'radio' + radio.value">{{ radio.label }}</label>
-      </div>
-    </ng-container>
+    <form [formGroup]="this.radioFormGroup">
+      <ng-container *ngFor="let radio of this.periodRadioButtons">
+        <div class="field-row">
+          <input [id]="'radio' + radio.value" [value]="radio.value" type="radio"
+                 formControlName="category">
+          <label [for]="'radio' + radio.value">{{ radio.label }}</label>
+        </div>
+      </ng-container>
+    </form>
   </fieldset>
 
   <div class="container_treeview">
