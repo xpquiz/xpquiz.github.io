@@ -19,7 +19,6 @@ export class AllAnswersCorrectWindowComponent {
   public totalScore: number = 0;
   public clipboardText: string = '';
   public displayClipboardMessage: boolean = false;
-  public hoursToPlayAgain: number = 3;
 
   protected readonly PathsEnum = PathsEnum;
   private readonly  correctAnswerSound: HTMLAudioElement = new Audio('assets/sounds/tada.wav');

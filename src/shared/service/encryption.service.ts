@@ -17,24 +17,4 @@ export class EncryptionService {
     const decrypted = AES.decrypt(value, this.encryptionkey);
     return decrypted.toString(enc.Utf8);
   }
-
-  public replacer(key: any, value: any) {
-    if (value instanceof Map) {
-      return {
-        dataType: 'Map',
-        value: Array.from(value.entries()), // or with spread: value: [...value]
-      };
-    } else {
-      return value;
-    }
-  }
-
-  public reviver(key: any, value: any) {
-    if (typeof value === 'object' && value !== null) {
-      if (value.dataType === 'Map') {
-        return new Map(value.value);
-      }
-    }
-    return value;
-  }
 }

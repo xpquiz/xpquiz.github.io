@@ -1,14 +1,9 @@
-import {booleanAttribute, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {firstValueFrom} from "rxjs";
 import {TheTriviaApiResponse} from "../model/questions/TheTriviaApiResponse";
 import {OpenTriviaDBResponse} from "../model/questions/OpenTriviaDBResponse";
 import {DifficultyType, Question} from "../model/questions/Question";
-import {
-  QuizAPIResponse,
-  QuizAPIResponseAnswers,
-  QuizAPIResponseCorrectAnswers
-} from "../model/questions/QuizAPIResponse";
 import {environment} from "../../environments/environment";
 
 
@@ -26,7 +21,6 @@ export class TriviaService {
   private readonly questionMethods: Function[] = [
     this.getQuestionsTheTriviaApi,
     this.getQuestionsOpenTriviaDB,
-    this.getQuestionsQuizAPI,
   ]
 
   constructor(
@@ -96,52 +90,5 @@ export class TriviaService {
         isNiche: false,
       }
     });
-  }
-
-  private async getQuestionsQuizAPI(questionAmount: number): Promise<Question[]> {
-    const url: string = `${environment.quizAPIUrl}?limit=${questionAmount}`;
-    const response: QuizAPIResponse[] = await firstValueFrom(
-      this.httpClient.get<QuizAPIResponse[]>(url, {
-        headers: {'X-Api-Key': environment.quizAPIKey}
-      })
-    );
-
-    return response.map(res => {
-      const difficulty: DifficultyType = res.difficulty.toLowerCase() as DifficultyType;
-      let incorrectAnswers: string[] = [];
-      let correctAnswer: string | undefined = undefined;
-
-      for (const key of Object.keys(res.answers)) {
-        const answer: string | null = res.answers[key as keyof QuizAPIResponseAnswers];
-
-        if (answer === null)
-          continue;
-
-        const answerKey: string = `${key}_correct`;
-        const isAnswerCorrect: string = res.correct_answers[answerKey as keyof QuizAPIResponseCorrectAnswers];
-
-        if (booleanAttribute(isAnswerCorrect) && correctAnswer === undefined) {
-          correctAnswer = answer;
-          continue;
-        }
-
-        incorrectAnswers.push(answer);
-      }
-
-      const answers = [correctAnswer!, ...incorrectAnswers]
-        .map((value) => ({value, sort: Math.random()}))
-        .sort((a, b) => a.sort - b.sort)
-        .map(({value}) => value);
-
-      return {
-        question: res.question,
-        correctAnswer: correctAnswer!,
-        answers,
-        points: this.difficultyPointsMap.get(difficulty)!,
-        difficulty,
-        isNiche: false
-      }
-    });
-
   }
 }
