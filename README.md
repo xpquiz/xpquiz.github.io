@@ -15,7 +15,8 @@ A quiz game, with 3 different modes.
 ### 1. Game description
 
 You have 3 different game modes to choose from.\
-Each mode has a different number of questions, scoring system, and wait time depending on your performance.
+Each mode has a different number of questions, scoring system, and wait time depending on your performance.\
+At the end of every mode, you can see your earned score, missed questions, and are also able to copy the result to the clipboard to share with your friends!
 
 #### 1.2. Normal mode
 
