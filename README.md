@@ -67,5 +67,5 @@ On the tech side of the app, I've used:
 
 ---
 
-The site is available at [xpquiz.github.io](https://xpquiz.github.io) - go ahead, play it, and share your results with friends! \
+The site is available at [xpquiz.github.io](https://xpquiz.github.io) - go ahead and play! And share your results with friends! \
 Feel free to contact me with suggestions, feedback, or just to say hi!
